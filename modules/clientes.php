@@ -167,7 +167,7 @@ $stmt->close();
                         <td><?php echo htmlspecialchars($cli['direccion']); ?></td>
                         <td>
                             <a href="?editar=<?php echo $cli['id']; ?>" class="btn-accion editar" title="Editar">&#9998;</a>
-                            <form method="POST" style="display:inline;" onsubmit="return confirm('¿Eliminar este cliente?');">
+                            <form method="POST" class="form-inline" onsubmit="return confirm('¿Eliminar este cliente?');">
                                 <input type="hidden" name="accion" value="eliminar">
                                 <input type="hidden" name="cliente_id" value="<?php echo $cli['id']; ?>">
                                 <button type="submit" class="btn-accion eliminar" title="Eliminar">&#128465;</button>
@@ -177,7 +177,7 @@ $stmt->close();
                     <?php endforeach; ?>
                     <?php if (count($clientes) === 0): ?>
                     <tr>
-                        <td colspan="6" style="text-align:center; color:#aaa;">Sin clientes registrados.</td>
+                        <td colspan="6" class="tabla-vacia">Sin clientes registrados.</td>
                     </tr>
                     <?php endif; ?>
                 </tbody>

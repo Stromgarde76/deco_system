@@ -218,23 +218,23 @@ function selected_tipo_cuenta($valor, $banco_editar) {
                         <td><?php echo htmlspecialchars($b['tipo_cuenta']); ?></td>
                         <td><?php echo formatearCuenta($b['numero_cuenta']); ?></td>
                         <td><?php echo htmlspecialchars($b['titular']); ?></td>
-                        <td class="td-saldo" style="text-align:right;font-weight:bold;">
+                        <td class="td-saldo">
                             <?php echo number_format($b['saldo'],2,',','.'); ?> Bs.
                             <?php if ($tasa_usd > 0): ?>
                                 <br>
-                                <small style="font-weight:normal;color:#37659a;">
+                                <small class="saldo-secundario">
                                     <?php echo number_format($b['saldo']/$tasa_usd, 2, ',', '.'); ?> USD
                                 </small>
                             <?php else: ?>
                                 <br>
-                                <small style="font-weight:normal;color:#aaa;">
+                                <small class="saldo-sin-tasa">
                                     Tasa no disponible
                                 </small>
                             <?php endif; ?>
                         </td>
                         <td>
                             <a href="?editar=<?php echo $b['id']; ?>" class="btn-accion editar" title="Editar">&#9998;</a>
-                            <form method="POST" style="display:inline;" onsubmit="return confirm('¿Eliminar este banco?');">
+                            <form method="POST" class="form-inline" onsubmit="return confirm('¿Eliminar este banco?');">
                                 <input type="hidden" name="accion" value="eliminar">
                                 <input type="hidden" name="banco_id" value="<?php echo $b['id']; ?>">
                                 <button type="submit" class="btn-accion eliminar" title="Eliminar">&#128465;</button>
@@ -244,7 +244,7 @@ function selected_tipo_cuenta($valor, $banco_editar) {
                     <?php endforeach; ?>
                     <?php if (count($bancos) === 0): ?>
                     <tr>
-                        <td colspan="6" style="text-align:center; color:#aaa;">Sin bancos registrados.</td>
+                        <td colspan="6" class="tabla-vacia">Sin bancos registrados.</td>
                     </tr>
                     <?php endif; ?>
                 </tbody>

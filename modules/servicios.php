@@ -182,10 +182,10 @@ $stmt->close();
                                 <td><?php echo htmlspecialchars($s['nombre']); ?></td>
                                 <td><?php echo ucfirst(htmlspecialchars($s['tipo'])); ?></td>
                                 <td class="td-costo"><?php echo number_format($s['costo'],2,',','.'); ?></td>
-                                <td style="text-align:left;"><?php echo htmlspecialchars($s['descripcion']); ?></td>
+                                <td class="text-left"><?php echo htmlspecialchars($s['descripcion']); ?></td>
                                 <td>
                                     <a href="?editar=<?php echo $s['id']; ?>" class="btn-accion editar" title="Editar">&#9998;</a>
-                                    <form method="POST" style="display:inline;" onsubmit="return confirm('¿Eliminar este servicio?');">
+                                    <form method="POST" class="form-inline" onsubmit="return confirm('¿Eliminar este servicio?');">
                                         <input type="hidden" name="accion" value="eliminar">
                                         <input type="hidden" name="servicio_id" value="<?php echo $s['id']; ?>">
                                         <button type="submit" class="btn-accion eliminar" title="Eliminar">&#128465;</button>
@@ -195,7 +195,7 @@ $stmt->close();
                             <?php endforeach; ?>
                             <?php if (count($servicios) === 0): ?>
                             <tr>
-                                <td colspan="6" style="text-align:center; color:#aaa;">Sin servicios registrados.</td>
+                                <td colspan="6" class="tabla-vacia">Sin servicios registrados.</td>
                             </tr>
                             <?php endif; ?>
                         </tbody>

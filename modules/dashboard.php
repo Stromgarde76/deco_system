@@ -138,13 +138,13 @@ $input_tasa_value = ($tasa_actual !== '' && $tasa_actual !== null) ? str_replace
                         <div class="tasa-anterior-label">Tasa anterior:</div>
                         <div class="tasa-valor">
                             <?php echo ($tasa_actual !== '' && $tasa_actual !== null) ? number_format($tasa_actual, 4, ',', '.') : '--'; ?>
-                            <?php if ($fecha_tasa) echo "<small style='color:#666;'> ($fecha_tasa)</small>"; ?>
+                            <?php if ($fecha_tasa) echo "<small class='tasa-fecha-info'> ($fecha_tasa)</small>"; ?>
                         </div>
                     </div>
 
-                    <form method="post" class="formulario" style="margin:0;">
+                    <form method="post" class="formulario m-0">
                         <div class="tasa-form-row">
-                            <label for="nueva_tasa" style="font-weight:bold;margin-right:7px;display:none;">Tasa $ hoy:</label>
+                            <label for="nueva_tasa" class="d-none">Tasa $ hoy:</label>
                             <input aria-label="Tasa a ingresar" type="number" step="0.0001" name="nueva_tasa" id="nueva_tasa"
                                    value="<?php echo htmlspecialchars($input_tasa_value); ?>"
                                    class="input-tasa-dashboard"
@@ -154,7 +154,7 @@ $input_tasa_value = ($tasa_actual !== '' && $tasa_actual !== null) ? str_replace
                     </form>
 
                     <?php if($mensaje_tasa): ?>
-                      <div class="msg-info" style="margin-top:4px;"><?php echo htmlspecialchars($mensaje_tasa); ?></div>
+                      <div class="msg-info mt-04"><?php echo htmlspecialchars($mensaje_tasa); ?></div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -182,7 +182,7 @@ $input_tasa_value = ($tasa_actual !== '' && $tasa_actual !== null) ? str_replace
                             <div class="card-title">Pagos Pendientes</div>
                             <div class="card-value"><?php echo number_format($pagos_pendientes, 0, ',', '.'); ?></div>
                         </div>
-                        <div style="min-height:1rem;"></div>
+                        <div class="spacer-1rem"></div>
                     </div>
                 </div>
 

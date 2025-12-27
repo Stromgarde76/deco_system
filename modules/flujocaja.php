@@ -357,9 +357,9 @@ unset($_SESSION['msg']);
 
     <main class="dashboard-main">
         <div class="container-dashboard">
-            <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <header class="flex-row" style="justify-content:space-between;margin-bottom:12px;">
                 <div>
-                    <h2 style="margin:0;">Flujo de Caja</h2>
+                    <h2 class="m-0">Flujo de Caja</h2>
                     <div class="small-note">Registra los egresos diarios y administra pagos en Bs y en $</div>
                 </div>
                 <div class="inline-actions no-print">
@@ -378,7 +378,7 @@ unset($_SESSION['msg']);
 
             <!-- Formulario principal (servirá para crear y para editar) -->
             <section id="form-nuevo" class="card-panel" aria-label="Agregar movimiento">
-                <h3 style="margin-top:0;" id="form-title">Agregar movimiento</h3>
+                <h3 class="mt-0" id="form-title">Agregar movimiento</h3>
                 <form id="form_agregar" method="POST" onsubmit="return flujocaja_before_submit(this);" class="formulario">
                     <!-- hidden id: if set, we are editing -->
                     <input type="hidden" name="id" id="form_id" value="">
@@ -398,7 +398,7 @@ unset($_SESSION['msg']);
                     </div>
 
                     <!-- Cuenta banco -->
-                    <div class="form-row" style="margin-top:0.6rem;">
+                    <div class="form-row mt-06">
                         <label>Cuenta banco (si Bs):
                             <select name="banco_id" id="banco_id" onchange="flujocaja_on_bank_change();">
                                 <option value="">-- Seleccione cuenta --</option>
@@ -411,21 +411,21 @@ unset($_SESSION['msg']);
                     </div>
 
                     <!-- 3. Descripción -->
-                    <div class="form-row" style="margin-top:0.6rem;">
+                    <div class="form-row mt-06">
                         <label>Descripción del Pago:
                             <input type="text" name="descripcion" id="descripcion_input" placeholder="Ej: Pago de bono de transporte a Pedro Pérez" required />
                         </label>
 
                         <!-- 4. Monto -->
                         <label>Monto:
-                            <div style="display:flex;align-items:center;gap:8px;">
+                            <div class="flex-row">
                                 <div id="currency_label" class="currency-badge">Bs</div>
                                 <input type="text" name="monto" id="monto_input" required placeholder="0" />
                             </div>
                         </label>
                     </div>
 
-                    <div class="form-row" style="margin-top:0.6rem;">
+                    <div class="form-row mt-06">
                         <label>Tasa (si desea cambiar):
                             <input type="text" name="tasa" id="tasa_input" value="<?php echo $tasa_actual!==null ? htmlspecialchars(str_replace(',', '.', (string)$tasa_actual)) : ''; ?>" />
                         </label>
@@ -437,17 +437,17 @@ unset($_SESSION['msg']);
                         </label>
                     </div>
 
-                    <div style="margin-top:0.9rem;">
+                    <div class="mt-09">
                         <button type="submit" id="submit_btn" name="guardar" class="btn-principal">Guardar</button>
-                        <button type="button" id="cancel_edit_btn" class="btn-volver" style="margin-left:8px;display:none;">Cancelar edición</button>
-                        <button type="reset" class="btn-cancelar" style="margin-left:8px;">Limpiar</button>
+                        <button type="button" id="cancel_edit_btn" class="btn-volver ml-8 d-none">Cancelar edición</button>
+                        <button type="reset" class="btn-cancelar ml-8">Limpiar</button>
                     </div>
                 </form>
             </section>
 
             <!-- Listado (sin cambios visuales) -->
-            <section style="margin-top:1rem;">
-                <h3 style="margin-bottom:10px;">Movimientos recientes</h3>
+            <section class="mt-1rem">
+                <h3 class="mb-10">Movimientos recientes</h3>
                 <?php if (count($items) === 0): ?>
                     <div class="msg card-panel">No hay movimientos registrados.</div>
                 <?php else: ?>
@@ -520,7 +520,7 @@ unset($_SESSION['msg']);
                                                     <span class="sr-only">Editar</span>
                                                 </a>
 
-                                                <form method="POST" style="display:inline;margin:0;" onsubmit="return confirm('¿Eliminar registro?');">
+                                                <form method="POST" class="form-inline" onsubmit="return confirm('¿Eliminar registro?');">
                                                     <input type="hidden" name="id" value="<?php echo $it['id']; ?>">
                                                     <button type="submit" name="eliminar" class="btn-accion eliminar" title="Eliminar">
                                                         <span aria-hidden="true">&#128465;</span>
@@ -538,9 +538,9 @@ unset($_SESSION['msg']);
                     <?php
                         $total_pages = max(1, ceil($total_rows / $perpage));
                     ?>
-                    <div style="margin-top:0.8rem;">
+                    <div class="mt-08">
                         <?php for ($p = 1; $p <= $total_pages; $p++): ?>
-                            <a href="flujocaja.php?page=<?php echo $p; ?>" class="btn-volver" style="margin-right:6px;<?php echo $p==$page?'opacity:0.8;':''; ?>"><?php echo $p; ?></a>
+                            <a href="flujocaja.php?page=<?php echo $p; ?>" class="btn-volver mr-6<?php echo $p==$page?' opacity-active':''; ?>"><?php echo $p; ?></a>
                         <?php endfor; ?>
                     </div>
                 <?php endif; ?>
