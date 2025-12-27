@@ -103,8 +103,7 @@ while ($row = $res->fetch_assoc()) $trabajos[] = $row;
 <head>
     <meta charset="UTF-8">
     <title>Trabajos</title>
-    <link rel="stylesheet" href="../assets/css/style.css?v=<?= time() ?>">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <script>
     // Mostrar/ocultar el campo "tasa cambio" según la moneda seleccionada
     function actualizarTasa() {

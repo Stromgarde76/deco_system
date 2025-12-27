@@ -109,15 +109,6 @@ if (isset($_POST['consulta_personal'])) {
     <meta charset="UTF-8">
     <title>Reportes</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <style>
-        .align-right { text-align: right !important; }
-        .bold { font-weight: bold !important; }
-        .total-row td {
-            background: #e5f2ff;
-            font-weight: bold;
-            color: #003399;
-        }
-    </style>
 </head>
 <body>
     <nav class="nav-bar">

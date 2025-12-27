@@ -147,36 +147,6 @@ if (isset($_POST['consulta_personal'])) {
     <title>Reportes</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <style>
-        .align-right { text-align: right !important; }
-        .bold { font-weight: bold !important; }
-        .total-row td {
-            background: #e5f2ff;
-            font-weight: bold;
-            color: #003399;
-        }
-
-        /* ================= PRINT STYLES ================= */
-        @media print {
-            body * { visibility: hidden; }
-            #print-area, #print-area * { visibility: visible; }
-            #print-area { position: absolute; left: 0; top: 0; width: 100%; }
-            table.reporte-tabla {
-                border-collapse: collapse !important;
-                width: 100% !important;
-                font-size: 12pt !important;
-            }
-            table.reporte-tabla th, table.reporte-tabla td {
-                border: 1px solid #ddd !important;
-                padding: 8px !important;
-            }
-            .no-print { display: none !important; }
-            @page { margin: 15mm; }
-        }
-
-        .print-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; }
-        .print-title { font-size:1.1rem; font-weight:800; color:#19396b; }
-    </style>
 </head>
 <body>
     <nav class="nav-bar no-print">

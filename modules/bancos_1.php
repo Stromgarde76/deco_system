@@ -134,17 +134,6 @@ function selected_tipo_cuenta($valor, $banco_editar) {
     <meta charset="UTF-8">
     <title>Bancos</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <style>
-        /* Aumenta el tamaño de fuente solo en el listado de bancos */
-        .tabla-bancos th,
-        .tabla-bancos td {
-            font-size: 16px;
-        }
-        /* Los saldos se verán en negrita */
-        .td-saldo {
-            font-weight: bold;
-        }
-    </style>
     <script>
     // Formatea automáticamente el número de cuenta mientras se escribe (solo para mostrar, el guardado es sin guiones)
     function formatNumeroCuenta(input) {

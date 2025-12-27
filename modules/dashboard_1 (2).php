@@ -88,7 +88,7 @@ $tasa_actual = $row ? $row['tasa'] : '';
 <head>
     <meta charset="UTF-8">
     <title>Dashboard | <?php echo htmlspecialchars($empresa_nombre); ?></title>
-    <link rel="stylesheet" href="../assets/css/style.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <nav class="nav-bar">

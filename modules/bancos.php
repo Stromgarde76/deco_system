@@ -138,7 +138,7 @@ function selected_tipo_cuenta($valor, $banco_editar) {
 <head>
     <meta charset="UTF-8">
     <title>Bancos</title>
-    <link rel="stylesheet" href="../assets/css/style.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <script>
     function formatNumeroCuenta(input) {
         let value = input.value.replace(/\D/g,'').slice(0,20);

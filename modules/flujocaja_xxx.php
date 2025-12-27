@@ -204,24 +204,7 @@ unset($_SESSION['msg']);
 <meta charset="utf-8">
 <title>Flujo de Caja | <?php echo htmlspecialchars($_SESSION['nombre'] ?? ''); ?></title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>">
-<style>
-/* Styling kept as before */
-.container-dashboard { max-width:1100px; margin:0 auto; padding: 1rem; }
-.card-panel { background:var(--color-panel); border-radius:12px; padding:1rem; box-shadow:0 6px 20px var(--color-shadow); margin-bottom:1rem; }
-.form-row { display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center; }
-.form-row label { flex:1 1 220px; min-width:180px; display:flex; flex-direction:column; gap:0.35rem; font-weight:600; color:var(--color-titulo); }
-.form-row input[type="text"], .form-row input[type="number"], .form-row select { padding:8px 10px; border-radius:8px; border:none; background:var(--color-input-bg); box-shadow:0 1px 4px var(--color-shadow); }
-.currency-badge { display:inline-block; min-width:44px; font-weight:bold; text-align:center; padding:6px 8px; border-radius:8px; background:#f0f4fb; color:var(--color-principal); margin-right:6px; }
-.table-actions button { margin-right:6px; }
-.table-actions form { display:inline-block; margin:0; }
-.reporte-tabla th, .reporte-tabla td { vertical-align: middle; }
-.small-note { font-size:0.88rem; color:#666; margin-top:6px; }
-.inline-actions { display:flex; gap:8px; align-items:center; }
-@media (max-width:720px) {
-    .form-row label { min-width:100%; }
-}
-</style>
+<link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <nav class="nav-bar">

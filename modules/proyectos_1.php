@@ -79,47 +79,7 @@ while ($row = $res->fetch_assoc()) $proyectos[] = $row;
 <head>
     <meta charset="UTF-8">
     <title>Proyectos</title>
-    <!-- Archivo: assets/css/style.css -->
-    <link rel="stylesheet" href="../assets/css/style.css?v=<?= time() ?>">
-    <!-- Font Awesome CDN para iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- ESTILOS EXCLUSIVOS para este modulo -->
-    <style>
-    .proyectos-formulario input,
-    .proyectos-formulario select {
-        width: 100%;
-        font-size: 12px;
-        padding: 4px 7px;
-        margin-bottom: 8px;
-        border-radius: 7px;
-        background: #e9eff6;
-        border: none;
-        box-shadow: 0 1px 4px #19396b08;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        box-sizing: border-box;
-    }
-    .proyectos-formulario .btn-principal {
-        width: 55%;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .proyectos-formulario input[name="monto_inicial"] {
-        font-weight: bold !important;
-        text-align: right !important;
-        letter-spacing: 0.5px !important;
-        font-variant-numeric: tabular-nums !important;
-        color: #19396b;
-        background: #e9eff6;
-    }
-    .proyectos-formulario input[name="tasa_cambio"] {
-        font-weight: bold;
-        color: #37659a;
-        text-align: right;
-    }
-    </style>
+    <link rel="stylesheet" href="../assets/css/style.css">
     <script>
     // Mostrar/ocultar el campo "tasa cambio" según la moneda seleccionada
     function actualizarTasa() {
