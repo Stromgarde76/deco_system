@@ -1,0 +1,235 @@
+/* Archivo: assets/css/style.css */
+/* Esquema unificado con acentos azul oscuro y naranja moderno */
+
+/* ====================== VARIABLES DE COLOR Y ESTILO ======================== */
+:root {
+    --color-principal: #19396b;
+    --color-secundario: #ff7f36;
+    --color-panel: #fff;
+    --color-fondo: #f5f7fa;
+    --color-input-bg: #e9eff6;
+    --color-input-focus: #fff;
+    --color-shadow: #19396b10;
+    --color-titulo: #19396b;
+    --color-tabla-th: #e9eff6;
+    --color-tabla-td: #19396b;
+    --color-icono: #19396b;
+    --color-icono-hover: #fff;
+    --color-btn-main: linear-gradient(90deg, #19396b 0%, #37659a 100%);
+    --color-btn-main-hover: linear-gradient(90deg, #37659a 0%, #19396b 100%);
+    --color-btn-cancel: #19396b;
+    --color-btn-cancel-hover: #ff7f36;
+    --color-msg-bg: #ffb366;
+    --color-msg-text: #333;
+}
+
+/* ====================== ESTILOS GLOBALES ======================== */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--color-fondo);
+    font-size: 12px;
+}
+
+/* ====================== BOTONES UNIFICADOS ======================== */
+.form-btns {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.btn-principal,
+.btn-cancelar {
+    min-width: 128px;
+    max-width: 128px;
+    height: 40px;
+    font-size: 15px;
+    border-radius: 7px;
+    background: var(--color-btn-main);
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    box-shadow: 0 2px 8px #19396b20;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.btn-principal:hover,
+.btn-cancelar:hover {
+    background: var(--color-btn-main-hover);
+    color: #fff;
+}
+
+.btn-cancelar {
+    text-decoration: none;
+}
+
+/* ...resto del CSS igual que antes... */
+
+/* ====================== ESTILOS GLOBALES ======================== */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--color-titulo);
+    margin-bottom: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+a {
+    color: var(--color-principal);
+    text-decoration: none;
+    transition: color 0.16s;
+}
+
+a:hover {
+    color: var(--color-secundario);
+}
+/* ====================== LAYOUTS UNIFICADOS ======================== */
+.seccion-bancos, .seccion-clientes, .seccion-contratistas, .proyectos-main {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: flex-start;
+    background: linear-gradient(135deg, var(--color-fondo) 0%, #c5d0e6 100%);
+    min-height: 93vh;
+    padding: 2.4rem 0;
+}
+
+.bancos-form, .clientes-form, .contratistas-form, .proyectos-formulario {
+    background: var(--color-panel);
+    border-radius: 14px;
+    padding: 1.2rem 1rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    color: var(--color-titulo);
+    min-width: 250px;
+    max-width: 340px;
+    flex: 0 0 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Proyectos más angosto */
+.proyectos-formulario {
+    min-width: 230px;
+    max-width: 330px;
+    flex: 0 0 180px;
+}
+
+/* Panel de listado (derecha) */
+.bancos-lista, .clientes-lista, .contratistas-lista, .proyectos-listado {
+    background: var(--color-panel);
+    border-radius: 14px;
+    padding: 1.6rem 1.5rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    color: var(--color-titulo);
+    flex: 1 1 540px;
+    max-width: 900px;
+    overflow-x: auto;
+}
+
+/* ====================== FORMULARIOS UNIFICADOS ======================== */
+.formulario, .proyectos-formulario form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    width: 100%;
+}
+
+.formulario input,
+.formulario select,
+.formulario textarea,
+.proyectos-formulario input,
+.proyectos-formulario select,
+.proyectos-formulario textarea {
+    font-size: 12px;
+    padding: 7px 10px;
+    margin-bottom: 8px;
+    border-radius: 7px;
+    background: var(--color-input-bg);
+    border: none;
+    box-shadow: 0 1px 4px var(--color-shadow);
+    color: var(--color-titulo);
+    width: 100%;
+    box-sizing: border-box;
+    transition: background 0.12s, outline 0.12s;
+}
+
+.formulario input:focus,
+.formulario select:focus,
+.formulario textarea:focus,
+.proyectos-formulario input:focus,
+.proyectos-formulario select:focus,
+.proyectos-formulario textarea:focus {
+    outline: 2px solid var(--color-principal);
+    background: var(--color-input-focus);
+}
+
+/* Campo especial: Monto Inicial */
+input[name="monto_inicial"], .input-monto {
+    font-weight: bold !important;
+    text-align: right !important;
+    letter-spacing: 0.5px !important;
+    font-variant-numeric: tabular-nums !important;
+    background: var(--color-input-bg) !important;
+    color: var(--color-titulo) !important;
+}
+
+/* Campo especial: Tasa de cambio */
+input[name="tasa_cambio"], .input-tasa {
+    font-weight: bold;
+    color: #37659a;
+    text-align: right;
+}
+
+/* Inputs y selects de proyectos centrados y 75% ancho */
+.proyectos-formulario input[type="text"],
+.proyectos-formulario input[type="date"],
+.proyectos-formulario input[type="number"],
+.proyectos-formulario select {
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+/* Botón principal centrado y al 75% */
+.proyectos-formulario .btn-principal,
+.formulario .btn-principal {
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+/* Botón volver general */
+.btn-volver {
+    background: var(--color-secundario);
+    color: #fff;
+    font-weight: bold;
+    font-size: 13px;
+    border: none;
+    border-radius: 7px;
+    padding: 9px 28px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.18s, color 0.18s;
+    box-shadow: 0 2px 8px #19396b20;
+    margin-right: 12px;
+    margin-bottom: 10px;
+}
+.btn-volver:hover {
+    background: var(--color-input-bg);
+    color: var(--color-principal);
+}
+
+/* ...resto igual que antes... */

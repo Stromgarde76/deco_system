@@ -1,0 +1,663 @@
+/* Archivo: assets/css/style.css */
+/* Esquema claro con acentos azul oscuro y naranja moderno */
+
+/* ---------------------- ESTILOS GLOBALES ---------------------- */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f5f7fa;
+    font-size: 12px; /* Tamaño de fuente principal del sistema */
+}
+
+/* ------ ESTILOS UNIFICADOS PARA TODOS LOS MÓDULOS (BANCO, CLIENTES, CONTRATISTAS, PROYECTOS) ------ */
+
+/* Layout principal de sección (bancos, clientes, contratistas, proyectos) */
+.seccion-bancos, .seccion-clientes, .seccion-contratistas, .proyectos-main {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: flex-start;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c5d0e6 100%);
+    min-height: 93vh;
+    padding: 2.4rem 0;
+}
+
+/* --------------- Panel del formulario (izquierda) --------------- */
+.bancos-form, .clientes-form, .contratistas-form, .proyectos-formulario {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.6rem 1.5rem;
+    box-shadow: 0 4px 22px #19396b10;
+    color: #19396b;
+    min-width: 290px;
+    max-width: 340px;
+    flex: 0 0 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* ------------------ Panel de lista (derecha) ------------- */
+.bancos-lista, .clientes-lista, .contratistas-lista, .proyectos-listado {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.6rem 1.5rem;
+    box-shadow: 0 4px 22px #19396b10;
+    color: #19396b;
+    flex: 1 1 540px;
+    max-width: 900px;
+    overflow-x: auto;
+}
+
+/* ------------------ Títulos de módulos ------------------ */
+.bancos-form h2, .bancos-lista h2, .clientes-form h2, .clientes-lista h2,
+.contratistas-form h2, .contratistas-lista h2, .proyectos-formulario h2, .proyectos-listado h2 {
+    color: #19396b;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 1.1rem;
+    letter-spacing: 1px;
+}
+
+/* ------------------ Mensajes de éxito/error/info ------------------ */
+.msg, .msg-info {
+    background: #ffb366;
+    color: #333;
+    border-radius: 8px;
+    padding: 8px 0;
+    margin-bottom: 13px;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+/* ------------- FORMULARIOS: ESTILO UNIFICADO PARA TODO EL SISTEMA ------------- */
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    width: 100%;
+}
+
+/* ------------------ Para filas de inputs en la misma línea (si se usan) ------------------ */
+.input-row {
+    display: flex;
+    gap: 0.7rem;
+}
+
+/* ---- Entradas y selects de formularios: un solo bloque para todos los tipos y formularios ---- */
+.formulario input[type="text"],
+.formulario input[type="email"],
+.formulario input[type="number"],
+.formulario input[type="date"],
+.formulario input[type="password"],
+.formulario select,
+.formulario textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 7px;
+    font-size: 12px;
+    font-weight: normal;
+    background: #e9eff6;
+    color: #19396b;
+    border: none;
+    border-radius: 7px;
+    padding: 10px 10px;
+    box-shadow: 0 1px 5px #19396b10;
+    transition: background 0.12s, outline 0.12s;
+}
+
+/* Efecto al enfocar un campo (input, select, textarea) */
+.formulario input[type="text"]:focus,
+.formulario input[type="email"]:focus,
+.formulario input[type="number"]:focus,
+.formulario input[type="date"]:focus,
+.formulario input[type="password"]:focus,
+.formulario select:focus,
+.formulario textarea:focus {
+    outline: 2px solid #19396b;
+    background: #fff;
+}
+
+/* ------------------ Placeholders de inputs (texto guía dentro del campo) ------------------ */
+.formulario input::placeholder,
+.formulario textarea::placeholder {
+    color: #9ab5d6;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+/* ------------------ Textareas: mínimo tamaño y redimensionar solo vertical ------------------ */
+.formulario textarea {
+    min-height: 32px;
+    resize: vertical;
+}
+
+/* ------------------ Botones dentro del formulario ------------------ */
+.form-btns {
+    display: flex;
+    gap: 1rem;
+    margin-top: 8px;
+}
+.btn-principal {
+    background: linear-gradient(90deg, #19396b 0%, #37659a 100%);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 10px 0;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 120px;
+    transition: background 0.2s;
+}
+.btn-principal:hover {
+    background: linear-gradient(90deg, #37659a 0%, #19396b 100%);
+}
+.btn-cancelar {
+    background: #fff;
+    color: #19396b;
+    border-radius: 7px;
+    padding: 10px 0;
+    font-size: 12px;
+    font-weight: bold;
+    width: 100px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    border: 1.5px solid #19396b;
+    transition: background 0.15s, color 0.15s;
+}
+.btn-cancelar:hover {
+    background: #19396b;
+    color: #fff;
+}
+
+/* ----------- TABLAS LISTADO DE TODOS LOS MÓDULOS ----------- */
+.tabla-scroll {
+    overflow-x: auto;
+}
+.tabla-clientes, .tabla-contratistas, .tabla-bancos, .tabla-proyectos {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    color: #19396b;
+    box-shadow: 0 1px 7px #19396b10;
+}
+.tabla-clientes th, .tabla-clientes td,
+.tabla-contratistas th, .tabla-contratistas td,
+.tabla-bancos th, .tabla-bancos td,
+.tabla-proyectos th, .tabla-proyectos td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #e3ecfa;
+    font-size: 12px;
+}
+.tabla-clientes th, .tabla-contratistas th, .tabla-bancos th, .tabla-proyectos th {
+    background: #e9eff6;
+    color: #19396b;
+    font-weight: bold;
+    text-align: left;
+}
+.col-acciones {
+    text-align: center;
+    width: 90px;
+}
+.btn-accion {
+    border: none;
+    background: none;
+    color: #ff7f36;
+    font-size: 10px;
+    margin: 0 3px;
+    cursor: pointer;
+    transition: color 0.18s;
+    text-decoration: none;
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.btn-accion.editar:hover {
+    color: #19396b;
+    background: #e9eff6;
+}
+.btn-accion.eliminar:hover {
+    color: #fff;
+    background: #ff7f36;
+}
+
+/* ----------- RESPONSIVE ----------- */
+@media (max-width: 950px) {
+    .seccion-bancos, .seccion-clientes, .seccion-contratistas, .proyectos-main {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.7rem;
+    }
+    .bancos-lista, .clientes-lista, .contratistas-lista, .proyectos-listado,
+    .bancos-form, .clientes-form, .contratistas-form, .proyectos-formulario {
+        max-width: 100%;
+    }
+}
+
+/* --- Botón Volver general --- */
+.btn-volver {
+    background: #ff7f36;
+    color: #fff;
+    font-weight: bold;
+    font-size: 13px;
+    border: none;
+    border-radius: 7px;
+    padding: 9px 28px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.18s, color 0.18s;
+    box-shadow: 0 2px 8px #19396b20;
+    margin-right: 12px;
+    margin-bottom: 10px;
+}
+.btn-volver:hover {
+    background: #e9eff6;
+    color: #19396b;
+}
+
+/* -------------- ESTILOS PARA REPORTES.PHP --------------- */
+.reporte-form, .editor-form {
+    background: #f8f8f8;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    max-width: 600px;
+}
+.reporte-resultado {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 8px #0001;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+    max-width: 900px;
+}
+table.reporte-tabla {
+    width: 100%;
+    border-collapse: collapse;
+}
+table.reporte-tabla th,
+table.reporte-tabla td {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 8px 4px;
+    text-align: left;
+}
+table.reporte-tabla th {
+    background: #e5f2ff;
+    color: #003399;
+    font-weight: bold;
+}
+.msg { margin: 15px 0; color: #c00; }
+
+/* -------------- RESTO DEL SISTEMA (LOGIN, DASHBOARD, ETC) --------------- */
+/* --- Login --- */
+.login-bg {
+    background: linear-gradient(135deg, #c5d0e6 0%, #f5f7fa 100%);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    background: #fff;
+    box-shadow: 0 8px 32px rgba(40,53,94,0.10);
+    border-radius: 18px;
+    /* ------------- padding: 38px 36px 30px 36px; ------------- */
+    padding: 24px 22px 20px 22px;
+    text-align: center;
+    max-width: 420px;
+    min-width: 300px;
+    width: 100%;
+}
+
+.logo {
+    width: 150px;
+    margin-bottom: 24px;
+    filter: drop-shadow(0 2px 8px #24345a80);
+}
+/* -------------- aca modifico ELEMENTOS DE LOGIN PANTALLA --------------- */
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: 50%;
+    padding: 12px 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 7px;
+    background: #e9eff6;
+    color: #222b38;
+    font-size: 20px;
+    outline: none;
+    font-weight: 100;
+    box-shadow: 0 2px 8px #24345a10;
+}
+
+.login-container button {
+    width: 50%;
+    padding: 13px 0;
+    background: linear-gradient(90deg, #19396b 0%, #37659a 100%);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 20px;
+    font-weight: 100;
+    cursor: pointer;
+    margin-top: 18px;
+    letter-spacing: 1px;
+    transition: background 0.3s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px #19396b33;
+}
+
+.login-container button:hover {
+    background: linear-gradient(90deg, #37659a 0%, #19396b 100%);
+    box-shadow: 0 4px 18px #19396b33;
+}
+
+.error-msg {
+    margin-top: 16px;
+    background: #ff5f5f;
+    width: 50%;            /* o prueba con 100%, 80%, 400px, etc */
+    margin: 16px auto 0 auto;  /* auto centra la banda */
+    color: #fff;
+    padding: 8px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* --- Dashboard --------------------------------------------------- */
+.nav-bar {
+    background: #19396b;
+    color: #fff;
+    padding: 0.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px #1a263422;
+}
+.nav-logo-img {
+    width: 48px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px #24345a80;
+}
+.nav-empresa {
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 1px;
+}
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.nav-user-name {
+    font-size: 10rem;
+    font-weight: bold;
+}
+.nav-logout {
+    font-size: 2rem;
+    color: #ff7f36;
+    text-decoration: none;
+    margin-left: 10px;
+    transition: color 0.2s;
+}
+.nav-logout:hover {
+    color: #19396b;
+}
+
+/* ==== Cambios para fijar los iconos del dashboard en la parte inferior SIEMPRE visibles ==== */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 104px; /* Ajusta este valor al alto de .dashboard-modulos */
+}
+.dashboard-main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c5d0e6 100%);
+    min-height: 100vh;
+    padding: 2.5rem 0 0 0;
+}
+
+/* -------- BIENVENIDA: ALINEADA A LA DERECHA Y MISMO TAMAÑO Y COLOR -------- */
+.dashboard-bienvenida {
+    text-align: right;
+    margin-bottom: 2.5rem;
+    padding-right: 5vw; /* Opcional: separa del borde derecho */
+}
+.dashboard-bienvenida h2,
+.dashboard-bienvenida p {
+    color: #19396b;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 0 0.3rem 0;
+}
+.dashboard-bienvenida p {
+    margin-top: 0.3rem;
+    letter-spacing: 0.5px;
+}
+
+/* ----------- RESTO DEL DASHBOARD ----------- */
+.dashboard-empresa {
+    color: #ff7f36;
+    font-weight: bold;
+}
+.dashboard-resumen {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+.dashboard-card {
+    background: #fff;
+    border-radius: 17px;
+    min-width: 210px;
+    max-width: 260px;
+    padding: 1.2rem 1.1rem;
+    box-shadow: 0 4px 20px #19396b10;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    color: #222b38;
+    margin: 0.8rem 0.1rem;
+    position: relative;
+    border-left: 6px solid #19396b;
+}
+.dashboard-card.saldo {
+    border-color: #ffb366;
+}
+.dashboard-card.pagos {
+    border-color: #37659a;
+}
+.dashboard-card.proyectos {
+    border-color: #feca57;
+}
+.card-icon {
+    font-size: 3rem;
+    color: #19396b;
+    background: #e3ecfa;
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.card-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ff7f36;
+    margin-bottom: 0.2rem;
+}
+.card-value {
+    font-size: 2rem;
+    font-weight: bold;
+}
+/* ---------------------------------- Iconos del dashboard FIJOS abajo y siempre visibles ---------------------------- */
+.dashboard-modulos {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #acacac; /* Cambia aquí el color de la banda inferior */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.2rem;
+    padding: 1.2rem 0 1.15rem 0;
+    z-index: 20;
+    box-shadow: 0 -2px 12px #19396b15;
+}
+.modulo-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.5rem 1.1rem;
+    text-decoration: none;
+    color: #19396b;
+    box-shadow: 0 2px 8px #19396b10;
+    transition: transform 0.12s, box-shadow 0.12s, background 0.2s, color 0.2s;
+    min-width: 62px;
+    max-width: 76px;
+    font-size: 1.15rem;
+    font-weight: bold;
+}
+.modulo-btn:hover {
+    background: #19396b;
+    color: #fff;
+    transform: translateY(-3px) scale(1.06);
+    box-shadow: 0 8px 22px #19396b33;
+}
+.modulo-icon {
+    font-size: 1.38rem;
+    margin-bottom: 0.4rem;
+    color: #19396b;
+    transition: color 0.2s;
+}
+.modulo-btn:hover .modulo-icon {
+    color: #fff;
+}
+
+@media (max-width: 900px) {
+    .dashboard-resumen {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.4rem;
+    }
+    .dashboard-modulos {
+        gap: 0.7rem;
+        padding: 0.7rem 0 0.7rem 0;
+    }
+    .modulo-btn {
+        min-width: 55px;
+        max-width: 70px;
+        padding: 0.28rem 0.54rem;
+    }
+    .modulo-icon {
+        font-size: 1.1rem;
+        margin-bottom: 0.24rem;
+    }
+}
+
+/* ---------------------- Pantalla Selección de Empresa ------------------ */
+.empresa-bg {
+    background: linear-gradient(135deg, #c5d0e6 0%, #f5f7fa 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.empresa-container {
+    background: #fff;
+    border-radius: 22px;
+    padding: 38px 40px 28px 40px;
+    box-shadow: 0 8px 32px #19396b12;
+    min-width: 350px;
+    text-align: center;
+}
+.empresa-container h2 {
+    color: #19396b;
+    font-weight: bold;
+    margin-bottom: 33px;
+    font-size: 3rem;
+    letter-spacing: 1px;
+}
+.empresa-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+.empresa-card {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+}
+.empresa-btn {
+    background: #f5f7fa;
+    border-radius: 13px;
+    border: none;
+    box-shadow: 0 3px 12px #19396b10;
+    padding: 2.2rem 1.8rem 1.5rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 125px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #19396b;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.12s;
+    outline: none;
+    position: relative;
+}
+.empresa-btn:hover {
+    background: #19396b;
+    color: #fff;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 19px #19396b33;
+}
+.empresa-icon {
+    font-size: 3rem;
+    margin-bottom: 0.8rem;
+    color: #ff7f36;
+    transition: color 0.2s;
+}
+.empresa-btn:hover .empresa-icon {
+    color: #fff;
+}
+.empresa-nombre {
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+.volver-login {
+    display: inline-block;
+    color: #ff7f36;
+    margin-top: 20px;
+    font-size: 2rem;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+.volver-login:hover {
+    color: #19396b;
+}
+
+/* ---------------------- FIN DE ARCHIVO ---------------------- */
+/*
+    Resumen:
+    - Para unificar los estilos de TODOS los formularios usa la clase .formulario en tus formularios.
+    - Los estilos de .formulario aplican a todos los campos (input, select, textarea) de manera uniforme.
+    - Puedes eliminar clases como .formulario-banco, .formulario-contratista, etc. de tus HTML/PHP y usar solo .formulario.
+    - Si necesitas cambiar detalles visuales, hazlo en este bloque para que impacte a todo el sistema.
+*/

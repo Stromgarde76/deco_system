@@ -1,0 +1,29 @@
+deco_system/
+│
+├── assets/
+│   ├── css/
+│   │   └── style.css
+│   ├── img/
+│   │   └── logo.png
+│   └── icons/
+│       └── (aquí irán tus iconos SVG o PNG)
+│
+├── config/
+│   └── db.php
+│
+├── modules/
+│   ├── dashboard.php
+│   ├── clientes.php
+│   ├── contratistas.php
+│   ├── proyectos.php
+│   ├── bancos.php
+│   ├── cobranzas.php
+│   ├── pagos.php
+│   ├── servicios.php
+│   └── configuracion.php
+│
+├── index.php
+├── login.php
+├── logout.php
+├── select_empresa.php
+└── README.txt
