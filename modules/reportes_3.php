@@ -129,49 +129,6 @@ if (isset($_POST['consulta_personal'])) {
     <title>Reportes</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <style>
-        .align-right { text-align: right !important; }
-        .bold { font-weight: bold !important; }
-        .total-row td {
-            background: #e5f2ff;
-            font-weight: bold;
-            color: #003399;
-        }
-
-        /* ================= PRINT STYLES ================= */
-        /* We'll hide navigation and interactive controls in print and only show the report content */
-        @media print {
-            /* Hide everything first */
-            body * { visibility: hidden; }
-
-            /* Make the printable area visible */
-            #print-area, #print-area * { visibility: visible; }
-
-            /* Position printable area at the top-left for printing */
-            #print-area { position: absolute; left: 0; top: 0; width: 100%; }
-
-            /* Make tables more print-friendly */
-            table.reporte-tabla {
-                border-collapse: collapse !important;
-                width: 100% !important;
-                font-size: 12pt !important;
-            }
-            table.reporte-tabla th, table.reporte-tabla td {
-                border: 1px solid #ddd !important;
-                padding: 8px !important;
-            }
-
-            /* Hide elements you don't want on print */
-            .no-print { display: none !important; }
-
-            /* Page margins */
-            @page { margin: 15mm; }
-        }
-
-        /* Optional simple print-friendly header inside printable area */
-        .print-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; }
-        .print-title { font-size:1.1rem; font-weight:800; color:#19396b; }
-    </style>
 </head>
 <body>
     <nav class="nav-bar no-print">

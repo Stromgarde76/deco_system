@@ -219,15 +219,8 @@ unset($_SESSION['msg']);
 <meta charset="utf-8">
 <title>Flujo de Caja | <?php echo htmlspecialchars($_SESSION['nombre'] ?? ''); ?></title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="../assets/css/style.css">
 <script src="../assets/js/flujocaja.js"></script>
-<style>
-    .small { font-size: 0.9rem; }
-    .form-row { display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center; }
-    .form-row label { flex:1 1 200px; min-width:140px; }
-    .table-actions button { margin-right:6px; }
-    .currency-badge { display:inline-block; min-width:36px; font-weight:bold; text-align:center; padding:4px 6px; border-radius:6px; background:#f0f4fb; color:var(--color-principal); margin-right:6px;}
-</style>
 </head>
 <body>
     <nav class="nav-bar">

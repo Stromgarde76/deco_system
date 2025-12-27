@@ -81,67 +81,6 @@ while ($row = $res->fetch_assoc()) $contratistas[] = $row;
     <meta charset="UTF-8">
     <title>Editar Proyecto</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <style>
-    .form-row {
-        display: flex;
-        align-items: center;
-        margin-bottom: 0.9rem;
-        gap: 12px;
-    }
-    .form-label {
-        font-weight: bold;
-        color: #19396b;
-        min-width: 160px;
-        text-align: right;
-        margin-bottom: 0;
-        margin-top: 0;
-        font-size: 13px;
-        letter-spacing: 0.1px;
-        justify-self: flex-end;
-    }
-    .form-row input[type="text"],
-    .form-row input[type="date"],
-    .form-row select,
-    .form-row input[type="number"] {
-        flex: 70 70 200px;
-        margin-bottom: 0;
-        font-size: 13px;
-        padding: 8px 10px;
-    }
-    .input-monto {
-        text-align: right;
-        font-weight: bold !important;
-        letter-spacing: 1px;
-        font-size: 15px !important;
-        color: #19396b;
-        background: #e9eff6;
-        border-radius: 7px;
-        border: none;
-        box-shadow: 0 1px 4px #19396b08;
-    }
-    .input-tasa {
-        text-align: right;
-        font-weight: bold;
-        color: #37659a;
-        background: #e9eff6;
-        border-radius: 7px;
-        border: none;
-        box-shadow: 0 1px 4px #19396b08;
-        font-size: 13px;
-        padding: 8px 10px;
-    }
-    @media (max-width: 700px) {
-        .form-row {
-            flex-direction: column;
-            align-items: stretch;
-        }
-        .form-label {
-            min-width: 0;
-            text-align: left;
-            margin-bottom: 4px;
-        }
-    }
-    </style>
     <script>
     function formatMontoInput(input) {
         let value = input.value.replace(/[^0-9,\.]/g, '');

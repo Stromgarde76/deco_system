@@ -101,82 +101,9 @@ if (!isset($tasa_actual)) {
     <meta charset="UTF-8">
     <title>Dashboard | <?php echo htmlspecialchars($empresa_nombre); ?></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="../assets/css/style.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="../assets/css/style.css">
 
     <!-- Pequeños estilos específicos para organizar mejor el dashboard sin tocar global CSS -->
-    <style>
-        /* Contenedor central que aprovecha el ancho y centra la UI */
-        .container-dashboard {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.25rem;
-            width: calc(100% - 2.5rem);
-        }
-
-        /* Grid del encabezado: bienvenida + tarjeta de tasa */
-        .header-grid {
-            display: grid;
-            grid-template-columns: 1fr 420px;
-            gap: 1.25rem;
-            align-items: center;
-            width: 100%;
-        }
-        @media (max-width: 980px) {
-            .header-grid { grid-template-columns: 1fr; }
-        }
-
-        .welcome-block {
-            text-align: center;
-            padding: 1rem 0;
-        }
-        .welcome-block h2 { margin:0 0 0.25rem 0; font-size:1.6rem; }
-        .welcome-block p { margin:0; color:#4d638c; font-weight:600; }
-
-        /* Compacta la tarjeta de tasa y la hace responsiva */
-        .tasa-card-compact {
-            margin: 0 auto;
-            max-width: 420px;
-            width: 100%;
-            background: var(--color-panel);
-            border-radius: 12px;
-            padding: 1rem 1.1rem;
-            box-shadow: 0 6px 20px rgba(25,57,107,0.06);
-            display:flex;
-            flex-direction:column;
-            gap:0.6rem;
-            align-items:stretch;
-        }
-        .tasa-row-top { display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
-        .tasa-row-top .tasa-anterior-label { color:#4d638c; font-weight:600; }
-        .tasa-row-top .tasa-valor { font-weight:800; color:var(--color-principal); }
-
-        .tasa-form-row { display:flex; gap:0.6rem; align-items:center; justify-content:flex-end; }
-        .tasa-form-row .input-tasa-dashboard { width:160px; }
-        @media (max-width:640px) {
-            .tasa-form-row { flex-direction:column; align-items:stretch; }
-            .tasa-form-row .input-tasa-dashboard { width:100%; }
-            .tasa-card-compact { padding:0.9rem; }
-        }
-
-        /* Resumen como grid para aprovechar espacio horizontal */
-        .resumen-grid {
-            display:grid;
-            grid-template-columns: repeat(3, minmax(240px, 1fr));
-            gap:1.6rem;
-            align-items:stretch;
-            width:100%;
-            margin:1.8rem 0;
-        }
-        @media (max-width:980px) {
-            .resumen-grid { grid-template-columns: 1fr; }
-        }
-
-        /* Ajustes menores de padding para las card-info dentro del nuevo grid */
-        .dashboard-card .card-info { padding-left:0.6rem; }
-
-        /* Espacio final para que el menú fijo no tape contenido */
-        .spacer-bottom { height:120px; }
-    </style>
 </head>
 <body>
     <nav class="nav-bar">

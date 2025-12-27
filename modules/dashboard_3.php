@@ -88,70 +88,7 @@ $tasa_actual = $row ? $row['tasa'] : '';
 <head>
     <meta charset="UTF-8">
     <title>Dashboard | <?php echo htmlspecialchars($empresa_nombre); ?></title>
-    <link rel="stylesheet" href="../assets/css/style.css?v=<?= time() ?>">
-    <style>
-        /* Organización visual extra para dashboard */
-        .dashboard-header {
-            background: var(--color-panel);
-            box-shadow: 0 2px 8px var(--color-shadow);
-            border-radius: 14px;
-            padding: 1.2em 2em;
-            margin-top: 2.2em;
-            margin-bottom: 2.2em;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5em;
-        }
-        .dashboard-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            justify-content: center;
-            align-items: stretch;
-            margin-bottom: 2.1em;
-        }
-        .dashboard-col {
-            flex: 1 1 320px;
-            min-width: 270px;
-            max-width: 450px;
-            display: flex;
-            flex-direction: column;
-            gap: 1.2em;
-        }
-        .dashboard-tasa {
-            background: var(--color-panel);
-            border-radius: 14px;
-            box-shadow: 0 2px 8px var(--color-shadow);
-            padding: 1em 2em;
-            margin-bottom: 1.4em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-        .dashboard-bienvenida {
-            text-align: center;
-            margin-bottom: 1.2em;
-        }
-        .dashboard-resumen {
-            display: flex;
-            gap: 1.6em;
-            justify-content: center;
-            align-items: flex-start;
-            margin-bottom: 2em;
-        }
-        @media (max-width: 950px) {
-            .dashboard-row, .dashboard-resumen {
-                flex-direction: column;
-                gap: 1.4em;
-            }
-            .dashboard-header {
-                margin-top: 1em;
-                margin-bottom: 1em;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <nav class="nav-bar">

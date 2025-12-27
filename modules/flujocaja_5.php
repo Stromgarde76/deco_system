@@ -234,34 +234,7 @@ unset($_SESSION['msg']);
 <meta charset="utf-8">
 <title>Flujo de Caja | <?php echo htmlspecialchars($_SESSION['nombre'] ?? ''); ?></title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>">
-<style>
-/* Ajustes visuales específicos */
-.container-dashboard { max-width:1100px; margin:0 auto; padding: 1rem; }
-.card-panel { background:var(--color-panel); border-radius:12px; padding:1rem; box-shadow:0 6px 20px var(--color-shadow); margin-bottom:1rem; }
-.form-row { display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center; }
-.form-row label { flex:1 1 220px; min-width:180px; display:flex; flex-direction:column; gap:0.35rem; font-weight:600; color:var(--color-titulo); }
-.form-row input[type="text"], .form-row input[type="number"], .form-row select { padding:8px 10px; border-radius:8px; border:none; background:var(--color-input-bg); box-shadow:0 1px 4px var(--color-shadow); }
-.currency-badge { display:inline-block; min-width:44px; font-weight:bold; text-align:center; padding:6px 8px; border-radius:8px; background:#f0f4fb; color:var(--color-principal); margin-right:6px; }
-.table-actions { display:flex; gap:8px; align-items:center; justify-content:flex-end; }
-.sr-only { position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
-
-/* Modal simple */
-.modal-overlay { display:none; position:fixed; left:0; top:0; right:0; bottom:0; background:rgba(0,0,0,0.35); align-items:center; justify-content:center; z-index:9999; }
-.modal { background:var(--color-panel); padding:1rem 1.2rem; border-radius:10px; box-shadow:0 8px 30px rgba(25,57,107,0.18); max-width:520px; width:100%; }
-.modal .balance { font-weight:800; color:#8B0000; } /* dark red bold */
-.modal .controls { display:flex; gap:8px; justify-content:flex-end; margin-top:12px; }
-.modal .controls .btn-small { padding:6px 10px; border-radius:8px; font-weight:700; }
-
-/* small buttons for modal */
-.btn-small.continue { background: var(--color-principal); color:#fff; border:none; }
-.btn-small.change { background: var(--color-panel); color:var(--color-principal); border:1px solid var(--color-principal); }
-.btn-small.cancel { background:#f5f5f5; color:#333; border:1px solid #ddd; }
-
-@media (max-width:720px) {
-    .form-row label { min-width:100%; }
-}
-</style>
+<link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <nav class="nav-bar">
