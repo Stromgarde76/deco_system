@@ -26,8 +26,8 @@ $proyecto = $result->fetch_assoc();
 $stmt->close();
 
 if (!$proyecto) {
-    echo "<p style='color:red; text-align:center;'>Proyecto no encontrado o no pertenece a tu empresa.</p>";
-    echo "<p style='text-align:center;'><a href='proyectos.php'>Volver al listado</a></p>";
+    echo "<p class='text-center error-text'>Proyecto no encontrado o no pertenece a tu empresa.</p>";
+    echo "<p class='text-center'><a href='proyectos.php'>Volver al listado</a></p>";
     exit();
 }
 
@@ -135,9 +135,9 @@ while ($row = $res->fetch_assoc()) $contratistas[] = $row;
         </div>
     </nav>
     <main>
-        <div style="display:flex; justify-content:center; align-items:flex-start; min-height:80vh; padding:2rem 0;">
+        <div class="proyectos-editar-container">
             <div class="proyectos-formulario">
-                <h2 style="margin-bottom:1.4rem;">Editar Proyecto</h2>
+                <h2 class="mb-14">Editar Proyecto</h2>
                 <?php if ($mensaje): ?>
                     <div class="msg-info"><?php echo $mensaje; ?></div>
                 <?php endif; ?>

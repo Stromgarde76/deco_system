@@ -210,7 +210,7 @@ if (isset($_POST['consulta_personal'])) {
                     </div>
                 </div>
 
-                <h3 style="font-size:1.2rem; color:#003399; font-weight:bold; margin:0 0 0.6rem;"><?php echo htmlspecialchars($titulo_reporte); ?></h3>
+                <h3 class="reporte-subtitle"><?php echo htmlspecialchars($titulo_reporte); ?></h3>
 
                 <?php if($resultados): ?>
                 <div class="tabla-scroll">
@@ -304,7 +304,7 @@ if (isset($_POST['consulta_personal'])) {
             <div class="msg"><?php echo htmlspecialchars($msg); ?></div>
         <?php endif; ?>
 
-        <div class="spacer-bottom" style="height:120px;"></div>
+        <div class="spacer-bottom"></div>
     </main>
 
     <script>

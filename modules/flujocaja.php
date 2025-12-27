@@ -357,7 +357,7 @@ unset($_SESSION['msg']);
 
     <main class="dashboard-main">
         <div class="container-dashboard">
-            <header class="flex-row" style="justify-content:space-between;margin-bottom:12px;">
+            <header class="flex-row justify-space-between mb-12">
                 <div>
                     <h2 class="m-0">Flujo de Caja</h2>
                     <div class="small-note">Registra los egresos diarios y administra pagos en Bs y en $</div>
@@ -452,7 +452,7 @@ unset($_SESSION['msg']);
                     <div class="msg card-panel">No hay movimientos registrados.</div>
                 <?php else: ?>
                     <div class="tabla-scroll card-panel">
-                        <table class="reporte-tabla" style="width:100%;">
+                        <table class="reporte-tabla w-100">
                             <thead>
                                 <tr>
                                     <th>Fecha</th>
@@ -491,7 +491,7 @@ unset($_SESSION['msg']);
                                                 <?php if ($it['tasa'] && floatval($it['tasa'])>0):
                                                     $usd = $v / floatval($it['tasa']);
                                                 ?>
-                                                    <div style="font-size:0.85rem;color:#666;">(US$ <?php echo htmlspecialchars(number_format($usd,2,',','.')); ?>)</div>
+                                                    <div class="conversion-usd-inline">(US$ <?php echo htmlspecialchars(number_format($usd,2,',','.')); ?>)</div>
                                                 <?php endif; ?>
                                             <?php else:
                                                 $v = floatval($it['monto_usd'] ?? 0.0);
@@ -548,7 +548,7 @@ unset($_SESSION['msg']);
 
         </div>
 
-        <div style="height:120px;"></div>
+        <div class="spacer-bottom"></div>
     </main>
 
     <!-- Cargar JS al final -->

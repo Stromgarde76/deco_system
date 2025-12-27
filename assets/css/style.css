@@ -1238,9 +1238,49 @@ table.reporte-tabla th, table.reporte-tabla td {
     margin-top: 0.5rem;
 }
 
+/* Error text - usado en proyectos_editar.php */
+.error-text {
+    color: red;
+}
+
+/* Proyectos editar - Container - usado en proyectos_editar.php */
+.proyectos-editar-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 80vh;
+    padding: 2rem 0;
+}
+
+.proyectos-formulario {
+    background: var(--color-panel);
+    border-radius: 14px;
+    padding: 1.2rem 1rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    color: var(--color-titulo);
+    min-width: 400px;
+    max-width: 600px;
+}
+
 /* Pagination - Active page opacity - usado en flujocaja.php */
 .opacity-active {
     opacity: 0.8;
+}
+
+/* Utility: margin-bottom classes - usado en flujocaja.php */
+.mb-12 {
+    margin-bottom: 12px;
+}
+
+/* Utility: justify-content - usado en flujocaja.php */
+.justify-space-between {
+    justify-content: space-between;
+}
+
+/* Warning text for insufficient balance - usado en flujocaja.php (JavaScript) */
+.saldo-insuficiente {
+    font-weight: 800;
+    color: #8B0000;
 }
 
 /* Utility: margin-top 1rem - usado en flujocaja.php */
@@ -1250,6 +1290,14 @@ table.reporte-tabla th, table.reporte-tabla td {
 
 .mt-04 {
     margin-top: 0.4rem;
+}
+
+/* Reportes - Subtitle for print area - usado en reportes.php */
+.reporte-subtitle {
+    font-size: 1.2rem;
+    color: #003399;
+    font-weight: bold;
+    margin: 0 0 0.6rem;
 }
 
 /* Reportes - Main container - usado en reportes.php */
