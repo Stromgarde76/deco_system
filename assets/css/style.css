@@ -698,4 +698,688 @@ table.reporte-tabla th, table.reporte-tabla td {
     }
 }
 
+/* ====================== ESTILOS CENTRALIZADOS DE MODULES ======================== */
+/* Estilos provenientes de: modules/*.php */
+
+/* Conversión de moneda (USD) - usado en bancos.php, reportes.php, trabajos.php */
+.conversion-usd {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+.conversion-usd-inline {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Información secundaria en tablas - usado en pagos.php, cobranzas.php */
+.info-secundaria {
+    color: #666;
+    font-size: 11px;
+}
+
+/* Mensajes de tabla vacía - usado en múltiples archivos */
+.tabla-vacia {
+    text-align: center;
+    color: #aaa;
+}
+
+/* Formularios inline para acciones - usado en múltiples archivos */
+.form-inline {
+    display: inline;
+    margin: 0;
+}
+
+/* Alineación de texto - usado en múltiples archivos */
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Bold text - usado en bancos.php */
+.text-bold {
+    font-weight: bold;
+}
+
+/* Saldo en tabla de bancos - usado en bancos.php */
+.td-saldo {
+    text-align: right;
+    font-weight: bold;
+}
+
+/* Información bancaria secundaria - usado en bancos.php */
+.saldo-secundario {
+    font-weight: normal;
+    color: #37659a;
+}
+
+.saldo-sin-tasa {
+    font-weight: normal;
+    color: #aaa;
+}
+
+/* Espaciadores - usado en dashboard.php, reportes.php, flujocaja.php */
+.spacer-1rem {
+    min-height: 1rem;
+}
+
+.spacer-bottom {
+    height: 120px;
+}
+
+/* Margen superior - usado en flujocaja.php, reportes.php */
+.mt-0 {
+    margin-top: 0;
+}
+
+.mt-06 {
+    margin-top: 0.6rem;
+}
+
+.mt-08 {
+    margin-top: 0.8rem;
+}
+
+.mt-09 {
+    margin-top: 0.9rem;
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.mb-08 {
+    margin-bottom: 0.8rem;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-14 {
+    margin-bottom: 1.4rem;
+}
+
+.m-0 {
+    margin: 0;
+}
+
+/* Margen lateral - usado en flujocaja.php */
+.ml-8 {
+    margin-left: 8px;
+}
+
+.mr-6 {
+    margin-right: 6px;
+}
+
+/* Width utilities - usado en reportes.php, dashboard.php */
+.w-100 {
+    width: 100%;
+}
+
+/* Display flex utilities - usado en flujocaja.php, reportes.php */
+.flex-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.flex-row-gap-05 {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Hide element - usado en dashboard.php, flujocaja.php */
+.d-none {
+    display: none;
+}
+
+.d-inline {
+    display: inline;
+}
+
+.d-inline-block {
+    display: inline-block;
+}
+
+/* Botones con ancho específico - usado en reportes.php */
+.btn-width-130 {
+    width: 130px;
+}
+
+/* Estilos para reportes - usado en reportes.php */
+.align-right {
+    text-align: right;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+/* Header de impresión - usado en reportes.php */
+.print-header {
+    margin-bottom: 0.8rem;
+}
+
+/* Clase no-print para ocultar elementos al imprimir */
+.no-print {
+    /* Se añade en @media print más abajo */
+}
+
+/* Ocultar elementos al imprimir */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* ====================== ESTILOS ESPECÍFICOS DE MÓDULOS ======================== */
+
+/* Dashboard - Tasa de cambio - usado en dashboard.php */
+.tasa-fecha-info {
+    color: #666;
+}
+
+/* Servicios - Columna de costo - usado en servicios.php */
+.td-costo {
+    text-align: right;
+}
+
+/* Pagos - Columna de monto - usado en pagos.php */
+.td-monto {
+    text-align: right;
+}
+
+/* Pagos y Cobranzas - Información de banco - usado en pagos.php, cobranzas.php */
+.td-banco {
+    /* Estilos para celdas de información bancaria */
+}
+
+/* Flujocaja - Badge de moneda - usado en flujocaja.php */
+.currency-badge {
+    display: inline-block;
+    font-weight: bold;
+    padding: 4px 8px;
+    background: var(--color-input-bg);
+    border-radius: 5px;
+    color: var(--color-titulo);
+}
+
+/* Flujocaja - Card panel - usado en flujocaja.php, reportes.php */
+.card-panel {
+    background: var(--color-panel);
+    border-radius: 14px;
+    padding: 1.2rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    margin-bottom: 1rem;
+}
+
+/* Flujocaja - Small note - usado en flujocaja.php */
+.small-note {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.3rem;
+}
+
+/* Flujocaja - Inline actions - usado en flujocaja.php */
+.inline-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Reportes - Container general - usado en reportes.php */
+.reporte-form, .editor-form, .reporte-resultado {
+    background: var(--color-panel);
+    border-radius: 14px;
+    padding: 1.6rem 1.5rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    margin: 1.5rem auto;
+}
+
+/* Reportes - Print title - usado en reportes.php */
+.print-title {
+    font-size: 1.3rem;
+    color: var(--color-titulo);
+    font-weight: bold;
+}
+
+/* Reportes - Total row - usado en reportes.php */
+.total-row {
+    background: var(--color-input-bg);
+    font-weight: bold;
+}
+
+/* Servicios - Contenedor flex - usado en servicios.php */
+.servicios-flex-container {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: flex-start;
+    background: linear-gradient(135deg, var(--color-fondo) 0%, #c5d0e6 100%);
+    min-height: 93vh;
+    padding: 2.4rem 0;
+}
+
+/* Servicios - Formulario y lista - usado en servicios.php */
+.servicios-form {
+    background: var(--color-panel);
+    border-radius: 14px;
+    padding: 1.2rem 1rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    color: var(--color-titulo);
+    min-width: 250px;
+    max-width: 340px;
+    flex: 0 0 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.servicios-lista {
+    background: var(--color-panel);
+    border-radius: 14px;
+    padding: 1.6rem 1.5rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    color: var(--color-titulo);
+    flex: 1 1 540px;
+    max-width: 900px;
+    overflow-x: auto;
+}
+
+/* Tabla de servicios - usado en servicios.php */
+.tabla-servicios {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-panel);
+    color: var(--color-tabla-td);
+    box-shadow: 0 1px 7px var(--color-shadow);
+}
+
+.tabla-servicios th, .tabla-servicios td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #e3ecfa;
+    font-size: 12px;
+}
+
+.tabla-servicios th {
+    background: var(--color-tabla-th);
+    color: var(--color-titulo);
+    font-weight: bold;
+    text-align: left;
+}
+
+/* Pagos - Contenedor flex - usado en pagos.php */
+.seccion-pagos {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: flex-start;
+    background: linear-gradient(135deg, var(--color-fondo) 0%, #c5d0e6 100%);
+    min-height: 93vh;
+    padding: 2.4rem 0;
+}
+
+.pagos-flex-container {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.pagos-form {
+    background: var(--color-panel);
+    border-radius: 14px;
+    padding: 1.2rem 1rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    color: var(--color-titulo);
+    min-width: 250px;
+    max-width: 340px;
+    flex: 0 0 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.pagos-lista {
+    background: var(--color-panel);
+    border-radius: 14px;
+    padding: 1.6rem 1.5rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    color: var(--color-titulo);
+    flex: 1 1 540px;
+    max-width: 900px;
+    overflow-x: auto;
+}
+
+/* Tabla de pagos - usado en pagos.php */
+.tabla-pagos {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-panel);
+    color: var(--color-tabla-td);
+    box-shadow: 0 1px 7px var(--color-shadow);
+}
+
+.tabla-pagos th, .tabla-pagos td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #e3ecfa;
+    font-size: 12px;
+}
+
+.tabla-pagos th {
+    background: var(--color-tabla-th);
+    color: var(--color-titulo);
+    font-weight: bold;
+    text-align: left;
+}
+
+/* Cobranzas - Contenedor flex - usado en cobranzas.php */
+.seccion-cobranzas {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: flex-start;
+    background: linear-gradient(135deg, var(--color-fondo) 0%, #c5d0e6 100%);
+    min-height: 93vh;
+    padding: 2.4rem 0;
+}
+
+.cobranzas-flex-container {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.cobranzas-form {
+    background: var(--color-panel);
+    border-radius: 14px;
+    padding: 1.2rem 1rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    color: var(--color-titulo);
+    min-width: 250px;
+    max-width: 340px;
+    flex: 0 0 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.cobranzas-lista {
+    background: var(--color-panel);
+    border-radius: 14px;
+    padding: 1.6rem 1.5rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    color: var(--color-titulo);
+    flex: 1 1 540px;
+    max-width: 900px;
+    overflow-x: auto;
+}
+
+/* Tabla de cobranzas - usado en cobranzas.php */
+.tabla-cobranzas {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-panel);
+    color: var(--color-tabla-td);
+    box-shadow: 0 1px 7px var(--color-shadow);
+}
+
+.tabla-cobranzas th, .tabla-cobranzas td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #e3ecfa;
+    font-size: 12px;
+}
+
+.tabla-cobranzas th {
+    background: var(--color-tabla-th);
+    color: var(--color-titulo);
+    font-weight: bold;
+    text-align: left;
+}
+
+/* Dashboard - Container y grid - usado en dashboard.php */
+.container-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.header-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 2rem;
+}
+
+.welcome-block h2 {
+    margin: 0 0 0.5rem 0;
+}
+
+.welcome-block p {
+    margin: 0;
+    color: #666;
+}
+
+.dashboard-usuario {
+    color: var(--color-secundario);
+}
+
+/* Dashboard - Tasa card compact - usado en dashboard.php */
+.tasa-card-compact {
+    background: var(--color-panel);
+    border-radius: 14px;
+    padding: 1rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    min-width: 280px;
+}
+
+.tasa-row-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.tasa-anterior-label {
+    font-weight: bold;
+    color: var(--color-titulo);
+}
+
+.tasa-form-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.input-tasa-dashboard {
+    flex: 1;
+    font-size: 1.1rem;
+    padding: 8px 10px;
+    border-radius: 7px;
+    background: var(--color-input-bg);
+    border: none;
+    box-shadow: 0 1px 4px var(--color-shadow);
+    color: var(--color-titulo);
+    font-weight: bold;
+    text-align: right;
+}
+
+/* Dashboard - Resumen grid - usado en dashboard.php */
+.resumen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.6rem;
+    margin-bottom: 2rem;
+}
+
+.card-sumatoria {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.card-valor-activos {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+/* Error text - usado en proyectos_editar.php */
+.error-text {
+    color: red;
+}
+
+/* Proyectos editar - Container - usado en proyectos_editar.php */
+.proyectos-editar-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 80vh;
+    padding: 2rem 0;
+}
+
+.proyectos-formulario {
+    background: var(--color-panel);
+    border-radius: 14px;
+    padding: 1.2rem 1rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    color: var(--color-titulo);
+    min-width: 400px;
+    max-width: 600px;
+}
+
+/* Pagination - Active page opacity - usado en flujocaja.php */
+.opacity-active {
+    opacity: 0.8;
+}
+
+/* Utility: margin-bottom classes - usado en flujocaja.php */
+.mb-12 {
+    margin-bottom: 12px;
+}
+
+/* Utility: justify-content - usado en flujocaja.php */
+.justify-space-between {
+    justify-content: space-between;
+}
+
+/* Warning text for insufficient balance - usado en flujocaja.php (JavaScript) */
+.saldo-insuficiente {
+    font-weight: 800;
+    color: #8B0000;
+}
+
+/* Utility: margin-top 1rem - usado en flujocaja.php */
+.mt-1rem {
+    margin-top: 1rem;
+}
+
+.mt-04 {
+    margin-top: 0.4rem;
+}
+
+/* Reportes - Subtitle for print area - usado en reportes.php */
+.reporte-subtitle {
+    font-size: 1.2rem;
+    color: #003399;
+    font-weight: bold;
+    margin: 0 0 0.6rem;
+}
+
+/* Reportes - Main container - usado en reportes.php */
+.reportes-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 90vh;
+}
+
+/* Reportes - Form sections max-width - usado en reportes.php */
+.reporte-form-container, .editor-form-container {
+    width: 100%;
+    max-width: 600px;
+}
+
+.reporte-resultado-container {
+    width: 100%;
+    max-width: 900px;
+}
+
+/* Reportes - Section titles - usado en reportes.php */
+.section-title {
+    font-size: 1.3rem;
+    color: var(--color-titulo);
+    font-weight: bold;
+    margin-bottom: 1.1rem;
+}
+
+/* Reportes - Formulario flex layout - usado en reportes.php */
+.form-flex {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* Reportes - Label con flex - usado en reportes.php */
+.label-flex-1 {
+    flex: 1;
+    min-width: 140px;
+}
+
+.label-flex-2 {
+    flex: 2;
+    min-width: 160px;
+}
+
+.label-flex-narrow {
+    flex: 1;
+    min-width: 90px;
+}
+
+/* Reportes - Select y input flex - usado en reportes.php */
+.select-flex-1 {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* ====================== RESPONSIVE PARA NUEVOS MÓDULOS ======================== */
+@media (max-width: 950px) {
+    .servicios-flex-container,
+    .pagos-flex-container,
+    .cobranzas-flex-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.7rem;
+    }
+    
+    .servicios-form, .servicios-lista,
+    .pagos-form, .pagos-lista,
+    .cobranzas-form, .cobranzas-lista {
+        max-width: 100%;
+    }
+    
+    .header-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .resumen-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* ====================== FIN DE ARCHIVO ======================== */

@@ -321,15 +321,15 @@ $stmt->close();
                                 <td class="td-banco">
                                     <?php echo htmlspecialchars($c['banco_nombre']); ?>
                                     <br>
-                                    <span style="color:#666;font-size:11px">
+                                    <span class="info-secundaria">
                                         <?php echo htmlspecialchars($c['tipo_cuenta']); ?> - ****<?php echo substr($c['numero_cuenta'], -4); ?>
                                     </span>
                                 </td>
                                 <td class="td-monto"><?php echo number_format($c['monto'], 2, ',', '.'); ?></td>
-                                <td style="text-align:left;"><?php echo htmlspecialchars($c['descripcion']); ?></td>
+                                <td class="text-left"><?php echo htmlspecialchars($c['descripcion']); ?></td>
                                 <td>
                                     <a href="?editar=<?php echo $c['id']; ?>" class="btn-accion editar" title="Editar">&#9998;</a>
-                                    <form method="POST" style="display:inline;" onsubmit="return confirm('¿Eliminar esta cobranza?');">
+                                    <form method="POST" class="form-inline" onsubmit="return confirm('¿Eliminar esta cobranza?');">
                                         <input type="hidden" name="accion" value="eliminar">
                                         <input type="hidden" name="cobranza_id" value="<?php echo $c['id']; ?>">
                                         <button type="submit" class="btn-accion eliminar" title="Eliminar">&#128465;</button>
@@ -339,7 +339,7 @@ $stmt->close();
                             <?php endforeach; ?>
                             <?php if (count($cobranzas) === 0): ?>
                             <tr>
-                                <td colspan="7" style="text-align:center; color:#aaa;">Sin cobranzas registradas.</td>
+                                <td colspan="7" class="tabla-vacia">Sin cobranzas registradas.</td>
                             </tr>
                             <?php endif; ?>
                         </tbody>

@@ -331,15 +331,15 @@ $stmt->close();
                                 <td class="td-banco">
                                     <?php echo htmlspecialchars($p['banco_nombre']); ?>
                                     <br>
-                                    <span style="color:#666;font-size:11px">
+                                    <span class="info-secundaria">
                                         <?php echo htmlspecialchars($p['tipo_cuenta']); ?> - ****<?php echo substr($p['numero_cuenta'], -4); ?>
                                     </span>
                                 </td>
                                 <td class="td-monto"><?php echo number_format($p['monto'], 2, ',', '.'); ?></td>
-                                <td style="text-align:left;"><?php echo htmlspecialchars($p['descripcion']); ?></td>
+                                <td class="text-left"><?php echo htmlspecialchars($p['descripcion']); ?></td>
                                 <td>
                                     <a href="?editar=<?php echo $p['id']; ?>" class="btn-accion editar" title="Editar">&#9998;</a>
-                                    <form method="POST" style="display:inline;" onsubmit="return confirm('¿Eliminar este pago?');">
+                                    <form method="POST" class="form-inline" onsubmit="return confirm('¿Eliminar este pago?');">
                                         <input type="hidden" name="accion" value="eliminar">
                                         <input type="hidden" name="pago_id" value="<?php echo $p['id']; ?>">
                                         <button type="submit" class="btn-accion eliminar" title="Eliminar">&#128465;</button>
@@ -349,7 +349,7 @@ $stmt->close();
                             <?php endforeach; ?>
                             <?php if (count($pagos) === 0): ?>
                             <tr>
-                                <td colspan="8" style="text-align:center; color:#aaa;">Sin pagos registrados.</td>
+                                <td colspan="8" class="tabla-vacia">Sin pagos registrados.</td>
                             </tr>
                             <?php endif; ?>
                         </tbody>

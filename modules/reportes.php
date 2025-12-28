@@ -159,11 +159,11 @@ if (isset($_POST['consulta_personal'])) {
         </div>
     </nav>
 
-    <main style="display: flex; flex-direction: column; align-items: center; min-height: 90vh;">
-        <section class="reporte-form" style="width:100%;max-width:600px;">
-            <h2 style="font-size:1.3rem; color:#19396b; font-weight:bold; margin-bottom: 1.1rem;">Reportes generales</h2>
-            <form method="POST" style="display:flex; gap:1rem; flex-wrap:wrap; align-items:center;">
-                <select name="reporte" required style="flex:1;min-width:200px;">
+    <main class="reportes-main">
+        <section class="reporte-form reporte-form-container">
+            <h2 class="section-title">Reportes generales</h2>
+            <form method="POST" class="form-flex">
+                <select name="reporte" required class="select-flex-1">
                     <option value="">Seleccione un reporte</option>
                     <?php foreach($reportes as $key => $desc): ?>
                         <option value="<?php echo $key; ?>" <?php if(isset($_POST['reporte']) && $_POST['reporte']==$key) echo 'selected'; ?>>
@@ -171,15 +171,15 @@ if (isset($_POST['consulta_personal'])) {
                         </option>
                     <?php endforeach; ?>
                 </select>
-                <button type="submit" class="btn-principal no-print" style="width:130px;">Ver reporte</button>
+                <button type="submit" class="btn-principal no-print btn-width-130">Ver reporte</button>
             </form>
         </section>
 
-        <section class="editor-form" style="width:100%;max-width:600px;">
-            <h2 style="font-size:1.3rem; color:#19396b; font-weight:bold; margin-bottom: 1.1rem;">Editor de reportes (consulta personalizada)</h2>
-            <form method="POST" style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center;">
-                <label style="flex:1; min-width:140px;">Tabla:
-                    <select name="tabla" required style="width:100%;">
+        <section class="editor-form editor-form-container">
+            <h2 class="section-title">Editor de reportes (consulta personalizada)</h2>
+            <form method="POST" class="form-flex">
+                <label class="label-flex-1">Tabla:
+                    <select name="tabla" required class="w-100">
                         <option value="">Seleccione tabla</option>
                         <option value="bancos">Bancos</option>
                         <option value="clientes">Clientes</option>
@@ -189,28 +189,28 @@ if (isset($_POST['consulta_personal'])) {
                         <option value="pagos">Pagos</option>
                     </select>
                 </label>
-                <label style="flex:2; min-width:160px;">Campos (ej: nombre, saldo) o *:
-                    <input type="text" name="campos" placeholder="*" value="<?php echo isset($_POST['campos']) ? htmlspecialchars($_POST['campos']) : '*'; ?>" style="width:100%;" />
+                <label class="label-flex-2">Campos (ej: nombre, saldo) o *:
+                    <input type="text" name="campos" placeholder="*" value="<?php echo isset($_POST['campos']) ? htmlspecialchars($_POST['campos']) : '*'; ?>" class="w-100" />
                 </label>
-                <label style="flex:1; min-width:90px;">Límite:
-                    <input type="number" name="limite" value="<?php echo isset($_POST['limite']) ? intval($_POST['limite']) : 30; ?>" min="1" max="100" style="width:100%;" />
+                <label class="label-flex-narrow">Límite:
+                    <input type="number" name="limite" value="<?php echo isset($_POST['limite']) ? intval($_POST['limite']) : 30; ?>" min="1" max="100" class="w-100" />
                 </label>
-                <button type="submit" name="consulta_personal" class="btn-principal no-print" style="width:130px;">Ejecutar</button>
+                <button type="submit" name="consulta_personal" class="btn-principal no-print btn-width-130">Ejecutar</button>
             </form>
         </section>
 
         <?php if($titulo_reporte): ?>
-        <section class="reporte-resultado" style="width:100%;max-width:900px;">
+        <section class="reporte-resultado reporte-resultado-container">
             <div id="print-area">
-                <div class="print-header no-print" style="margin-bottom:0.8rem;">
+                <div class="print-header no-print mb-08">
                     <div class="print-title"><?php echo htmlspecialchars($titulo_reporte); ?></div>
-                    <div style="display:flex; gap:0.5rem;">
+                    <div class="flex-row-gap-05">
                         <button type="button" onclick="window.print()" class="btn-principal no-print">Imprimir</button>
                         <button type="button" onclick="exportTableToCSV()" class="btn-principal no-print">Exportar CSV</button>
                     </div>
                 </div>
 
-                <h3 style="font-size:1.2rem; color:#003399; font-weight:bold; margin:0 0 0.6rem;"><?php echo htmlspecialchars($titulo_reporte); ?></h3>
+                <h3 class="reporte-subtitle"><?php echo htmlspecialchars($titulo_reporte); ?></h3>
 
                 <?php if($resultados): ?>
                 <div class="tabla-scroll">
@@ -249,9 +249,9 @@ if (isset($_POST['consulta_personal'])) {
                                             echo '<td class="align-right bold">';
                                             echo htmlspecialchars($bs_formatted);
                                             if ($usd_formatted !== null) {
-                                                echo '<div style="font-size:0.85rem;color:#666;margin-top:4px;">(' . 'US$ ' . htmlspecialchars($usd_formatted) . ')</div>';
+                                                echo '<div class="conversion-usd">(' . 'US$ ' . htmlspecialchars($usd_formatted) . ')</div>';
                                             } else {
-                                                echo '<div style="font-size:0.85rem;color:#666;margin-top:4px;">(sin tasa)</div>';
+                                                echo '<div class="conversion-usd">(sin tasa)</div>';
                                             }
                                             echo '</td>';
                                         } else {
@@ -278,10 +278,10 @@ if (isset($_POST['consulta_personal'])) {
                                         if ($tasa_actual !== null && $tasa_actual > 0) {
                                             $usd_total = number_format($total_saldos / $tasa_actual, 2, ',', '.');
                                             echo '<td class="align-right bold">' . htmlspecialchars($bs_total) .
-                                                 '<div style="font-size:0.85rem;color:#666;margin-top:4px;">(US$ ' . htmlspecialchars($usd_total) . ')</div></td>';
+                                                 '<div class="conversion-usd">(US$ ' . htmlspecialchars($usd_total) . ')</div></td>';
                                         } else {
                                             echo '<td class="align-right bold">' . htmlspecialchars($bs_total) .
-                                                 '<div style="font-size:0.85rem;color:#666;margin-top:4px;">(sin tasa)</div></td>';
+                                                 '<div class="conversion-usd">(sin tasa)</div></td>';
                                         }
                                     } else {
                                         echo '<td></td>';
@@ -304,7 +304,7 @@ if (isset($_POST['consulta_personal'])) {
             <div class="msg"><?php echo htmlspecialchars($msg); ?></div>
         <?php endif; ?>
 
-        <div class="spacer-bottom" style="height:120px;"></div>
+        <div class="spacer-bottom"></div>
     </main>
 
     <script>

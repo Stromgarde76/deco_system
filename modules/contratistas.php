@@ -167,7 +167,7 @@ $stmt->close();
                         <td><?php echo htmlspecialchars($c['direccion']); ?></td>
                         <td>
                             <a href="?editar=<?php echo $c['id']; ?>" class="btn-accion editar" title="Editar">&#9998;</a>
-                            <form method="POST" style="display:inline;" onsubmit="return confirm('¿Eliminar este contratista?');">
+                            <form method="POST" class="form-inline" onsubmit="return confirm('¿Eliminar este contratista?');">
                                 <input type="hidden" name="accion" value="eliminar">
                                 <input type="hidden" name="contratista_id" value="<?php echo $c['id']; ?>">
                                 <button type="submit" class="btn-accion eliminar" title="Eliminar">&#128465;</button>
@@ -177,7 +177,7 @@ $stmt->close();
                     <?php endforeach; ?>
                     <?php if (count($contratistas) === 0): ?>
                     <tr>
-                        <td colspan="6" style="text-align:center; color:#aaa;">Sin contratistas registrados.</td>
+                        <td colspan="6" class="tabla-vacia">Sin contratistas registrados.</td>
                     </tr>
                     <?php endif; ?>
                 </tbody>
