@@ -215,7 +215,7 @@ $input_tasa_value = ($tasa_actual !== '' && $tasa_actual !== null) ? str_replace
                         <div class="card-info">
                             <div class="card-title">Trabajos Activos</div>
                             <div class="card-value"><?php echo number_format($trabajos_activos, 0, ',', '.'); ?></div>
-                            <div class="card-valor-activos">
+                            <div class="card-sumatoria">
                                 Trabajos en ejecución
                             </div>
                         </div>

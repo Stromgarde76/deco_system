@@ -1282,8 +1282,7 @@ table.reporte-tabla th, table.reporte-tabla td {
     margin-bottom: 0.3rem;
 }
 
-.summary-card .card-sumatoria,
-.summary-card .card-valor-activos {
+.summary-card .card-sumatoria {
     font-size: 0.85rem;
     color: #888;
     line-height: 1.4;
@@ -1406,12 +1405,6 @@ table.reporte-tabla th, table.reporte-tabla td {
 }
 
 .card-sumatoria {
-    font-size: 0.85rem;
-    color: #666;
-    margin-top: 0.5rem;
-}
-
-.card-valor-activos {
     font-size: 0.85rem;
     color: #666;
     margin-top: 0.5rem;
