@@ -231,7 +231,7 @@ while ($row = $res->fetch_assoc()) $trabajos[] = $row;
                                 }
                             ?>
                         </td>
-                        <td>
+                        <td class="col-acciones">
                             <a href="trabajos.php?editar=<?php echo urlencode($t['id_trab']); ?>" class="btn-accion editar" title="Editar">&#9998;</a>
                             <form id="form-eliminar-<?php echo $t['id_trab']; ?>" method="post" action="" class="form-inline">
                                 <input type="hidden" name="accion" value="eliminar">
