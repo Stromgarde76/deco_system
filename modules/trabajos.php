@@ -144,12 +144,11 @@ while ($row = $res->fetch_assoc()) $trabajos[] = $row;
             <a href="../logout.php" class="nav-logout" title="Cerrar sesión">&#x1F511;</a>
         </div>
     </nav>
-    <main>
-        <div class="trabajos-main">
-            <div class="trabajos-formulario">
+    <main class="seccion-bancos">
+        <section class="bancos-form">
                 <h2><?php echo $trabajo_editar ? "Editar Trabajo" : "Nuevo Trabajo"; ?></h2>
                 <?php if ($mensaje): ?>
-                    <div class="msg-info"><?php echo $mensaje; ?></div>
+                    <div class="msg"><?php echo $mensaje; ?></div>
                 <?php endif; ?>
                 <form method="post" class="formulario" autocomplete="off">
                     <input type="hidden" name="accion" value="<?php echo $trabajo_editar ? 'editar' : 'nuevo'; ?>">
@@ -195,11 +194,10 @@ while ($row = $res->fetch_assoc()) $trabajos[] = $row;
                         <?php endif; ?>
                     </div>
                 </form>
-            </div>
-            <div class="trabajos-listado">
+        <section class="bancos-lista">
                 <h2>Lista de Trabajos</h2>
-                <div class="tabla-scroll">
-                    <table class="tabla-trabajos">
+            <div class="tabla-scroll">
+            <table class="tabla-bancos">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -232,25 +230,25 @@ while ($row = $res->fetch_assoc()) $trabajos[] = $row;
                                     }
                                 ?>
                                 </td>
-                                <td class="col-acciones">
-                                    <a href="trabajos.php?editar=<?php echo urlencode($t['id_trab']); ?>" class="btn-accion editar" title="Editar">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                    <form id="form-eliminar-<?php echo $t['id_trab']; ?>" method="post" action="" class="form-inline">
-                                        <input type="hidden" name="accion" value="eliminar">
-                                        <input type="hidden" name="id_trab_eliminar" value="<?php echo $t['id_trab']; ?>">
-                                        <button type="button" class="btn-accion eliminar" title="Eliminar" onclick="confirmarEliminar(<?php echo $t['id_trab']; ?>)">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
+                            <td class="col-acciones">
+                                <a href="trabajos.php?editar=<?php echo urlencode($t['id_trab']); ?>" class="btn-accion editar" title="Editar">&#9998;</a>
+                                <form id="form-eliminar-<?php echo $t['id_trab']; ?>" method="post" action="" class="form-inline">
+                                    <input type="hidden" name="accion" value="eliminar">
+                                    <input type="hidden" name="id_trab_eliminar" value="<?php echo $t['id_trab']; ?>">
+                                    <button type="button" class="btn-accion eliminar" title="Eliminar" onclick="confirmarEliminar(<?php echo $t['id_trab']; ?>)">&#128465;</button>
+                                </form>
+                            </td>
                             </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                    <?php endforeach; ?>
+                    <?php if (count($trabajos) === 0): ?>
+                    <tr>
+                        <td colspan="9" class="tabla-vacia">Sin trabajos registrados.</td>
+                    </tr>
+                    <?php endif; ?>
+                    </tbody>
+            </table>
             </div>
-        </div>
+        </section>
     </main>
 </body>
 </html>

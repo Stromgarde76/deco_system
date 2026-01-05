@@ -245,9 +245,8 @@ $stmt->close();
             <a href="../logout.php" class="nav-logout" title="Cerrar sesión">&#x1F511;</a>
         </div>
     </nav>
-    <main class="seccion-cobranzas">
-        <div class="cobranzas-flex-container">
-            <section class="cobranzas-form">
+    <main class="seccion-bancos">
+        <section class="bancos-form">
                 <h2><?php echo $cobranza_editar ? "Editar Cobranza" : "Registrar Cobranza"; ?></h2>
                 <?php if ($msg): ?>
                     <div class="msg"><?php echo $msg; ?></div>
@@ -297,10 +296,10 @@ $stmt->close();
                     </div>
                 </form>
             </section>
-            <section class="cobranzas-lista">
+        <section class="bancos-lista">
                 <h2>Listado de Cobranzas</h2>
-                <div class="tabla-scroll">
-                    <table class="tabla-cobranzas">
+            <div class="tabla-scroll">
+            <table class="tabla-bancos">
                         <thead>
                             <tr>
                                 <th>Fecha</th>
@@ -343,10 +342,9 @@ $stmt->close();
                             </tr>
                             <?php endif; ?>
                         </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
+            </table>
+            </div>
+        </section>
     </main>
 </body>
 </html>
