@@ -356,200 +356,138 @@ unset($_SESSION['msg']);
         </div>
     </nav>
 
-    <main class="dashboard-main">
-        <div class="container-dashboard">
-            <header class="flex-row justify-space-between mb-12">
-                <div>
-                    <h2 class="m-0">Flujo de Caja</h2>
-                    <div class="small-note">Registra los egresos diarios y administra pagos en Bs y en $</div>
-                </div>
-                <div class="inline-actions no-print">
-                    <button class="btn-principal" onclick="document.getElementById('form-nuevo').scrollIntoView({behavior:'smooth'});">Agregar movimiento</button>
-                    <a class="btn-volver" href="reportes.php">Ir a Reportes</a>
-                </div>
-            </header>
-
+    <main class="seccion-bancos">
+        <section class="bancos-form">
+            <h2><?php echo isset($_GET['editar']) ? "Editar Movimiento" : "Agregar Movimiento"; ?></h2>
             <?php if ($msg_flash): ?>
-                <div class="msg card-panel"><?php echo htmlspecialchars($msg_flash); ?></div>
+                <div class="msg"><?php echo htmlspecialchars($msg_flash); ?></div>
             <?php endif; ?>
 
             <?php if (!empty($errors)): ?>
-                <div class="msg card-panel"><?php foreach($errors as $e) echo htmlspecialchars($e)."<br>"; ?></div>
+                <div class="msg"><?php foreach($errors as $e) echo htmlspecialchars($e)."<br>"; ?></div>
             <?php endif; ?>
-
-            <!-- Formulario principal (servirá para crear y para editar) -->
-            <section id="form-nuevo" class="card-panel" aria-label="Agregar movimiento">
-                <h3 class="mt-0" id="form-title">Agregar movimiento</h3>
-                <form id="form_agregar" method="POST" onsubmit="return flujocaja_before_submit(this);" class="formulario">
-                    <!-- hidden id: if set, we are editing -->
-                    <input type="hidden" name="id" id="form_id" value="">
-                    <div class="form-row">
-                        <!-- 1. Fecha (sin cambios) -->
-                        <label>Fecha (DD/MM/AAAA):
-                            <input name="fecha" id="fecha_input" type="text" value="<?php echo date('d/m/Y'); ?>" required placeholder="DD/MM/AAAA" />
-                        </label>
-
-                        <!-- 2. Instrumento (solo etiqueta modificada) -->
-                        <label>Instrumento de Pago:
-                            <select name="instrumento" id="instrumento" onchange="flujocaja_toggle_instrumento();" required>
-                                <option value="Bs">Bolívares (Bs)</option>
-                                <option value="$">Dólares ($)</option>
-                            </select>
-                        </label>
-                    </div>
-
-                    <!-- Cuenta banco -->
-                    <div class="form-row mt-06">
-                        <label>Cuenta banco (si Bs):
-                            <select name="banco_id" id="banco_id" onchange="flujocaja_on_bank_change();">
-                                <option value="">-- Seleccione cuenta --</option>
-                                <?php foreach($bancos as $b): ?>
-                                    <option value="<?php echo $b['id']; ?>" data-saldo="<?php echo htmlspecialchars($b['saldo']); ?>"><?php echo htmlspecialchars($b['nombre']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <div id="bank_saldo_info" class="small-note" aria-live="polite"></div>
-                        </label>
-                    </div>
-
-                    <!-- 3. Descripción -->
-                    <div class="form-row mt-06">
-                        <label>Descripción del Pago:
-                            <input type="text" name="descripcion" id="descripcion_input" placeholder="Ej: Pago de bono de transporte a Pedro Pérez" required />
-                        </label>
-
-                        <!-- 4. Monto -->
-                        <label>Monto:
-                            <div class="flex-row">
-                                <div id="currency_label" class="currency-badge">Bs</div>
-                                <input type="text" name="monto" id="monto_input" required placeholder="0" />
-                            </div>
-                        </label>
-                    </div>
-
-                    <div class="form-row mt-06">
-                        <label>Tasa (si desea cambiar):
-                            <input type="text" name="tasa" id="tasa_input" value="<?php echo $tasa_actual!==null ? htmlspecialchars(str_replace(',', '.', (string)$tasa_actual)) : ''; ?>" />
-                        </label>
-                        <label>Responsable:
-                            <input type="text" name="responsable" id="responsable_input" />
-                        </label>
-                        <label>Beneficiario:
-                            <input type="text" name="beneficiario" id="beneficiario_input" />
-                        </label>
-                    </div>
-
-                    <div class="mt-09">
-                        <button type="submit" id="submit_btn" name="guardar" class="btn-principal">Guardar</button>
-                        <button type="button" id="cancel_edit_btn" class="btn-volver ml-8 d-none">Cancelar edición</button>
-                        <button type="reset" class="btn-cancelar ml-8">Limpiar</button>
-                    </div>
-                </form>
-            </section>
-
-            <!-- Listado (sin cambios visuales) -->
-            <section class="mt-1rem">
-                <h3 class="mb-10">Movimientos recientes</h3>
-                <?php if (count($items) === 0): ?>
-                    <div class="msg card-panel">No hay movimientos registrados.</div>
-                <?php else: ?>
-                    <div class="tabla-scroll card-panel">
-                        <table class="reporte-tabla w-100">
-                            <thead>
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th>Descripción</th>
-                                    <th>Instrumento</th>
-                                    <th>Cuenta</th>
-                                    <th class="align-right">Monto</th>
-                                    <th>Resp.</th>
-                                    <th>Benef.</th>
-                                    <th class="no-print">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach($items as $it):
-                                    $data_id = (int)$it['id'];
-                                    $data_fecha = htmlspecialchars(sql_to_ddmmyyyy($it['fecha']));
-                                    $data_desc = htmlspecialchars($it['descripcion']);
-                                    $data_instr = ($it['instrumento'] === '$') ? '$' : 'Bs';
-                                    $data_banco = isset($it['banco_id']) ? (int)$it['banco_id'] : '';
-                                    $data_monto_bs = isset($it['monto_bs']) ? floatval($it['monto_bs']) : 0;
-                                    $data_monto_usd = isset($it['monto_usd']) ? floatval($it['monto_usd']) : 0;
-                                    $data_tasa = isset($it['tasa']) ? htmlspecialchars($it['tasa']) : '';
-                                    $data_resp = htmlspecialchars($it['responsable']);
-                                    $data_ben = htmlspecialchars($it['beneficiario']);
-                                ?>
-                                    <tr>
-                                        <td><?php echo $data_fecha; ?></td>
-                                        <td><?php echo $data_desc; ?></td>
-                                        <td><?php echo $data_instr; ?></td>
-                                        <td><?php echo htmlspecialchars($it['banco_nombre'] ?? '—'); ?></td>
-                                        <td class="align-right">
-                                            <?php if ($it['instrumento'] === 'Bs'):
-                                                $v = floatval($it['monto_bs'] ?? 0.0);
-                                            ?>
-                                                <span class="amount" data-raw="<?php echo $v; ?>" data-currency="Bs">Bs <?php echo htmlspecialchars(number_format($v, 2, ',', '.')); ?></span>
-                                                <?php if ($it['tasa'] && floatval($it['tasa'])>0):
-                                                    $usd = $v / floatval($it['tasa']);
-                                                ?>
-                                                    <div class="conversion-usd-inline">(US$ <?php echo htmlspecialchars(number_format($usd,2,',','.')); ?>)</div>
-                                                <?php endif; ?>
-                                            <?php else:
-                                                $v = floatval($it['monto_usd'] ?? 0.0);
-                                            ?>
-                                                <span class="amount" data-raw="<?php echo $v; ?>" data-currency="$">$ <?php echo htmlspecialchars(number_format($v,2,',','.')); ?></span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td><?php echo $data_resp; ?></td>
-                                        <td><?php echo $data_ben; ?></td>
-                                        <td class="no-print">
-                                            <div class="table-actions" aria-label="Acciones">
-                                                <a href="#" class="btn-accion editar"
-                                                   title="Editar"
-                                                   data-id="<?php echo $data_id; ?>"
-                                                   data-fecha="<?php echo $data_fecha; ?>"
-                                                   data-descripcion="<?php echo $data_desc; ?>"
-                                                   data-instrumento="<?php echo $data_instr; ?>"
-                                                   data-banco="<?php echo $data_banco; ?>"
-                                                   data-montobs="<?php echo $data_monto_bs; ?>"
-                                                   data-montousd="<?php echo $data_monto_usd; ?>"
-                                                   data-tasa="<?php echo $data_tasa; ?>"
-                                                   data-responsable="<?php echo $data_resp; ?>"
-                                                   data-beneficiario="<?php echo $data_ben; ?>"
-                                                   onclick="loadRecordIntoMainForm(this); return false;">
-                                                    <span aria-hidden="true">&#9998;</span>
-                                                    <span class="sr-only">Editar</span>
-                                                </a>
-
-                                                <form method="POST" class="form-inline" onsubmit="return confirm('¿Eliminar registro?');">
-                                                    <input type="hidden" name="id" value="<?php echo $it['id']; ?>">
-                                                    <button type="submit" name="eliminar" class="btn-accion eliminar" title="Eliminar">
-                                                        <span aria-hidden="true">&#128465;</span>
-                                                        <span class="sr-only">Eliminar</span>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <?php
-                        $total_pages = max(1, ceil($total_rows / $perpage));
+            <form id="form_agregar" method="POST" onsubmit="return flujocaja_before_submit(this);" class="formulario" autocomplete="off">
+                <input type="hidden" name="id" id="form_id" value="">
+                <input type="text" name="fecha" id="fecha_input" type="text" value="<?php echo date('d/m/Y'); ?>" required placeholder="Fecha (DD/MM/AAAA)">
+                <select name="instrumento" id="instrumento" onchange="flujocaja_toggle_instrumento();" required>
+                    <option value="">Seleccione instrumento</option>
+                    <option value="Bs" selected>Bolívares (Bs)</option>
+                    <option value="$">Dólares ($)</option>
+                </select>
+                <select name="banco_id" id="banco_id" onchange="flujocaja_on_bank_change();">
+                    <option value="">-- Seleccione cuenta --</option>
+                    <?php foreach($bancos as $b): ?>
+                        <option value="<?php echo $b['id']; ?>" data-saldo="<?php echo htmlspecialchars($b['saldo']); ?>"><?php echo htmlspecialchars($b['nombre']); ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <div id="bank_saldo_info" class="small-note" aria-live="polite"></div>
+                <input type="text" name="descripcion" id="descripcion_input" placeholder="Descripción del Pago" required>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div id="currency_label" class="currency-badge">Bs</div>
+                    <input type="text" name="monto" id="monto_input" required placeholder="Monto" style="flex: 1;">
+                </div>
+                <input type="text" name="tasa" id="tasa_input" value="<?php echo $tasa_actual!==null ? htmlspecialchars(str_replace(',', '.', (string)$tasa_actual)) : ''; ?>" placeholder="Tasa (opcional)">
+                <input type="text" name="responsable" id="responsable_input" placeholder="Responsable">
+                <input type="text" name="beneficiario" id="beneficiario_input" placeholder="Beneficiario">
+                <div class="form-btns">
+                    <button type="submit" id="submit_btn" name="guardar" class="btn-principal">Guardar</button>
+                    <button type="button" id="cancel_edit_btn" class="btn-cancelar" style="display: none;">Cancelar</button>
+                </div>
+            </form>
+        </section>
+        <section class="bancos-lista">
+            <h2>Listado de Movimientos</h2>
+            <div class="tabla-scroll">
+            <table class="tabla-bancos">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Instrumento</th>
+                        <th>Cuenta</th>
+                        <th>Monto</th>
+                        <th>Resp.</th>
+                        <th>Benef.</th>
+                        <th class="col-acciones">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($items as $it):
+                        $data_id = (int)$it['id'];
+                        $data_fecha = htmlspecialchars(sql_to_ddmmyyyy($it['fecha']));
+                        $data_desc = htmlspecialchars($it['descripcion']);
+                        $data_instr = ($it['instrumento'] === '$') ? '$' : 'Bs';
+                        $data_banco = isset($it['banco_id']) ? (int)$it['banco_id'] : '';
+                        $data_monto_bs = isset($it['monto_bs']) ? floatval($it['monto_bs']) : 0;
+                        $data_monto_usd = isset($it['monto_usd']) ? floatval($it['monto_usd']) : 0;
+                        $data_tasa = isset($it['tasa']) ? htmlspecialchars($it['tasa']) : '';
+                        $data_resp = htmlspecialchars($it['responsable']);
+                        $data_ben = htmlspecialchars($it['beneficiario']);
                     ?>
-                    <div class="mt-08">
-                        <?php for ($p = 1; $p <= $total_pages; $p++): ?>
-                            <a href="flujocaja.php?page=<?php echo $p; ?>" class="btn-volver mr-6<?php echo $p==$page?' opacity-active':''; ?>"><?php echo $p; ?></a>
-                        <?php endfor; ?>
-                    </div>
-                <?php endif; ?>
-            </section>
+                        <tr>
+                            <td><?php echo $data_fecha; ?></td>
+                            <td><?php echo $data_desc; ?></td>
+                            <td><?php echo $data_instr; ?></td>
+                            <td><?php echo htmlspecialchars($it['banco_nombre'] ?? '—'); ?></td>
+                            <td class="td-saldo">
+                                <?php if ($it['instrumento'] === 'Bs'):
+                                    $v = floatval($it['monto_bs'] ?? 0.0);
+                                ?>
+                                    <span class="amount" data-raw="<?php echo $v; ?>" data-currency="Bs">Bs <?php echo htmlspecialchars(number_format($v, 2, ',', '.')); ?></span>
+                                    <?php if ($it['tasa'] && floatval($it['tasa'])>0):
+                                        $usd = $v / floatval($it['tasa']);
+                                    ?>
+                                        <br><small class="saldo-secundario">(US$ <?php echo htmlspecialchars(number_format($usd,2,',','.')); ?>)</small>
+                                    <?php endif; ?>
+                                <?php else:
+                                    $v = floatval($it['monto_usd'] ?? 0.0);
+                                ?>
+                                    <span class="amount" data-raw="<?php echo $v; ?>" data-currency="$">$ <?php echo htmlspecialchars(number_format($v,2,',','.')); ?></span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?php echo $data_resp; ?></td>
+                            <td><?php echo $data_ben; ?></td>
+                            <td>
+                                <a href="#" class="btn-accion editar"
+                                   title="Editar"
+                                   data-id="<?php echo $data_id; ?>"
+                                   data-fecha="<?php echo $data_fecha; ?>"
+                                   data-descripcion="<?php echo $data_desc; ?>"
+                                   data-instrumento="<?php echo $data_instr; ?>"
+                                   data-banco="<?php echo $data_banco; ?>"
+                                   data-montobs="<?php echo $data_monto_bs; ?>"
+                                   data-montousd="<?php echo $data_monto_usd; ?>"
+                                   data-tasa="<?php echo $data_tasa; ?>"
+                                   data-responsable="<?php echo $data_resp; ?>"
+                                   data-beneficiario="<?php echo $data_ben; ?>"
+                                   onclick="loadRecordIntoMainForm(this); return false;">&#9998;</a>
 
-        </div>
-
-        <div class="spacer-bottom"></div>
+                                <form method="POST" class="form-inline" onsubmit="return confirm('¿Eliminar este movimiento?');">
+                                    <input type="hidden" name="id" value="<?php echo $it['id']; ?>">
+                                    <button type="submit" name="eliminar" class="btn-accion eliminar" title="Eliminar">&#128465;</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    <?php if (count($items) === 0): ?>
+                    <tr>
+                        <td colspan="8" class="tabla-vacia">Sin movimientos registrados.</td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+            </div>
+            <?php
+                $total_pages = max(1, ceil($total_rows / $perpage));
+            ?>
+            <?php if ($total_pages > 1): ?>
+            <div style="margin-top: 1rem;">
+                <?php for ($p = 1; $p <= $total_pages; $p++): ?>
+                    <a href="flujocaja.php?page=<?php echo $p; ?>" class="btn-volver" style="margin-right: 0.5rem; <?php echo $p==$page ? 'opacity: 0.6;' : ''; ?>"><?php echo $p; ?></a>
+                <?php endfor; ?>
+            </div>
+            <?php endif; ?>
+        </section>
     </main>
 
     <!-- Cargar JS al final -->
@@ -689,12 +627,13 @@ unset($_SESSION['msg']);
         var submitBtn = document.getElementById('submit_btn');
         if (submitBtn) {
             submitBtn.name = 'guardar_edicion';
-            submitBtn.textContent = 'Guardar cambios';
+            submitBtn.textContent = 'Actualizar';
         }
         var cancelBtn = document.getElementById('cancel_edit_btn');
         if (cancelBtn) cancelBtn.style.display = 'inline-block';
 
-        document.getElementById('form-nuevo').scrollIntoView({behavior:'smooth', block:'center'});
+        document.querySelector('.bancos-form').scrollIntoView({behavior:'smooth', block:'center'});
+        flujocaja_toggle_instrumento();
         updateBankSaldoInfo(document.getElementById('form_agregar'), 'bank_saldo_info');
         setTimeout(function(){ var desc = document.getElementById('descripcion_input'); if (desc) desc.focus(); }, 200);
     }
@@ -711,6 +650,8 @@ unset($_SESSION['msg']);
                 if (submitBtn) { submitBtn.name = 'guardar'; submitBtn.textContent = 'Guardar'; }
                 this.style.display = 'none';
                 if (document.getElementById('currency_label')) document.getElementById('currency_label').innerText = 'Bs';
+                if (document.getElementById('instrumento')) document.getElementById('instrumento').value = 'Bs';
+                flujocaja_toggle_instrumento();
                 updateBankSaldoInfo(document.getElementById('form_agregar'), 'bank_saldo_info');
             });
         }
