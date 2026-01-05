@@ -252,9 +252,8 @@ $stmt->close();
             <a href="../logout.php" class="nav-logout" title="Cerrar sesión">&#x1F511;</a>
         </div>
     </nav>
-    <main class="seccion-pagos">
-        <div class="pagos-flex-container">
-            <section class="pagos-form">
+    <main class="seccion-bancos">
+        <section class="bancos-form">
                 <h2><?php echo $pago_editar ? "Editar Pago" : "Emitir Pago"; ?></h2>
                 <?php if ($msg): ?>
                     <div class="msg"><?php echo $msg; ?></div>
@@ -305,10 +304,10 @@ $stmt->close();
                     </div>
                 </form>
             </section>
-            <section class="pagos-lista">
+        <section class="bancos-lista">
                 <h2>Listado de Pagos</h2>
-                <div class="tabla-scroll">
-                    <table class="tabla-pagos">
+            <div class="tabla-scroll">
+            <table class="tabla-bancos">
                         <thead>
                             <tr>
                                 <th>Fecha</th>
@@ -353,10 +352,9 @@ $stmt->close();
                             </tr>
                             <?php endif; ?>
                         </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
+            </table>
+            </div>
+        </section>
     </main>
 </body>
 </html>

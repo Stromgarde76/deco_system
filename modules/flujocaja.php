@@ -349,9 +349,10 @@ unset($_SESSION['msg']);
 <body>
     <nav class="nav-bar">
         <div class="nav-logo"><img src="../assets/img/logo.png" class="nav-logo-img" alt="logo"></div>
-        <div class="nav-empresa"><b>Flujo de Caja</b></div>
+        <div class="nav-empresa"><b>Flujo de Caja</b> | <span style="color:#FF7F36;"><?php echo htmlspecialchars($_SESSION['nombre']); ?></span></div>
         <div class="nav-user">
             <button class="btn-volver" onclick="window.location.href='dashboard.php'">Volver</button>
+            <a href="../logout.php" class="nav-logout" title="Cerrar sesión">&#x1F511;</a>
         </div>
     </nav>
 
@@ -369,7 +370,7 @@ unset($_SESSION['msg']);
             </header>
 
             <?php if ($msg_flash): ?>
-                <div class="msg-info card-panel"><?php echo htmlspecialchars($msg_flash); ?></div>
+                <div class="msg card-panel"><?php echo htmlspecialchars($msg_flash); ?></div>
             <?php endif; ?>
 
             <?php if (!empty($errors)): ?>
