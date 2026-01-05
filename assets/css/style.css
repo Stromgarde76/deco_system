@@ -1178,7 +1178,35 @@ table.reporte-tabla th, table.reporte-tabla td {
     color: var(--color-secundario);
 }
 
-/* Dashboard - Welcome message (header llamativo) */
+/* Dashboard - Topbar compact (nuevo diseño optimizado) */
+.dashboard-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, var(--color-principal) 0%, #37659a 100%);
+    border-radius: 10px;
+    padding: 0.8rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 3px 12px rgba(25, 57, 107, 0.12);
+    color: #fff;
+}
+
+.dashboard-topbar-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #fff;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.dashboard-topbar-welcome {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Dashboard - Welcome message (header llamativo) - deprecated pero mantenido para compatibilidad */
 .welcome-msg {
     background: linear-gradient(135deg, var(--color-principal) 0%, #37659a 100%);
     border-radius: 17px;
@@ -1560,6 +1588,22 @@ table.reporte-tabla th, table.reporte-tabla td {
     
     .welcome-content h1 {
         font-size: 1.4rem;
+    }
+    
+    /* Responsive para dashboard-topbar */
+    .dashboard-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 0.8rem 1rem;
+    }
+    
+    .dashboard-topbar-title {
+        font-size: 1.2rem;
+    }
+    
+    .dashboard-topbar-welcome {
+        font-size: 0.85rem;
     }
     
     .dashboard-cards {
