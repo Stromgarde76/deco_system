@@ -126,13 +126,10 @@ $input_tasa_value = ($tasa_actual !== '' && $tasa_actual !== null) ? str_replace
 
     <main class="dashboard-main">
         <div class="container-dashboard">
-            <!-- Header: bienvenida llamativa con ícono -->
-            <div class="welcome-msg">
-                <div class="welcome-icon">&#127775;</div>
-                <div class="welcome-content">
-                    <h1>¡Bienvenido, <span class="dashboard-usuario"><?php echo htmlspecialchars($_SESSION['nombre']); ?></span>!</h1>
-                    <p>Panel principal de <strong><?php echo htmlspecialchars($empresa_nombre); ?></strong></p>
-                </div>
+            <!-- Header: barra superior optimizada con diseño discreto -->
+            <div class="dashboard-topbar">
+                <h2 class="dashboard-topbar-title">Dashboard - <?php echo htmlspecialchars($empresa_nombre); ?></h2>
+                <p class="dashboard-topbar-welcome">¡Bienvenido, <span class="dashboard-usuario"><?php echo htmlspecialchars($_SESSION['nombre']); ?></span>!</p>
             </div>
 
             <!-- Tasa de cambio compacta -->
