@@ -368,7 +368,7 @@ unset($_SESSION['msg']);
             <?php endif; ?>
             <form id="form_agregar" method="POST" onsubmit="return flujocaja_before_submit(this);" class="formulario" autocomplete="off">
                 <input type="hidden" name="id" id="form_id" value="">
-                <input type="text" name="fecha" id="fecha_input" type="text" value="<?php echo date('d/m/Y'); ?>" required placeholder="Fecha (DD/MM/AAAA)">
+                <input type="text" name="fecha" id="fecha_input" value="<?php echo date('d/m/Y'); ?>" required placeholder="Fecha (DD/MM/AAAA)">
                 <select name="instrumento" id="instrumento" onchange="flujocaja_toggle_instrumento();" required>
                     <option value="">Seleccione instrumento</option>
                     <option value="Bs" selected>Bolívares (Bs)</option>
