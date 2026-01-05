@@ -1178,6 +1178,184 @@ table.reporte-tabla th, table.reporte-tabla td {
     color: var(--color-secundario);
 }
 
+/* Dashboard - Welcome message (header llamativo) */
+.welcome-msg {
+    background: linear-gradient(135deg, var(--color-principal) 0%, #37659a 100%);
+    border-radius: 17px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 1.8rem;
+    box-shadow: 0 6px 28px rgba(25, 57, 107, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    color: #fff;
+}
+
+.welcome-icon {
+    font-size: 3.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome-content h1 {
+    color: #fff;
+    margin: 0 0 0.3rem 0;
+    font-size: 1.8rem;
+    letter-spacing: 0.5px;
+}
+
+.welcome-content p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Dashboard - Cards container (nuevo grid profesional) */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.8rem;
+    margin-bottom: 1.8rem;
+}
+
+/* Dashboard - Summary card (tarjetas individuales profesionales) */
+.summary-card {
+    background: var(--color-panel);
+    border-radius: 17px;
+    padding: 1.4rem 1.3rem;
+    box-shadow: 0 4px 22px var(--color-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 5px solid var(--color-principal);
+}
+
+.summary-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 35px rgba(25, 57, 107, 0.18);
+}
+
+.summary-card.saldo {
+    border-left-color: #ffb366;
+}
+
+.summary-card.pagos {
+    border-left-color: #37659a;
+}
+
+.summary-card.trabajos {
+    border-left-color: #feca57;
+}
+
+.summary-card .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.summary-card .card-icon {
+    flex: 0 0 58px;
+    height: 58px;
+    font-size: 2rem;
+}
+
+.summary-card .card-info {
+    flex: 1 1 auto;
+}
+
+.summary-card .card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--color-titulo);
+    margin-bottom: 0.4rem;
+}
+
+.summary-card .card-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--color-principal);
+    margin-bottom: 0.3rem;
+}
+
+.summary-card .card-sumatoria {
+    font-size: 0.85rem;
+    color: #888;
+    line-height: 1.4;
+}
+
+/* Dashboard - Actions (botones de acceso rápido) */
+.dashboard-actions {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: var(--color-input-bg);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--color-principal);
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+    box-shadow: 0 2px 6px rgba(25, 57, 107, 0.08);
+}
+
+.action-btn:hover {
+    background: var(--color-principal);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(25, 57, 107, 0.2);
+}
+
+.action-icon {
+    font-size: 1.2rem;
+}
+
+.action-text {
+    font-size: 0.85rem;
+}
+
+/* Dashboard - Card tip (mensaje de ayuda visual) */
+.card-tip {
+    background: linear-gradient(135deg, #fff8e1 0%, #fffbf0 100%);
+    border-left: 5px solid #feca57;
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    box-shadow: 0 3px 15px rgba(254, 202, 87, 0.15);
+}
+
+.tip-icon {
+    font-size: 2rem;
+    color: #f6b43b;
+    flex: 0 0 auto;
+}
+
+.tip-content {
+    flex: 1 1 auto;
+    color: #5a4a1f;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.tip-content strong {
+    color: #3d3214;
+    font-weight: bold;
+}
+
 /* Dashboard - Tasa card compact - usado en dashboard.php */
 .tasa-card-compact {
     background: var(--color-panel);
@@ -1224,18 +1402,6 @@ table.reporte-tabla th, table.reporte-tabla td {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 1.6rem;
     margin-bottom: 2rem;
-}
-
-.card-sumatoria {
-    font-size: 0.85rem;
-    color: #666;
-    margin-top: 0.5rem;
-}
-
-.card-valor-activos {
-    font-size: 0.85rem;
-    color: #666;
-    margin-top: 0.5rem;
 }
 
 /* Error text - usado en proyectos_editar.php */
@@ -1379,6 +1545,35 @@ table.reporte-tabla th, table.reporte-tabla td {
     
     .resumen-grid {
         grid-template-columns: 1fr;
+    }
+    
+    /* Responsive para nuevo dashboard */
+    .welcome-msg {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .welcome-icon {
+        font-size: 2.5rem;
+    }
+    
+    .welcome-content h1 {
+        font-size: 1.4rem;
+    }
+    
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+        gap: 1.4rem;
+    }
+    
+    .dashboard-actions {
+        justify-content: center;
+    }
+    
+    .card-tip {
+        flex-direction: column;
+        text-align: center;
     }
 }
 

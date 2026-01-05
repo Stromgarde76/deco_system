@@ -126,79 +126,120 @@ $input_tasa_value = ($tasa_actual !== '' && $tasa_actual !== null) ? str_replace
 
     <main class="dashboard-main">
         <div class="container-dashboard">
-            <!-- Header: bienvenida + tasa -->
-            <div class="header-grid">
-                <div class="welcome-block">
-                    <h2>Bienvenido, <span class="dashboard-usuario"><?php echo htmlspecialchars($_SESSION['nombre']); ?></span></h2>
+            <!-- Header: bienvenida llamativa con ícono -->
+            <div class="welcome-msg">
+                <div class="welcome-icon">&#127775;</div>
+                <div class="welcome-content">
+                    <h1>¡Bienvenido, <span class="dashboard-usuario"><?php echo htmlspecialchars($_SESSION['nombre']); ?></span>!</h1>
                     <p>Panel principal de <strong><?php echo htmlspecialchars($empresa_nombre); ?></strong></p>
-                </div>
-
-                <div class="tasa-card-compact" role="region" aria-label="Tasa de cambio">
-                    <div class="tasa-row-top">
-                        <div class="tasa-anterior-label">Tasa anterior:</div>
-                        <div class="tasa-valor">
-                            <?php echo ($tasa_actual !== '' && $tasa_actual !== null) ? number_format($tasa_actual, 4, ',', '.') : '--'; ?>
-                            <?php if ($fecha_tasa) echo "<small class='tasa-fecha-info'> ($fecha_tasa)</small>"; ?>
-                        </div>
-                    </div>
-
-                    <form method="post" class="formulario m-0">
-                        <div class="tasa-form-row">
-                            <label for="nueva_tasa" class="d-none">Tasa $ hoy:</label>
-                            <input aria-label="Tasa a ingresar" type="number" step="0.0001" name="nueva_tasa" id="nueva_tasa"
-                                   value="<?php echo htmlspecialchars($input_tasa_value); ?>"
-                                   class="input-tasa-dashboard"
-                                   required>
-                            <button type="submit" class="btn-principal">Actualizar</button>
-                        </div>
-                    </form>
-
-                    <?php if($mensaje_tasa): ?>
-                      <div class="msg mt-04"><?php echo htmlspecialchars($mensaje_tasa); ?></div>
-                    <?php endif; ?>
                 </div>
             </div>
 
-            <!-- Resumen: tarjetas en grid para aprovechar ancho -->
-            <section class="resumen-grid" aria-label="Resumen rápido">
-                <div class="dashboard-card saldo" role="article" aria-label="Saldo Total">
-                    <div class="card-icon" aria-hidden="true">&#128181;</div>
-                    <div class="card-info">
-                        <div>
+            <!-- Tasa de cambio compacta -->
+            <div class="tasa-card-compact" role="region" aria-label="Tasa de cambio">
+                <div class="tasa-row-top">
+                    <div class="tasa-anterior-label">Tasa anterior:</div>
+                    <div class="tasa-valor">
+                        <?php echo ($tasa_actual !== '' && $tasa_actual !== null) ? number_format($tasa_actual, 4, ',', '.') : '--'; ?>
+                        <?php if ($fecha_tasa) echo "<small class='tasa-fecha-info'> ($fecha_tasa)</small>"; ?>
+                    </div>
+                </div>
+
+                <form method="post" class="formulario m-0">
+                    <div class="tasa-form-row">
+                        <label for="nueva_tasa" class="d-none">Tasa $ hoy:</label>
+                        <input aria-label="Tasa a ingresar" type="number" step="0.0001" name="nueva_tasa" id="nueva_tasa"
+                               value="<?php echo htmlspecialchars($input_tasa_value); ?>"
+                               class="input-tasa-dashboard"
+                               required>
+                        <button type="submit" class="btn-principal">Actualizar</button>
+                    </div>
+                </form>
+
+                <?php if($mensaje_tasa): ?>
+                  <div class="msg mt-04"><?php echo htmlspecialchars($mensaje_tasa); ?></div>
+                <?php endif; ?>
+            </div>
+
+            <!-- Resumen: tarjetas mejoradas con botones de acceso rápido -->
+            <section class="dashboard-cards" aria-label="Resumen rápido">
+                <article class="summary-card saldo" aria-label="Saldo Total">
+                    <div class="card-header">
+                        <div class="card-icon" aria-hidden="true">&#128181;</div>
+                        <div class="card-info">
                             <div class="card-title">Saldo Total</div>
                             <div class="card-value">Bs <?php echo number_format($saldos, 2, ',', '.'); ?></div>
-                        </div>
-                        <div class="card-sumatoria">
-                            Saldo real sumado en bancos:<br>
-                            Bs <?php echo number_format($saldos, 2, ',', '.'); ?>
+                            <div class="card-sumatoria">
+                                Saldo real en bancos: Bs <?php echo number_format($saldos, 2, ',', '.'); ?>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <div class="dashboard-actions">
+                        <a href="bancos.php" class="action-btn" title="Ver Bancos">
+                            <span class="action-icon">&#128179;</span>
+                            <span class="action-text">Ver Bancos</span>
+                        </a>
+                        <a href="flujocaja.php" class="action-btn" title="Flujo de Caja">
+                            <span class="action-icon">&#128200;</span>
+                            <span class="action-text">Flujo Caja</span>
+                        </a>
+                    </div>
+                </article>
 
-                <div class="dashboard-card pagos" role="article" aria-label="Pagos Pendientes">
-                    <div class="card-icon" aria-hidden="true">&#9203;</div>
-                    <div class="card-info">
-                        <div>
+                <article class="summary-card pagos" aria-label="Pagos Pendientes">
+                    <div class="card-header">
+                        <div class="card-icon" aria-hidden="true">&#9203;</div>
+                        <div class="card-info">
                             <div class="card-title">Pagos Pendientes</div>
                             <div class="card-value"><?php echo number_format($pagos_pendientes, 0, ',', '.'); ?></div>
+                            <div class="card-sumatoria">
+                                Pagos por procesar
+                            </div>
                         </div>
-                        <div class="spacer-1rem"></div>
                     </div>
-                </div>
+                    <div class="dashboard-actions">
+                        <a href="pagos.php" class="action-btn" title="Gestionar Pagos">
+                            <span class="action-icon">&#128176;</span>
+                            <span class="action-text">Gestionar</span>
+                        </a>
+                        <a href="reportes.php" class="action-btn" title="Ver Reportes">
+                            <span class="action-icon">&#128202;</span>
+                            <span class="action-text">Reportes</span>
+                        </a>
+                    </div>
+                </article>
 
-                <div class="dashboard-card trabajos" role="article" aria-label="Trabajos en Ejecución">
-                    <div class="card-icon" aria-hidden="true">&#128736;</div>
-                    <div class="card-info">
-                        <div>
-                            <div class="card-title">Trabajos en Ejecución</div>
+                <article class="summary-card trabajos" aria-label="Trabajos en Ejecución">
+                    <div class="card-header">
+                        <div class="card-icon" aria-hidden="true">&#128736;</div>
+                        <div class="card-info">
+                            <div class="card-title">Trabajos Activos</div>
                             <div class="card-value"><?php echo number_format($trabajos_activos, 0, ',', '.'); ?></div>
-                        </div>
-                        <div class="card-valor-activos">
-                            Cantidad exacta de trabajos activos: <?php echo number_format($trabajos_activos, 0, ',', '.'); ?>
+                            <div class="card-sumatoria">
+                                Trabajos en ejecución
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <div class="dashboard-actions">
+                        <a href="trabajos.php" class="action-btn" title="Ver Trabajos">
+                            <span class="action-icon">&#128736;</span>
+                            <span class="action-text">Ver Trabajos</span>
+                        </a>
+                        <a href="clientes.php" class="action-btn" title="Ver Clientes">
+                            <span class="action-icon">&#128100;</span>
+                            <span class="action-text">Clientes</span>
+                        </a>
+                    </div>
+                </article>
             </section>
+
+            <!-- Mensaje de ayuda / Tip visual -->
+            <div class="card-tip">
+                <div class="tip-icon">&#128161;</div>
+                <div class="tip-content">
+                    <strong>Consejo:</strong> Usa los botones de acceso rápido en cada tarjeta para navegar directamente a los módulos más importantes. Mantén actualizada la tasa de cambio para cálculos precisos.
+                </div>
+            </div>
 
             <div class="spacer-bottom" aria-hidden="true"></div>
         </div>
