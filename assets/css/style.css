@@ -1404,12 +1404,6 @@ table.reporte-tabla th, table.reporte-tabla td {
     margin-bottom: 2rem;
 }
 
-.card-sumatoria {
-    font-size: 0.85rem;
-    color: #666;
-    margin-top: 0.5rem;
-}
-
 /* Error text - usado en proyectos_editar.php */
 .error-text {
     color: red;
