@@ -153,9 +153,10 @@ if (isset($_POST['consulta_personal'])) {
         <div class="nav-logo">
             <img src="../assets/img/logo.png" alt="Logo" class="nav-logo-img">
         </div>
-        <div class="nav-empresa"><b>Reportes</b></div>
+        <div class="nav-empresa"><b>Reportes</b> | <span style="color:#FF7F36;"><?php echo htmlspecialchars($_SESSION['nombre']); ?></span></div>
         <div class="nav-user">
             <button type="button" class="btn-volver" onclick="window.location.href='dashboard.php'">Volver</button>
+            <a href="../logout.php" class="nav-logout" title="Cerrar sesión">&#x1F511;</a>
         </div>
     </nav>
 

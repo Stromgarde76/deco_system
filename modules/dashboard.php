@@ -154,7 +154,7 @@ $input_tasa_value = ($tasa_actual !== '' && $tasa_actual !== null) ? str_replace
                     </form>
 
                     <?php if($mensaje_tasa): ?>
-                      <div class="msg-info mt-04"><?php echo htmlspecialchars($mensaje_tasa); ?></div>
+                      <div class="msg mt-04"><?php echo htmlspecialchars($mensaje_tasa); ?></div>
                     <?php endif; ?>
                 </div>
             </div>
