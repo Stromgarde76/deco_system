@@ -146,106 +146,107 @@ while ($row = $res->fetch_assoc()) $trabajos[] = $row;
     </nav>
     <main class="seccion-bancos">
         <section class="bancos-form">
-                <h2><?php echo $trabajo_editar ? "Editar Trabajo" : "Nuevo Trabajo"; ?></h2>
-                <?php if ($mensaje): ?>
-                    <div class="msg"><?php echo $mensaje; ?></div>
+            <h2><?php echo $trabajo_editar ? "Editar Trabajo" : "Nuevo Trabajo"; ?></h2>
+            <?php if ($mensaje): ?>
+                <div class="msg"><?php echo $mensaje; ?></div>
+            <?php endif; ?>
+            <form method="post" class="formulario" autocomplete="off">
+                <input type="hidden" name="accion" value="<?php echo $trabajo_editar ? 'editar' : 'nuevo'; ?>">
+                <?php if ($trabajo_editar): ?>
+                    <input type="hidden" name="id_trab" value="<?php echo htmlspecialchars($trabajo_editar['id_trab']); ?>">
                 <?php endif; ?>
-                <form method="post" class="formulario" autocomplete="off">
-                    <input type="hidden" name="accion" value="<?php echo $trabajo_editar ? 'editar' : 'nuevo'; ?>">
+                <input type="text" name="id_trab" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['id_trab']) : "Automático"; ?>" readonly placeholder="ID Trabajo">
+                <input type="text" name="descripcion" required placeholder="Descripción / Nombre" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['descripcion']) : ''; ?>">
+                <select name="cliente_id" required>
+                    <option value="">Cliente</option>
+                    <?php foreach ($clientes as $cli): ?>
+                    <option value="<?php echo $cli['id']; ?>" <?php echo $trabajo_editar && $cli['id'] == $trabajo_editar['cliente_id'] ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($cli['nombre']); ?>
+                    </option>
+                    <?php endforeach; ?>
+                </select>
+                <select name="contratista_id" required>
+                    <option value="">Contratista</option>
+                    <?php foreach ($contratistas as $con): ?>
+                    <option value="<?php echo $con['id']; ?>" <?php echo $trabajo_editar && $con['id'] == $trabajo_editar['contratista_id'] ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($con['nombre']); ?>
+                    </option>
+                    <?php endforeach; ?>
+                </select>
+                <input type="date" name="fecha_inicio" required placeholder="Fecha de inicio" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['fecha_inicio']) : ''; ?>">
+                <input type="date" name="fecha_culminacion" placeholder="Fecha de culminación" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['fecha_culminacion']) : ''; ?>">
+                <select name="estado" required>
+                    <option value="Evaluación" <?php echo $trabajo_editar && $trabajo_editar['estado']=='Evaluación' ? 'selected' : ''; ?>>Evaluación</option>
+                    <option value="Activo" <?php echo $trabajo_editar && $trabajo_editar['estado']=='Activo' ? 'selected' : ''; ?>>Activo</option>
+                    <option value="Finalizado" <?php echo $trabajo_editar && $trabajo_editar['estado']=='Finalizado' ? 'selected' : ''; ?>>Finalizado</option>
+                    <option value="En pausa" <?php echo $trabajo_editar && $trabajo_editar['estado']=='En pausa' ? 'selected' : ''; ?>>En pausa</option>
+                </select>
+                <select name="moneda" required>
+                    <option value="VES" <?php echo $trabajo_editar && $trabajo_editar['moneda']=='VES' ? 'selected' : ''; ?>>Bolívares</option>
+                    <option value="USD" <?php echo $trabajo_editar && $trabajo_editar['moneda']=='USD' ? 'selected' : ''; ?>>Dólares</option>
+                </select>
+                <input type="number" step="0.0001" min="0" name="tasa_cambio" id="tasa_cambio" placeholder="Tasa $ a Bs" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['tasa_cambio']) : ''; ?>">
+                <input type="number" step="0.01" min="0" name="monto_inicial" required placeholder="Monto Inicial" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['monto_inicial']) : ''; ?>">
+                <div class="form-btns">
+                    <button type="submit" class="btn-principal"><?php echo $trabajo_editar ? "Actualizar" : "Guardar Trabajo"; ?></button>
                     <?php if ($trabajo_editar): ?>
-                        <input type="hidden" name="id_trab" value="<?php echo htmlspecialchars($trabajo_editar['id_trab']); ?>">
+                        <a href="trabajos.php" class="btn-cancelar">Cancelar</a>
                     <?php endif; ?>
-                    <input type="text" name="id_trab" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['id_trab']) : "Automático"; ?>" readonly placeholder="ID Trabajo">
-                    <input type="text" name="descripcion" required placeholder="Descripción / Nombre" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['descripcion']) : ''; ?>">
-                    <select name="cliente_id" required>
-                        <option value="">Cliente</option>
-                        <?php foreach ($clientes as $cli): ?>
-                        <option value="<?php echo $cli['id']; ?>" <?php echo $trabajo_editar && $cli['id'] == $trabajo_editar['cliente_id'] ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($cli['nombre']); ?>
-                        </option>
-                        <?php endforeach; ?>
-                    </select>
-                    <select name="contratista_id" required>
-                        <option value="">Contratista</option>
-                        <?php foreach ($contratistas as $con): ?>
-                        <option value="<?php echo $con['id']; ?>" <?php echo $trabajo_editar && $con['id'] == $trabajo_editar['contratista_id'] ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($con['nombre']); ?>
-                        </option>
-                        <?php endforeach; ?>
-                    </select>
-                    <input type="date" name="fecha_inicio" required placeholder="Fecha de inicio" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['fecha_inicio']) : ''; ?>">
-                    <input type="date" name="fecha_culminacion" placeholder="Fecha de culminación" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['fecha_culminacion']) : ''; ?>">
-                    <select name="estado" required>
-                        <option value="Evaluación" <?php echo $trabajo_editar && $trabajo_editar['estado']=='Evaluación' ? 'selected' : ''; ?>>Evaluación</option>
-                        <option value="Activo" <?php echo $trabajo_editar && $trabajo_editar['estado']=='Activo' ? 'selected' : ''; ?>>Activo</option>
-                        <option value="Finalizado" <?php echo $trabajo_editar && $trabajo_editar['estado']=='Finalizado' ? 'selected' : ''; ?>>Finalizado</option>
-                        <option value="En pausa" <?php echo $trabajo_editar && $trabajo_editar['estado']=='En pausa' ? 'selected' : ''; ?>>En pausa</option>
-                    </select>
-                    <select name="moneda" required>
-                        <option value="VES" <?php echo $trabajo_editar && $trabajo_editar['moneda']=='VES' ? 'selected' : ''; ?>>Bolívares</option>
-                        <option value="USD" <?php echo $trabajo_editar && $trabajo_editar['moneda']=='USD' ? 'selected' : ''; ?>>Dólares</option>
-                    </select>
-                    <input type="number" step="0.0001" min="0" name="tasa_cambio" id="tasa_cambio" placeholder="Tasa $ a Bs" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['tasa_cambio']) : ''; ?>">
-                    <input type="number" step="0.01" min="0" name="monto_inicial" required placeholder="Monto Inicial" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['monto_inicial']) : ''; ?>">
-                    <div class="form-btns">
-                        <button type="submit" class="btn-principal"><?php echo $trabajo_editar ? "Actualizar" : "Guardar Trabajo"; ?></button>
-                        <?php if ($trabajo_editar): ?>
-                            <a href="trabajos.php" class="btn-cancelar">Cancelar</a>
-                        <?php endif; ?>
-                    </div>
-                </form>
+                </div>
+            </form>
+        </section>
         <section class="bancos-lista">
-                <h2>Lista de Trabajos</h2>
+            <h2>Lista de Trabajos</h2>
             <div class="tabla-scroll">
             <table class="tabla-bancos">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Descripción</th>
-                                <th>Cliente</th>
-                                <th>Contratista</th>
-                                <th>Inicio</th>
-                                <th>Fin</th>
-                                <th>Estado</th>
-                                <th>Monto Inicial</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach ($trabajos as $t): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($t['id_trab']); ?></td>
-                                <td><?php echo htmlspecialchars($t['descripcion']); ?></td>
-                                <td><?php echo htmlspecialchars($t['cliente_nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($t['contratista_nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($t['fecha_inicio']); ?></td>
-                                <td><?php echo htmlspecialchars($t['fecha_culminacion']); ?></td>
-                                <td><?php echo htmlspecialchars($t['estado']); ?></td>
-                                <td>
-                                <?php
-                                    echo number_format($t['monto_inicial'], 2, ',', '.');
-                                    echo ($t['moneda'] === 'USD') ? ' $' : ' Bs';
-                                    if ($t['moneda'] === 'USD' && $t['tasa_cambio']) {
-                                        echo "<br><small>(" . number_format($t['monto_inicial'] * $t['tasa_cambio'], 2, ',', '.') . " Bs)</small>";
-                                    }
-                                ?>
-                                </td>
-                            <td class="col-acciones">
-                                <a href="trabajos.php?editar=<?php echo urlencode($t['id_trab']); ?>" class="btn-accion editar" title="Editar">&#9998;</a>
-                                <form id="form-eliminar-<?php echo $t['id_trab']; ?>" method="post" action="" class="form-inline">
-                                    <input type="hidden" name="accion" value="eliminar">
-                                    <input type="hidden" name="id_trab_eliminar" value="<?php echo $t['id_trab']; ?>">
-                                    <button type="button" class="btn-accion eliminar" title="Eliminar" onclick="confirmarEliminar(<?php echo $t['id_trab']; ?>)">&#128465;</button>
-                                </form>
-                            </td>
-                            </tr>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Cliente</th>
+                        <th>Contratista</th>
+                        <th>Inicio</th>
+                        <th>Fin</th>
+                        <th>Estado</th>
+                        <th>Monto Inicial</th>
+                        <th class="col-acciones">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($trabajos as $t): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($t['id_trab']); ?></td>
+                        <td><?php echo htmlspecialchars($t['descripcion']); ?></td>
+                        <td><?php echo htmlspecialchars($t['cliente_nombre']); ?></td>
+                        <td><?php echo htmlspecialchars($t['contratista_nombre']); ?></td>
+                        <td><?php echo htmlspecialchars($t['fecha_inicio']); ?></td>
+                        <td><?php echo htmlspecialchars($t['fecha_culminacion']); ?></td>
+                        <td><?php echo htmlspecialchars($t['estado']); ?></td>
+                        <td>
+                            <?php
+                                echo number_format($t['monto_inicial'], 2, ',', '.');
+                                echo ($t['moneda'] === 'USD') ? ' $' : ' Bs';
+                                if ($t['moneda'] === 'USD' && $t['tasa_cambio']) {
+                                    echo "<br><small>(" . number_format($t['monto_inicial'] * $t['tasa_cambio'], 2, ',', '.') . " Bs)</small>";
+                                }
+                            ?>
+                        </td>
+                        <td>
+                            <a href="trabajos.php?editar=<?php echo urlencode($t['id_trab']); ?>" class="btn-accion editar" title="Editar">&#9998;</a>
+                            <form id="form-eliminar-<?php echo $t['id_trab']; ?>" method="post" action="" class="form-inline">
+                                <input type="hidden" name="accion" value="eliminar">
+                                <input type="hidden" name="id_trab_eliminar" value="<?php echo $t['id_trab']; ?>">
+                                <button type="button" class="btn-accion eliminar" title="Eliminar" onclick="confirmarEliminar(<?php echo $t['id_trab']; ?>)">&#128465;</button>
+                            </form>
+                        </td>
+                    </tr>
                     <?php endforeach; ?>
                     <?php if (count($trabajos) === 0): ?>
                     <tr>
                         <td colspan="9" class="tabla-vacia">Sin trabajos registrados.</td>
                     </tr>
                     <?php endif; ?>
-                    </tbody>
+                </tbody>
             </table>
             </div>
         </section>
