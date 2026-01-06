@@ -1388,16 +1388,18 @@ table.reporte-tabla th, table.reporte-tabla td {
 .tasa-card-compact {
     background: var(--color-panel);
     border-radius: 14px;
-    padding: 1rem;
+    padding: 0.8rem 1rem;
     box-shadow: 0 4px 22px var(--color-shadow);
-    min-width: 280px;
+    max-width: 450px;
+    margin-left: auto;
+    margin-bottom: 1.5rem;
 }
 
 .tasa-row-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
 }
 
 .tasa-anterior-label {
@@ -1409,12 +1411,13 @@ table.reporte-tabla th, table.reporte-tabla td {
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    justify-content: flex-end;
 }
 
 .input-tasa-dashboard {
-    flex: 1;
-    font-size: 1.1rem;
-    padding: 8px 10px;
+    width: 140px;
+    font-size: 1rem;
+    padding: 6px 8px;
     border-radius: 7px;
     background: var(--color-input-bg);
     border: none;
@@ -1422,6 +1425,14 @@ table.reporte-tabla th, table.reporte-tabla td {
     color: var(--color-titulo);
     font-weight: bold;
     text-align: right;
+}
+
+.tasa-form-row .btn-principal {
+    width: 90px;
+    height: 32px;
+    font-size: 13px;
+    padding: 0;
+    margin: 0;
 }
 
 /* Dashboard - Resumen grid - usado en dashboard.php */
