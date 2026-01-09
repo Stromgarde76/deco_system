@@ -49,13 +49,13 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'agregar') {
     $tipo_pago = $_POST['tipo_pago'] ?? 'pago total';
     $fecha = trim($_POST['fecha']) ?: date('Y-m-d');
     $monto = parseAmount($_POST['monto']);
-    $descripcion = trim($_POST['descripcion']);
+    $descripcion = trim($_POST['descripcion'] ?? '');
     $cuenta_id = intval($_POST['cuenta']);
 
     $sql = "INSERT INTO pagos (empresa_id, destino_pago, contratista_id, tipo_pago, fecha, monto, descripcion, cuenta) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     if (!$stmt) { die("Error en prepare: " . $conn->error); }
-    $stmt->bind_param('isssssdi', $empresa_id, $destino_pago, $contratista_id, $tipo_pago, $fecha, $monto, $descripcion, $cuenta_id);
+    $stmt->bind_param('issssdsi', $empresa_id, $destino_pago, $contratista_id, $tipo_pago, $fecha, $monto, $descripcion, $cuenta_id);
     if ($stmt->execute()) {
         // Restar el monto a la cuenta bancaria seleccionada
         $sql_upd = "UPDATE bancos SET saldo = saldo - ? WHERE id=? AND empresa_id=?";
@@ -79,7 +79,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'editar' && isset($_POST['pa
     $tipo_pago = $_POST['tipo_pago'] ?? 'pago total';
     $fecha = trim($_POST['fecha']) ?: date('Y-m-d');
     $monto = parseAmount($_POST['monto']);
-    $descripcion = trim($_POST['descripcion']);
+    $descripcion = trim($_POST['descripcion'] ?? '');
     $cuenta_id = intval($_POST['cuenta']);
 
     // Buscar datos antiguos
