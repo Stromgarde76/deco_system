@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Amount Input Functionality</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .test-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .test-result {
+            background: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #666;
+            font-size: 18px;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .expected {
+            color: #2196F3;
+            font-weight: bold;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+    <script src="assets/js/amount-input.js"></script>
+</head>
+<body>
+    <h1>Test de Funcionalidad - Campos de Monto</h1>
+    
+    <div class="instructions">
+        <h2>Instrucciones de Prueba:</h2>
+        <ol>
+            <li>Ingrese un monto usando el <strong>punto (.) como separador decimal</strong> (ejemplo: 652485.20)</li>
+            <li>Al hacer clic fuera del campo (blur), debería formatearse automáticamente a formato latino</li>
+            <li>Formato esperado: <span class="expected">652.485,20</span> (punto para miles, coma para decimales)</li>
+            <li>Al hacer clic en "Verificar Valor", verá el valor normalizado que se enviaría al servidor</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 1: Input Básico</h2>
+        <label>Ingrese un monto (ej: 652485.20):</label>
+        <input type="text" id="test1" class="test-input amount-input" placeholder="Ingrese monto...">
+        <button onclick="showValue('test1')">Verificar Valor</button>
+        <div id="result1" class="test-result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 2: Múltiples Inputs</h2>
+        <label>Monto 1 (ej: 1234567.89):</label>
+        <input type="text" id="test2a" class="test-input amount-input" placeholder="Monto 1">
+        
+        <label>Monto 2 (ej: 999.50):</label>
+        <input type="text" id="test2b" class="test-input amount-input" placeholder="Monto 2">
+        
+        <label>Monto 3 (ej: 50000):</label>
+        <input type="text" id="test2c" class="test-input amount-input" placeholder="Monto 3">
+        
+        <button onclick="showMultipleValues()">Verificar Todos</button>
+        <div id="result2" class="test-result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 3: Casos Especiales</h2>
+        <p>Pruebe ingresar estos valores y observe el comportamiento:</p>
+        <ul>
+            <li><strong>0.50</strong> - debería mostrar: 0,50</li>
+            <li><strong>1000000</strong> - debería mostrar: 1.000.000,00</li>
+            <li><strong>12.5</strong> - debería mostrar: 12,50</li>
+            <li><strong>0.05</strong> - debería mostrar: 0,05</li>
+        </ul>
+        <input type="text" id="test3" class="test-input amount-input" placeholder="Pruebe casos especiales...">
+        <button onclick="showValue('test3')">Verificar Valor</button>
+        <div id="result3" class="test-result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 4: Simulación de Formulario</h2>
+        <form id="testForm" onsubmit="return handleFormSubmit(event)">
+            <label>Descripción:</label>
+            <input type="text" class="test-input" placeholder="Concepto...">
+            
+            <label>Monto:</label>
+            <input type="text" id="formAmount" name="monto" class="test-input amount-input" placeholder="Ingrese monto..." required>
+            
+            <button type="submit">Enviar Formulario (Simulado)</button>
+        </form>
+        <div id="result4" class="test-result" style="display:none;"></div>
+    </div>
+
+    <script>
+        function showValue(inputId) {
+            const input = document.getElementById(inputId);
+            const resultDiv = document.getElementById('result' + inputId.replace('test', ''));
+            
+            // Get the normalized value (what would be sent to server)
+            const normalized = parseAmountInput(input.value);
+            const displayed = input.value;
+            
+            resultDiv.innerHTML = `
+                <strong>Valor mostrado:</strong> ${displayed}<br>
+                <strong>Valor normalizado (enviado al servidor):</strong> ${normalized}<br>
+                <strong>Como número:</strong> ${parseFloat(normalized) || 0}
+            `;
+            resultDiv.style.display = 'block';
+        }
+
+        function showMultipleValues() {
+            const inputs = ['test2a', 'test2b', 'test2c'];
+            const resultDiv = document.getElementById('result2');
+            let html = '<strong>Resultados:</strong><br>';
+            
+            inputs.forEach(id => {
+                const input = document.getElementById(id);
+                const normalized = parseAmountInput(input.value);
+                html += `${id}: Mostrado="${input.value}" → Normalizado="${normalized}" → Número=${parseFloat(normalized) || 0}<br>`;
+            });
+            
+            resultDiv.innerHTML = html;
+            resultDiv.style.display = 'block';
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const amount = formData.get('monto');
+            const normalized = parseAmountInput(amount);
+            
+            const resultDiv = document.getElementById('result4');
+            resultDiv.innerHTML = `
+                <strong>✓ Formulario procesado correctamente</strong><br>
+                <strong>Monto recibido:</strong> ${amount}<br>
+                <strong>Monto normalizado:</strong> ${normalized}<br>
+                <strong>Valor numérico:</strong> ${parseFloat(normalized) || 0}<br>
+                <em>En un formulario real, este valor normalizado (${normalized}) se enviaría al servidor.</em>
+            `;
+            resultDiv.style.display = 'block';
+            
+            return false;
+        }
+
+        // Log para debug
+        console.log('Amount input utility loaded successfully');
+        console.log('Functions available:', typeof parseAmountInput, typeof formatAmountDisplay, typeof initAmountInput);
+    </script>
+</body>
+</html>

@@ -2,6 +2,7 @@
 // Archivo: modules/proyectos_editar.php
 session_start();
 require_once "../config/db.php";
+require_once "../config/amount_utils.php";
 
 // Verifica sesión y empresa seleccionada
 if (!isset($_SESSION['usuario'])) {
@@ -41,10 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['
     $estado = $_POST['estado'];
     $moneda = $_POST['moneda'];
     $tasa_cambio = ($moneda === 'USD') ? floatval($_POST['tasa_cambio']) : null;
-    // Para guardar, eliminamos puntos y dejamos coma solo para decimales
-    $monto_str = str_replace('.', '', $_POST['monto_inicial']);
-    $monto_str = str_replace(',', '.', $monto_str);
-    $monto_inicial = floatval($monto_str);
+    $monto_inicial = parseAmount($_POST['monto_inicial']);
 
     $stmt = $conn->prepare("UPDATE proyectos SET descripcion=?, cliente_id=?, contratista_id=?, fecha_inicio=?, fecha_culminacion=?, estado=?, monto_inicial=?, moneda=?, tasa_cambio=? WHERE id_proy=? AND empresa_id=?");
     $stmt->bind_param("siisssdssii", $descripcion, $cliente_id, $contratista_id, $fecha_inicio, $fecha_culminacion, $estado, $monto_inicial, $moneda, $tasa_cambio, $id, $empresa_id);
@@ -81,20 +79,8 @@ while ($row = $res->fetch_assoc()) $contratistas[] = $row;
     <meta charset="UTF-8">
     <title>Editar Proyecto</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../assets/js/amount-input.js"></script>
     <script>
-    function formatMontoInput(input) {
-        let value = input.value.replace(/[^0-9,\.]/g, '');
-        value = value.replace(/\./g, ''); // quita puntos previos
-        value = value.replace(',', '.'); // para parsear float
-
-        if (value === '') return;
-        let num = parseFloat(value);
-        if (isNaN(num)) return;
-
-        // Formatea con separador miles y 2 decimales (español)
-        let formatted = num.toLocaleString('es-ES', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        input.value = formatted;
-    }
     function actualizarTasa() {
         var moneda = document.getElementById('moneda').value;
         var tasa = document.getElementById('tasa_cambio');
@@ -107,13 +93,9 @@ while ($row = $res->fetch_assoc()) $contratistas[] = $row;
         }
     }
     window.addEventListener('DOMContentLoaded', function() {
-        var montoInput = document.getElementById("input-monto");
-        if (montoInput) {
-            formatMontoInput(montoInput); // Formatea al cargar
-            montoInput.addEventListener('input', function() {
-                formatMontoInput(this);
-            });
-        }
+        // Inicializar campo de monto
+        initAmountInput('#input-monto');
+        
         // Actualizar visibilidad de tasa de cambio
         var monedaSel = document.getElementById('moneda');
         if (monedaSel) {
@@ -211,7 +193,7 @@ while ($row = $res->fetch_assoc()) $contratistas[] = $row;
 
                     <div class="form-row">
                         <label class="form-label" for="input-monto">Monto Inicial</label>
-                        <input type="text" id="input-monto" name="monto_inicial" class="input-monto" required placeholder="Monto Inicial" value="<?php echo number_format($proyecto['monto_inicial'], 2, ',', '.'); ?>">
+                        <input type="text" id="input-monto" name="monto_inicial" class="input-monto amount-input" required placeholder="Monto Inicial" value="<?php echo formatAmount($proyecto['monto_inicial']); ?>">
                     </div>
 
                     <button type="submit" class="btn-principal">Guardar Cambios</button>

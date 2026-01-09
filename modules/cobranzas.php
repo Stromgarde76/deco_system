@@ -4,6 +4,7 @@
 
 session_start();
 require_once "../config/db.php";
+require_once "../config/amount_utils.php";
 
 // Verifica si el usuario está autenticado y con empresa seleccionada
 if (!isset($_SESSION['usuario'])) {
@@ -34,7 +35,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'agregar') {
     $proyecto_id = intval($_POST['proyecto_id']);
     // FECHA: se toma la seleccionada por el usuario, o la actual si viene vacía
     $fecha = trim($_POST['fecha']) ?: date('Y-m-d');
-    $monto = floatval(str_replace(['.', ','], ['', '.'], str_replace('.', '', $_POST['monto'])));
+    $monto = parseAmount($_POST['monto']);
     $descripcion = trim($_POST['descripcion']);
     $destino_id = intval($_POST['destino']);
 
@@ -62,7 +63,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'editar' && isset($_POST['co
     $cliente_id = intval($_POST['cliente_id']);
     $proyecto_id = intval($_POST['proyecto_id']);
     $fecha = trim($_POST['fecha']) ?: date('Y-m-d');
-    $monto = floatval(str_replace(['.', ','], ['', '.'], str_replace('.', '', $_POST['monto'])));
+    $monto = parseAmount($_POST['monto']);
     $descripcion = trim($_POST['descripcion']);
     $destino_id = intval($_POST['destino']);
 
@@ -197,28 +198,11 @@ $stmt->close();
     <meta charset="UTF-8">
     <title>Cobranzas</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../assets/js/amount-input.js"></script>
     <script>
-    // Formatea el campo de monto en tiempo real: miles (.) y decimales (,)
-    function formatMonto(input) {
-        let value = input.value.replace(/\./g, '').replace(/,/g, '');
-        if (!value) {
-            input.value = '';
-            return;
-        }
-        let parts = value.split('.');
-        let intPart = parts[0];
-        let decPart = parts[1] ? parts[1].substring(0,2) : '';
-        let formatted = '';
-        intPart = intPart.replace(/^0+/, '') || '0';
-        formatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        if (decPart) formatted += ',' + decPart;
-        input.value = formatted;
-    }
     window.addEventListener('DOMContentLoaded', function() {
-        var monto = document.getElementById('monto');
-        if (monto) {
-            monto.addEventListener('input', function() { formatMonto(this); });
-        }
+        // Inicializar campo de monto
+        initAmountInput('#monto');
 
         // Hacer input fecha editable pero con valor por defecto actual
         var fecha = document.querySelector('input[name="fecha"]');
@@ -286,7 +270,7 @@ $stmt->close();
                             </option>
                         <?php endforeach; ?>
                     </select>
-                    <input type="text" id="monto" name="monto" value="<?php echo isset($cobranza_editar['monto']) ? number_format($cobranza_editar['monto'], 2, ',', '.') : ''; ?>" required placeholder="Monto (Bs. o Divisas)">
+                    <input type="text" id="monto" name="monto" class="amount-input" value="<?php echo isset($cobranza_editar['monto']) ? formatAmount($cobranza_editar['monto']) : ''; ?>" required placeholder="Monto (Bs. o Divisas)">
                     <textarea name="descripcion" placeholder="Descripción"><?php echo $cobranza_editar['descripcion'] ?? ''; ?></textarea>
                     <div class="form-btns">
                         <button type="submit" class="btn-principal"><?php echo $cobranza_editar ? "Actualizar" : "Registrar"; ?></button>
@@ -324,7 +308,7 @@ $stmt->close();
                                         <?php echo htmlspecialchars($c['tipo_cuenta']); ?> - ****<?php echo substr($c['numero_cuenta'], -4); ?>
                                     </span>
                                 </td>
-                                <td class="td-monto"><?php echo number_format($c['monto'], 2, ',', '.'); ?></td>
+                                <td class="td-monto"><?php echo formatAmount($c['monto']); ?></td>
                                 <td class="text-left"><?php echo htmlspecialchars($c['descripcion']); ?></td>
                                 <td>
                                     <a href="?editar=<?php echo $c['id']; ?>" class="btn-accion editar" title="Editar">&#9998;</a>

@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once "../config/db.php";
+require_once "../config/amount_utils.php";
 
 if (!isset($_SESSION['usuario'])) {
     header('Location: ../index.php');
@@ -56,7 +57,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'editar' && isset($_POST['se
     $servicio_id = intval($_POST['servicio_id']);
     $nombre = trim($_POST['nombre']);
     $tipo = $_POST['tipo'];
-    $costo = floatval(str_replace(',', '.', $_POST['costo']));
+    $costo = parseAmount($_POST['costo']);
     $descripcion = trim($_POST['descripcion']);
 
     $sql = "UPDATE servicios SET nombre=?, tipo=?, costo=?, descripcion=? WHERE id=? AND empresa_id=?";
@@ -113,6 +114,13 @@ $stmt->close();
     <meta charset="UTF-8">
     <title>Servicios</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../assets/js/amount-input.js"></script>
+    <script>
+    window.addEventListener('DOMContentLoaded', function() {
+        // Inicializar campo de costo
+        initAmountInput('#costo');
+    });
+    </script>
 </head>
 <body>
     <nav class="nav-bar">
@@ -148,8 +156,8 @@ $stmt->close();
                         <option value="mensual" <?php if(($servicio_editar['tipo'] ?? '')=='mensual') echo 'selected'; ?>>Mensual</option>
                         <option value="anual" <?php if(($servicio_editar['tipo'] ?? '')=='anual') echo 'selected'; ?>>Anual</option>
                     </select>
-                    <input type="number" name="costo" step="0.01" min="0"
-                        value="<?php echo isset($servicio_editar['costo']) ? $servicio_editar['costo'] : ''; ?>" required
+                    <input type="text" id="costo" name="costo" class="amount-input"
+                        value="<?php echo isset($servicio_editar['costo']) ? formatAmount($servicio_editar['costo']) : ''; ?>" required
                         placeholder="Costo del servicio">
                     <textarea name="descripcion" placeholder="Descripción"><?php echo $servicio_editar['descripcion'] ?? ''; ?></textarea>
                     <div class="form-btns">
@@ -180,7 +188,7 @@ $stmt->close();
                                 <td><?php echo htmlspecialchars($s['cod_serv']); ?></td>
                                 <td><?php echo htmlspecialchars($s['nombre']); ?></td>
                                 <td><?php echo ucfirst(htmlspecialchars($s['tipo'])); ?></td>
-                                <td class="td-costo"><?php echo number_format($s['costo'],2,',','.'); ?></td>
+                                <td class="td-costo"><?php echo formatAmount($s['costo']); ?></td>
                                 <td class="text-left"><?php echo htmlspecialchars($s['descripcion']); ?></td>
                                 <td>
                                     <a href="?editar=<?php echo $s['id']; ?>" class="btn-accion editar" title="Editar">&#9998;</a>
