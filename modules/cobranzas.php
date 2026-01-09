@@ -198,12 +198,9 @@ $stmt->close();
     <meta charset="UTF-8">
     <title>Cobranzas</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <script src="../assets/js/amount-input.js"></script>
+    <script src="../assets/js/latam-amounts.js"></script>
     <script>
     window.addEventListener('DOMContentLoaded', function() {
-        // Inicializar campo de monto
-        initAmountInput('#monto');
-
         // Hacer input fecha editable pero con valor por defecto actual
         var fecha = document.querySelector('input[name="fecha"]');
         if (fecha && !fecha.value) {

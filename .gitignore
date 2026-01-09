@@ -1,6 +1,8 @@
-# Test files
+# Old test files (from previous implementation)
 test_amount_parsing.php
 test_complete_system.html
+test_amount_input.html
+test_enter_functionality.html
 
 # IDE and editor files
 .vscode/

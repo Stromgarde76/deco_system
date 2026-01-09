@@ -140,7 +140,7 @@ function selected_tipo_cuenta($valor, $banco_editar) {
     <meta charset="UTF-8">
     <title>Bancos</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <script src="../assets/js/amount-input.js"></script>
+    <script src="../assets/js/latam-amounts.js"></script>
     <script>
     function formatNumeroCuenta(input) {
         let value = input.value.replace(/\D/g,'').slice(0,20);
@@ -151,10 +151,6 @@ function selected_tipo_cuenta($valor, $banco_editar) {
         if(value.length > 10) result += '-' + value.substring(10,20);
         input.value = result;
     }
-    window.addEventListener('DOMContentLoaded', function() {
-        // Inicializar campo de saldo
-        initAmountInput('#saldo');
-    });
     </script>
 </head>
 <body>

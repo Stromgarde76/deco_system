@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Sistema LATAM Amounts</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #FF7F36;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .test-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        input[type="text"]:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #FF7F36;
+            box-shadow: 0 0 5px rgba(255,127,54,0.3);
+        }
+        button {
+            background-color: #FF7F36;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #e66f30;
+        }
+        .info {
+            background-color: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .success {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .test-cases {
+            background-color: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+        .test-case {
+            padding: 8px;
+            margin: 5px 0;
+            border-left: 3px solid #ddd;
+            padding-left: 10px;
+        }
+        .expected {
+            color: #666;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+        .code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test - Sistema de Montos LATAM</h1>
+        
+        <div class="info">
+            <strong>📋 Instrucciones de Prueba:</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Durante escritura: solo permite dígitos y UN punto (.)</li>
+                <li>La coma (,) está bloqueada durante la escritura</li>
+                <li>Al presionar <strong>Enter</strong>: formatea a latino (1.234.567,89) y salta al siguiente campo</li>
+                <li>Al perder foco (blur): también formatea automáticamente</li>
+                <li>Al obtener foco: convierte de formato latino a editable (punto decimal)</li>
+                <li>NumpadDecimal inserta punto decimal correctamente</li>
+            </ul>
+        </div>
+
+        <!-- Test 1: Auto-detección por nombre -->
+        <div class="test-section">
+            <h2>Test 1: Auto-detección por nombre de campo</h2>
+            <p>Estos campos se detectan automáticamente por su atributo <code>name</code>:</p>
+            
+            <form id="form1">
+                <div class="form-group">
+                    <label for="monto1">Monto (name="monto")</label>
+                    <input type="text" name="monto" id="monto1" placeholder="Escribe: 1234567.89">
+                </div>
+                
+                <div class="form-group">
+                    <label for="precio1">Precio (name="precio")</label>
+                    <input type="text" name="precio" id="precio1" placeholder="Escribe: 0.5">
+                </div>
+                
+                <div class="form-group">
+                    <label for="cantidad1">Cantidad (name="cantidad")</label>
+                    <input type="text" name="cantidad" id="cantidad1" placeholder="Escribe: 1.2">
+                </div>
+                
+                <div class="form-group">
+                    <label for="total1">Total (name="total")</label>
+                    <input type="text" name="total" id="total1" placeholder="Escribe: 1.">
+                </div>
+
+                <div class="form-group">
+                    <label for="nombre1">Nombre (campo normal, no debe formatearse)</label>
+                    <input type="text" name="nombre" id="nombre1" placeholder="Campo normal">
+                </div>
+                
+                <button type="submit">Enviar Formulario 1</button>
+            </form>
+
+            <div class="test-cases">
+                <strong>Casos de prueba esperados:</strong>
+                <div class="test-case">
+                    <span class="code">1234567.89</span> → <span class="expected">Presiona Enter → "1.234.567,89"</span>
+                </div>
+                <div class="test-case">
+                    <span class="code">0.5</span> → <span class="expected">Presiona Enter → "0,50"</span>
+                </div>
+                <div class="test-case">
+                    <span class="code">1.2</span> → <span class="expected">Presiona Enter → "1,20"</span>
+                </div>
+                <div class="test-case">
+                    <span class="code">1.</span> → <span class="expected">Presiona Enter → "1,00"</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test 2: Auto-detección por clase -->
+        <div class="test-section">
+            <h2>Test 2: Auto-detección por clase "amount-input"</h2>
+            
+            <form id="form2">
+                <div class="form-group">
+                    <label for="valor1">Valor (class="amount-input")</label>
+                    <input type="text" class="amount-input" id="valor1" name="valor" placeholder="Escribe: 999999.99">
+                </div>
+                
+                <div class="form-group">
+                    <label for="importe1">Importe (class="amount-input")</label>
+                    <input type="text" class="amount-input" id="importe1" name="importe" placeholder="Escribe: 0">
+                </div>
+                
+                <div class="form-group">
+                    <label for="siguiente">Campo siguiente (para probar navegación)</label>
+                    <input type="text" id="siguiente" name="siguiente" placeholder="El foco llega aquí al presionar Enter">
+                </div>
+                
+                <button type="submit">Enviar Formulario 2</button>
+            </form>
+
+            <div class="test-cases">
+                <strong>Test de navegación:</strong>
+                <div class="test-case">
+                    Escribe un número en "Valor" y presiona <strong>Enter</strong>: debe formatear Y mover el foco a "Importe"
+                </div>
+                <div class="test-case">
+                    Luego presiona Enter en "Importe": debe mover el foco al campo "siguiente"
+                </div>
+            </div>
+        </div>
+
+        <!-- Test 3: Data attributes -->
+        <div class="test-section">
+            <h2>Test 3: Auto-detección por data-attributes</h2>
+            
+            <form id="form3">
+                <div class="form-group">
+                    <label for="campo1">Campo con data-amount</label>
+                    <input type="text" data-amount id="campo1" name="campo1" placeholder="Escribe: 12345.67">
+                </div>
+                
+                <div class="form-group">
+                    <label for="campo2">Campo con data-monto</label>
+                    <input type="text" data-monto id="campo2" name="campo2" placeholder="Escribe: 5000.5">
+                </div>
+                
+                <div class="form-group">
+                    <label for="campo3">Campo con data-cantidad</label>
+                    <input type="text" data-cantidad id="campo3" name="campo3" placeholder="Escribe: 100.25">
+                </div>
+                
+                <button type="submit">Enviar Formulario 3</button>
+            </form>
+        </div>
+
+        <!-- Test 4: Conversión de type=number a type=text -->
+        <div class="test-section">
+            <h2>Test 4: Conversión automática de type="number" a type="text"</h2>
+            <p style="margin-bottom: 15px;">Estos campos comienzan como <code>type="number"</code> pero se convierten automáticamente:</p>
+            
+            <form id="form4">
+                <div class="form-group">
+                    <label for="number_monto">Monto (originalmente type="number")</label>
+                    <input type="number" name="monto_number" id="number_monto" placeholder="Se convierte a text">
+                </div>
+                
+                <div class="form-group">
+                    <label for="number_precio">Precio (originalmente type="number")</label>
+                    <input type="number" name="precio_number" id="number_precio" placeholder="Se convierte a text">
+                </div>
+                
+                <button type="submit">Enviar Formulario 4</button>
+            </form>
+
+            <div class="test-cases">
+                <strong>Verificación:</strong>
+                <div class="test-case">
+                    Abre las herramientas de desarrollador y verifica que estos inputs ahora tienen <code>type="text"</code>, <code>inputmode="decimal"</code> y <code>autocomplete="off"</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test 5: Validación de entrada -->
+        <div class="test-section">
+            <h2>Test 5: Validación durante escritura</h2>
+            
+            <form id="form5">
+                <div class="form-group">
+                    <label for="validation">Prueba escribir caracteres inválidos</label>
+                    <input type="text" name="monto_validacion" id="validation" placeholder="Intenta: abc, múltiples puntos, comas">
+                </div>
+                
+                <div class="form-group">
+                    <label for="negative">Números negativos</label>
+                    <input type="text" name="monto_negativo" id="negative" placeholder="Escribe: -1234.56">
+                </div>
+                
+                <button type="submit">Enviar Formulario 5</button>
+            </form>
+
+            <div class="test-cases">
+                <strong>Casos de validación:</strong>
+                <div class="test-case">
+                    Intentar escribir letras (a, b, c) → <span class="expected">Se bloquean automáticamente</span>
+                </div>
+                <div class="test-case">
+                    Intentar escribir coma (,) → <span class="expected">Se bloquea durante la escritura</span>
+                </div>
+                <div class="test-case">
+                    Escribir múltiples puntos (1.2.3.4) → <span class="expected">Se mantiene solo el primer punto</span>
+                </div>
+                <div class="test-case">
+                    Número negativo (-1234.56) → <span class="expected">Se permite y formatea: "-1.234,56"</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test 6: Foco y blur -->
+        <div class="test-section">
+            <h2>Test 6: Comportamiento focus/blur</h2>
+            
+            <form id="form6">
+                <div class="form-group">
+                    <label for="focus_test">Prueba focus/blur</label>
+                    <input type="text" name="monto_focus" id="focus_test" value="1.234.567,89" placeholder="Valor inicial en formato latino">
+                </div>
+                
+                <div class="form-group">
+                    <label for="otro_campo">Otro campo</label>
+                    <input type="text" id="otro_campo" name="otro" placeholder="Click aquí para que el anterior pierda foco">
+                </div>
+                
+                <button type="submit">Enviar Formulario 6</button>
+            </form>
+
+            <div class="test-cases">
+                <strong>Test de focus/blur:</strong>
+                <div class="test-case">
+                    1. Click en el campo "Prueba focus/blur" → <span class="expected">El valor "1.234.567,89" se convierte a "1234567.89" para editar</span>
+                </div>
+                <div class="test-case">
+                    2. Modifica el valor (ej: agregar un 0 al final)
+                </div>
+                <div class="test-case">
+                    3. Click en "Otro campo" (blur) → <span class="expected">El valor se formatea automáticamente de vuelta a formato latino</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test 7: Exclusión de tasas -->
+        <div class="test-section">
+            <h2>Test 7: Exclusión de campos "tasa"</h2>
+            <p style="margin-bottom: 15px;">Los campos con "tasa" en el nombre NO deben formatearse:</p>
+            
+            <form id="form7">
+                <div class="form-group">
+                    <label for="tasa_cambio">Tasa de Cambio (NO debe formatearse)</label>
+                    <input type="number" name="tasa_cambio" id="tasa_cambio" step="0.0001" placeholder="36.5000">
+                </div>
+                
+                <div class="form-group">
+                    <label for="monto_tasa">Monto (SÍ debe formatearse)</label>
+                    <input type="text" name="monto" id="monto_tasa" placeholder="1000.50">
+                </div>
+                
+                <button type="submit">Enviar Formulario 7</button>
+            </form>
+
+            <div class="test-cases">
+                <strong>Verificación:</strong>
+                <div class="test-case">
+                    El campo "Tasa de Cambio" debe mantener su comportamiento de <code>type="number"</code> sin conversión
+                </div>
+                <div class="test-case">
+                    El campo "Monto" debe comportarse normalmente con el formateo latino
+                </div>
+            </div>
+        </div>
+
+        <div class="success">
+            <strong>✅ Sistema implementado correctamente si:</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Todos los campos de monto se auto-detectan sin necesidad de inicialización manual</li>
+                <li>Enter formatea Y mueve el foco al siguiente campo</li>
+                <li>No se puede escribir comas ni caracteres inválidos</li>
+                <li>El formato es siempre latino: miles con punto (.), decimales con coma (,)</li>
+                <li>Los campos type="number" de monto se convierten automáticamente a type="text"</li>
+                <li>Los campos de "tasa" NO se formatean</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Incluir el script -->
+    <script src="assets/js/latam-amounts.js"></script>
+    
+    <script>
+        // Prevenir envío de formularios para testing
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Formulario ' + this.id + ' enviado!\n\nValores:\n' + 
+                    Array.from(new FormData(this)).map(([k,v]) => k + ': ' + v).join('\n'));
+            });
+        });
+
+        // Log para debugging
+        console.log('Test page loaded. Checking for latam-amounts.js functions:');
+        console.log('formatLatamFromDot:', typeof window.formatLatamFromDot);
+        console.log('initAmountInput:', typeof window.initAmountInput);
+        console.log('initializeAllAmountInputs:', typeof window.initializeAllAmountInputs);
+    </script>
+</body>
+</html>

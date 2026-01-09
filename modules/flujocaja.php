@@ -315,7 +315,7 @@ unset($_SESSION['msg']);
 <title>Flujo de Caja | <?php echo htmlspecialchars($_SESSION['nombre'] ?? ''); ?></title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="../assets/css/style.css">
-<script src="../assets/js/amount-input.js"></script>
+<script src="../assets/js/latam-amounts.js"></script>
 </head>
 <body>
     <nav class="nav-bar">

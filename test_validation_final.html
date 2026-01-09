@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación Final - Casos del Problema</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #FF7F36;
+            border-bottom: 3px solid #FF7F36;
+            padding-bottom: 10px;
+        }
+        .test-case {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            border-radius: 4px;
+        }
+        .test-case h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .input-group {
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #FF7F36;
+            box-shadow: 0 0 5px rgba(255, 127, 54, 0.3);
+        }
+        .expected {
+            background: #e7f3ff;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 3px solid #2196F3;
+            font-family: monospace;
+        }
+        .instruction {
+            background: #fff9e6;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 3px solid #FFC107;
+        }
+        .result {
+            background: #e8f5e9;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 3px solid #4CAF50;
+        }
+        button {
+            background: #FF7F36;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #e66f30;
+        }
+        .summary {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        .code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #d63384;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✅ Validación Final - Casos Especificados en el Enunciado del Problema</h1>
+        
+        <p>Esta página valida los casos específicos mencionados en el enunciado del problema:</p>
+
+        <form id="mainForm">
+            <!-- Caso 1: Cero -->
+            <div class="test-case">
+                <h3>Caso 1: "0"</h3>
+                <div class="instruction">
+                    <strong>Instrucción:</strong> Escribe "0" y presiona Enter
+                </div>
+                <div class="input-group">
+                    <label for="test1">Input de Monto:</label>
+                    <input type="text" id="test1" name="monto1" placeholder="Escribe: 0">
+                </div>
+                <div class="expected">
+                    <strong>Esperado:</strong> "0,00"<br>
+                    <strong>Validar:</strong> Que se formatee con dos decimales y coma decimal
+                </div>
+            </div>
+
+            <!-- Caso 2: 0.5 -->
+            <div class="test-case">
+                <h3>Caso 2: "0.5" → "0,50"</h3>
+                <div class="instruction">
+                    <strong>Instrucción:</strong> Escribe "0.5" y presiona Enter
+                </div>
+                <div class="input-group">
+                    <label for="test2">Input de Monto:</label>
+                    <input type="text" id="test2" name="precio2" placeholder="Escribe: 0.5">
+                </div>
+                <div class="expected">
+                    <strong>Esperado:</strong> "0,50"<br>
+                    <strong>Validar:</strong> Decimal pequeño formateado correctamente con cero inicial
+                </div>
+            </div>
+
+            <!-- Caso 3: 1. -->
+            <div class="test-case">
+                <h3>Caso 3: "1." → "1,00"</h3>
+                <div class="instruction">
+                    <strong>Instrucción:</strong> Escribe "1." (solo número y punto) y presiona Enter
+                </div>
+                <div class="input-group">
+                    <label for="test3">Input de Monto:</label>
+                    <input type="text" id="test3" name="cantidad3" placeholder="Escribe: 1.">
+                </div>
+                <div class="expected">
+                    <strong>Esperado:</strong> "1,00"<br>
+                    <strong>Validar:</strong> Completa con dos decimales cero
+                </div>
+            </div>
+
+            <!-- Caso 4: 1.2 -->
+            <div class="test-case">
+                <h3>Caso 4: "1.2" → "1,20"</h3>
+                <div class="instruction">
+                    <strong>Instrucción:</strong> Escribe "1.2" y presiona Enter
+                </div>
+                <div class="input-group">
+                    <label for="test4">Input de Monto:</label>
+                    <input type="text" id="test4" name="total4" placeholder="Escribe: 1.2">
+                </div>
+                <div class="expected">
+                    <strong>Esperado:</strong> "1,20"<br>
+                    <strong>Validar:</strong> Completa el segundo decimal con cero
+                </div>
+            </div>
+
+            <!-- Caso 5: 1234567.89 (caso crítico) -->
+            <div class="test-case">
+                <h3>Caso 5: "1234567.89" → "1.234.567,89" ⚠️ CRÍTICO</h3>
+                <div class="instruction">
+                    <strong>Instrucción:</strong> Escribe "1234567.89" y presiona Enter<br>
+                    <strong>IMPORTANTE:</strong> Verificar que NO se pierden dígitos ni se trunca
+                </div>
+                <div class="input-group">
+                    <label for="test5">Input de Monto:</label>
+                    <input type="text" id="test5" name="valor5" placeholder="Escribe: 1234567.89">
+                </div>
+                <div class="expected">
+                    <strong>Esperado:</strong> "1.234.567,89"<br>
+                    <strong>Validar:</strong> 
+                    <ul style="margin: 5px 0 0 20px;">
+                        <li>✓ Separadores de miles con punto (.)</li>
+                        <li>✓ Separador decimal con coma (,)</li>
+                        <li>✓ TODOS los dígitos presentes (no debe aparecer "1234,56" o similar)</li>
+                        <li>✓ Parte entera completa: 1.234.567</li>
+                        <li>✓ Decimales completos: ,89</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Campo siguiente para probar navegación -->
+            <div class="test-case">
+                <h3>Test de Navegación con Enter</h3>
+                <div class="instruction">
+                    <strong>Instrucción:</strong> En cualquier campo de arriba, después de escribir el número, presiona Enter.<br>
+                    El sistema debe: 1) Formatear el valor, 2) Mover el foco al siguiente campo automáticamente.
+                </div>
+                <div class="input-group">
+                    <label for="next">Campo Siguiente (el foco debe llegar aquí):</label>
+                    <input type="text" id="next" name="siguiente" placeholder="El foco llegará aquí al presionar Enter en los campos de arriba">
+                </div>
+                <div class="expected">
+                    <strong>Validar:</strong> 
+                    <ul style="margin: 5px 0 0 20px;">
+                        <li>✓ Enter NO envía el formulario antes del formateo</li>
+                        <li>✓ El valor se formatea antes de mover el foco</li>
+                        <li>✓ El foco se mueve automáticamente al siguiente campo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Test de bloqueo de coma -->
+            <div class="test-case">
+                <h3>Test de Bloqueo de Coma</h3>
+                <div class="instruction">
+                    <strong>Instrucción:</strong> Intenta escribir comas (,) durante la escritura
+                </div>
+                <div class="input-group">
+                    <label for="testComma">Input de Monto:</label>
+                    <input type="text" id="testComma" name="testComma" placeholder="Intenta escribir: 1,2,3">
+                </div>
+                <div class="expected">
+                    <strong>Esperado:</strong> Las comas deben estar bloqueadas durante la escritura<br>
+                    <strong>Validar:</strong> Solo debe permitir dígitos y punto (.)
+                </div>
+            </div>
+
+            <!-- Test de NumpadDecimal -->
+            <div class="test-case">
+                <h3>Test de Teclado Numérico (NumpadDecimal)</h3>
+                <div class="instruction">
+                    <strong>Instrucción:</strong> Usa el teclado numérico y presiona la tecla decimal (.)
+                </div>
+                <div class="input-group">
+                    <label for="testNumpad">Input de Monto:</label>
+                    <input type="text" id="testNumpad" name="testNumpad" placeholder="Usa el numpad para escribir: 123.45">
+                </div>
+                <div class="expected">
+                    <strong>Esperado:</strong> La tecla decimal del numpad debe insertar un punto (.)<br>
+                    <strong>Validar:</strong> Funciona igual que la tecla punto normal
+                </div>
+            </div>
+
+            <button type="button" onclick="validateAll()">Validar Todos los Campos</button>
+            <button type="submit">Intentar Enviar Formulario</button>
+        </form>
+
+        <div class="summary">
+            <h2>Resumen de Validación</h2>
+            <div id="validationResults"></div>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #e3f2fd; border-radius: 4px;">
+            <h3>✅ Checklist de Validación Final</h3>
+            <ul>
+                <li><input type="checkbox" id="check1"> <label for="check1">Caso "0" → "0,00" funciona correctamente</label></li>
+                <li><input type="checkbox" id="check2"> <label for="check2">Caso "0.5" → "0,50" funciona correctamente</label></li>
+                <li><input type="checkbox" id="check3"> <label for="check3">Caso "1." → "1,00" funciona correctamente</label></li>
+                <li><input type="checkbox" id="check4"> <label for="check4">Caso "1.2" → "1,20" funciona correctamente</label></li>
+                <li><input type="checkbox" id="check5"> <label for="check5"><strong>Caso "1234567.89" → "1.234.567,89" funciona SIN pérdida de dígitos</strong></label></li>
+                <li><input type="checkbox" id="check6"> <label for="check6">Enter formatea el campo antes de mover el foco</label></li>
+                <li><input type="checkbox" id="check7"> <label for="check7">Enter mueve el foco al siguiente campo automáticamente</label></li>
+                <li><input type="checkbox" id="check8"> <label for="check8">Enter NO envía el formulario antes del formateo</label></li>
+                <li><input type="checkbox" id="check9"> <label for="check9">Comas están bloqueadas durante la escritura</label></li>
+                <li><input type="checkbox" id="check10"> <label for="check10">NumpadDecimal inserta punto decimal correctamente</label></li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="assets/js/latam-amounts.js"></script>
+    <script>
+        // Prevenir envío real del formulario
+        document.getElementById('mainForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('✅ Formulario no se envió automáticamente - correcto!\n\nEsto demuestra que Enter no envía el formulario antes del formateo.');
+        });
+
+        function validateAll() {
+            const results = [];
+            
+            // Validar cada campo
+            const fields = [
+                { id: 'test1', expected: '0,00', input: '0' },
+                { id: 'test2', expected: '0,50', input: '0.5' },
+                { id: 'test3', expected: '1,00', input: '1.' },
+                { id: 'test4', expected: '1,20', input: '1.2' },
+                { id: 'test5', expected: '1.234.567,89', input: '1234567.89' }
+            ];
+
+            fields.forEach(field => {
+                const input = document.getElementById(field.id);
+                // Trim to handle potential whitespace differences that could affect string comparison
+                const value = (input.value || '').trim();
+                const correct = value === field.expected;
+                
+                results.push({
+                    field: field.id,
+                    input: field.input,
+                    expected: field.expected,
+                    actual: value,
+                    correct: correct
+                });
+            });
+
+            // Mostrar resultados
+            const resultsDiv = document.getElementById('validationResults');
+            let html = '<table style="width: 100%; border-collapse: collapse;">';
+            html += '<tr style="background: #f0f0f0;"><th style="padding: 8px; border: 1px solid #ddd;">Campo</th><th style="padding: 8px; border: 1px solid #ddd;">Input</th><th style="padding: 8px; border: 1px solid #ddd;">Esperado</th><th style="padding: 8px; border: 1px solid #ddd;">Actual</th><th style="padding: 8px; border: 1px solid #ddd;">Estado</th></tr>';
+            
+            let allCorrect = true;
+            results.forEach(r => {
+                const status = r.correct ? '✅' : '❌';
+                const bgColor = r.correct ? '#e8f5e9' : '#ffebee';
+                html += `<tr style="background: ${bgColor};">`;
+                html += `<td style="padding: 8px; border: 1px solid #ddd;">${r.field}</td>`;
+                html += `<td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;">${r.input}</td>`;
+                html += `<td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;">${r.expected}</td>`;
+                html += `<td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;">${r.actual || '(vacío)'}</td>`;
+                html += `<td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${status}</td>`;
+                html += '</tr>';
+                
+                if (!r.correct) allCorrect = false;
+            });
+            
+            html += '</table>';
+            
+            if (allCorrect) {
+                html += '<div style="margin-top: 15px; padding: 15px; background: #4CAF50; color: white; border-radius: 4px; text-align: center;">';
+                html += '<strong>✅ ¡TODOS LOS CASOS VALIDADOS CORRECTAMENTE!</strong>';
+                html += '</div>';
+            } else {
+                html += '<div style="margin-top: 15px; padding: 15px; background: #f44336; color: white; border-radius: 4px; text-align: center;">';
+                html += '<strong>❌ Algunos casos no pasaron la validación. Por favor verifica.</strong>';
+                html += '</div>';
+            }
+            
+            resultsDiv.innerHTML = html;
+        }
+
+        // Instrucciones en consola
+        console.log('%c===== VALIDACIÓN FINAL - SISTEMA LATAM AMOUNTS =====', 'color: #FF7F36; font-size: 16px; font-weight: bold;');
+        console.log('%cSigue las instrucciones en cada caso de prueba:', 'color: #333; font-size: 14px;');
+        console.log('1. Escribe el valor indicado en cada campo');
+        console.log('2. Presiona Enter (no Tab, no Click fuera)');
+        console.log('3. Verifica que el formato sea el esperado');
+        console.log('4. Verifica que el foco se mueva al siguiente campo');
+        console.log('%c⚠️ CASO CRÍTICO: El caso "1234567.89" NO debe perder dígitos', 'color: red; font-weight: bold;');
+    </script>
+</body>
+</html>

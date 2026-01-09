@@ -114,13 +114,7 @@ $stmt->close();
     <meta charset="UTF-8">
     <title>Servicios</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <script src="../assets/js/amount-input.js"></script>
-    <script>
-    window.addEventListener('DOMContentLoaded', function() {
-        // Inicializar campo de costo
-        initAmountInput('#costo');
-    });
-    </script>
+    <script src="../assets/js/latam-amounts.js"></script>
 </head>
 <body>
     <nav class="nav-bar">
