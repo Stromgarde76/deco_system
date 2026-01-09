@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Enter Key Navigation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .test-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .test-result {
+            background: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #666;
+            font-size: 18px;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .expected {
+            color: #2196F3;
+            font-weight: bold;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        input:focus, select:focus, textarea:focus {
+            background-color: #ffffcc;
+            border-color: #2196F3;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+    <script src="assets/js/amount-input.js"></script>
+</head>
+<body>
+    <h1>Test - Tecla Enter: Formateo y Navegación Automática</h1>
+    
+    <div class="instructions">
+        <h2>Instrucciones de Prueba:</h2>
+        <ol>
+            <li>Ingrese un monto en el primer campo usando el <strong>punto (.) como separador decimal</strong> (ejemplo: 1234567.89)</li>
+            <li>Presione <strong>ENTER</strong></li>
+            <li>El campo debería:
+                <ul>
+                    <li>Formatearse automáticamente a formato latino: <span class="expected">1.234.567,89</span></li>
+                    <li>Mover el foco al siguiente campo automáticamente</li>
+                </ul>
+            </li>
+            <li>Continúe ingresando datos y presionando ENTER en cada campo</li>
+            <li>Observe cómo el foco se mueve automáticamente al siguiente campo</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 1: Formulario Completo con Navegación</h2>
+        <form id="testForm">
+            <label>Descripción:</label>
+            <input type="text" id="descripcion" name="descripcion" class="test-input" placeholder="Ingrese descripción...">
+            
+            <label>Monto 1 (ej: 1234567.89):</label>
+            <input type="text" id="monto1" name="monto1" class="test-input amount-input" placeholder="Ingrese monto y presione ENTER...">
+            
+            <label>Fecha:</label>
+            <input type="date" id="fecha" name="fecha" class="test-input">
+            
+            <label>Monto 2 (ej: 999.50):</label>
+            <input type="text" id="monto2" name="monto2" class="test-input amount-input" placeholder="Ingrese monto y presione ENTER...">
+            
+            <label>Tipo:</label>
+            <select id="tipo" name="tipo" class="test-input">
+                <option value="">Seleccione tipo</option>
+                <option value="tipo1">Tipo 1</option>
+                <option value="tipo2">Tipo 2</option>
+            </select>
+            
+            <label>Monto 3 (ej: 50000):</label>
+            <input type="text" id="monto3" name="monto3" class="test-input amount-input" placeholder="Ingrese monto y presione ENTER...">
+            
+            <label>Notas:</label>
+            <textarea id="notas" name="notas" class="test-input" placeholder="Notas adicionales..."></textarea>
+            
+            <button type="submit">Enviar Formulario (Simulado)</button>
+        </form>
+        <div id="result1" class="test-result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 2: Múltiples Montos Consecutivos</h2>
+        <form id="testForm2">
+            <label>Adelanto (ej: 5000):</label>
+            <input type="text" name="adelanto" class="test-input amount-input" placeholder="Adelanto">
+            
+            <label>Pago 1 (ej: 10000.50):</label>
+            <input type="text" name="pago1" class="test-input amount-input" placeholder="Pago 1">
+            
+            <label>Pago 2 (ej: 15000.75):</label>
+            <input type="text" name="pago2" class="test-input amount-input" placeholder="Pago 2">
+            
+            <label>Total (ej: 30001.25):</label>
+            <input type="text" name="total" class="test-input amount-input" placeholder="Total">
+            
+            <button type="submit">Ver Valores</button>
+        </form>
+        <div id="result2" class="test-result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Estado del Test</h2>
+        <div id="testLog" class="test-result">
+            <p><strong>Log de eventos:</strong></p>
+            <ul id="eventLog"></ul>
+        </div>
+    </div>
+
+    <script>
+        // Agregar logging para ver el comportamiento
+        function logEvent(message) {
+            const log = document.getElementById('eventLog');
+            const li = document.createElement('li');
+            li.textContent = new Date().toLocaleTimeString() + ' - ' + message;
+            log.appendChild(li);
+        }
+
+        // Monitorear eventos en todos los inputs de monto
+        document.querySelectorAll('.amount-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                logEvent(`Focus en "${this.name || this.id}" - Valor: ${this.value}`);
+            });
+            
+            input.addEventListener('blur', function() {
+                logEvent(`Blur en "${this.name || this.id}" - Valor formateado: ${this.value}`);
+            });
+            
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    logEvent(`Enter presionado en "${this.name || this.id}" - Valor antes de formatear: ${this.value}`);
+                }
+            });
+        });
+
+        // Handler para el primer formulario
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const resultDiv = document.getElementById('result1');
+            
+            let html = '<strong>✓ Datos del Formulario:</strong><br>';
+            for (let [key, value] of formData.entries()) {
+                if (key.startsWith('monto')) {
+                    const normalized = parseAmountInput(value);
+                    html += `${key}: "${value}" → Normalizado: "${normalized}" → Número: ${parseFloat(normalized) || 0}<br>`;
+                } else {
+                    html += `${key}: "${value}"<br>`;
+                }
+            }
+            
+            resultDiv.innerHTML = html;
+            resultDiv.style.display = 'block';
+            logEvent('Formulario 1 enviado');
+        });
+
+        // Handler para el segundo formulario
+        document.getElementById('testForm2').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const resultDiv = document.getElementById('result2');
+            
+            let html = '<strong>✓ Valores de Montos:</strong><br>';
+            for (let [key, value] of formData.entries()) {
+                const normalized = parseAmountInput(value);
+                html += `${key}: "${value}" → "${normalized}" → ${parseFloat(normalized) || 0}<br>`;
+            }
+            
+            resultDiv.innerHTML = html;
+            resultDiv.style.display = 'block';
+            logEvent('Formulario 2 enviado');
+        });
+
+        logEvent('Página cargada - Pruebe ingresar montos y presionar ENTER');
+    </script>
+</body>
+</html>
