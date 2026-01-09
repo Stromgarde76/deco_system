@@ -45,7 +45,11 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'agregar') {
     // Para servicios, en el futuro usar $_POST['servicio_id']
     $tipo_pago = $_POST['tipo_pago'] ?? 'pago total';
     $fecha = trim($_POST['fecha']) ?: date('Y-m-d');
-    $monto = floatval(str_replace(['.', ','], ['', '.'], str_replace('.', '', $_POST['monto'])));
+    // Convertir de formato latino (1.234,56) a formato estándar (1234.56)
+    $monto_str = trim($_POST['monto']);
+    $monto_str = str_replace('.', '', $monto_str); // Remover separador de miles
+    $monto_str = str_replace(',', '.', $monto_str); // Cambiar coma decimal por punto
+    $monto = floatval($monto_str);
     $descripcion = trim($_POST['descripcion']);
     $cuenta_id = intval($_POST['cuenta']);
 
@@ -75,7 +79,11 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'editar' && isset($_POST['pa
     $contratista_id = ($destino_pago === 'contratista') ? intval($_POST['contratista_id']) : null;
     $tipo_pago = $_POST['tipo_pago'] ?? 'pago total';
     $fecha = trim($_POST['fecha']) ?: date('Y-m-d');
-    $monto = floatval(str_replace(['.', ','], ['', '.'], str_replace('.', '', $_POST['monto'])));
+    // Convertir de formato latino (1.234,56) a formato estándar (1234.56)
+    $monto_str = trim($_POST['monto']);
+    $monto_str = str_replace('.', '', $monto_str); // Remover separador de miles
+    $monto_str = str_replace(',', '.', $monto_str); // Cambiar coma decimal por punto
+    $monto = floatval($monto_str);
     $descripcion = trim($_POST['descripcion']);
     $cuenta_id = intval($_POST['cuenta']);
 
@@ -193,18 +201,48 @@ $stmt->close();
     <link rel="stylesheet" href="../assets/css/style.css">
     <script>
     function formatMonto(input) {
-        let value = input.value.replace(/\./g, '').replace(/,/g, '');
-        if (!value) {
+        // Obtener el valor actual y remover todo excepto dígitos y coma
+        let value = input.value;
+        
+        // Permitir solo dígitos, punto, y coma
+        value = value.replace(/[^\d.,]/g, '');
+        
+        // Contar cuántas comas hay
+        let commaCount = (value.match(/,/g) || []).length;
+        
+        // Si hay más de una coma, remover las extras (mantener solo la última)
+        if (commaCount > 1) {
+            let lastCommaIndex = value.lastIndexOf(',');
+            value = value.substring(0, lastCommaIndex).replace(/,/g, '') + value.substring(lastCommaIndex);
+        }
+        
+        // Separar parte entera y decimal
+        let parts = value.split(',');
+        let intPart = parts[0].replace(/\./g, ''); // Remover puntos existentes
+        let decPart = parts[1] || '';
+        
+        // Limitar decimales a 2 dígitos
+        if (decPart.length > 2) {
+            decPart = decPart.substring(0, 2);
+        }
+        
+        // Si no hay parte entera, retornar vacío
+        if (!intPart) {
             input.value = '';
             return;
         }
-        let parts = value.split('.');
-        let intPart = parts[0];
-        let decPart = parts[1] ? parts[1].substring(0,2) : '';
-        let formatted = '';
+        
+        // Remover ceros a la izquierda, excepto si es solo "0"
         intPart = intPart.replace(/^0+/, '') || '0';
-        formatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        if (decPart) formatted += ',' + decPart;
+        
+        // Formatear parte entera con puntos como separador de miles
+        let formatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        
+        // Agregar parte decimal si existe
+        if (parts.length > 1) {
+            formatted += ',' + decPart;
+        }
+        
         input.value = formatted;
     }
     window.addEventListener('DOMContentLoaded', function() {
