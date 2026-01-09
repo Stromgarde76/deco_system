@@ -174,20 +174,32 @@ function initAmountInput(selector) {
     input.addEventListener('input', function(e) {
         let value = this.value;
         
-        // Permitir solo dígitos, punto y guión (para negativos)
-        value = value.replace(/[^\d.\-]/g, '');
+        // Verificar si comienza con signo negativo
+        const isNegative = value.startsWith('-');
         
-        // Prevenir múltiples puntos: mantener solo el primer punto encontrado
-        const firstDotIndex = value.indexOf('.');
-        if (firstDotIndex !== -1) {
-            // Hay al menos un punto, mantener solo el primero
-            const beforeDot = value.substring(0, firstDotIndex);
-            const afterDot = value.substring(firstDotIndex + 1).replace(/\./g, ''); // Remover puntos adicionales
-            value = beforeDot + '.' + afterDot;
+        // Permitir solo dígitos y punto (el guión se maneja por separado)
+        value = value.replace(/[^\d.]/g, '');
+        
+        // Restaurar signo negativo al inicio si estaba presente
+        if (isNegative) {
+            value = '-' + value;
+        }
+        
+        // Prevenir múltiples puntos: mantener solo el último punto como decimal
+        const lastDotIndex = value.lastIndexOf('.');
+        if (lastDotIndex !== -1) {
+            const beforeLastDot = value.substring(0, lastDotIndex).replace(/\./g, '');
+            const afterLastDot = value.substring(lastDotIndex + 1).replace(/\./g, '');
+            value = beforeLastDot + '.' + afterLastDot;
+            
+            // Si hay signo negativo, asegurar que esté al inicio
+            if (value.includes('-')) {
+                value = '-' + value.replace(/-/g, '');
+            }
         }
         
         // Limitar decimales a 2 dígitos después del punto
-        const dotIndex = value.indexOf('.');
+        const dotIndex = value.lastIndexOf('.');
         if (dotIndex !== -1) {
             const decimals = value.substring(dotIndex + 1);
             if (decimals.length > 2) {

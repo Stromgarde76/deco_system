@@ -62,16 +62,21 @@ function parseAmount($input) {
     // Remover todo excepto dígitos, punto y guión
     $str = preg_replace('/[^\d.\-]/', '', $str);
     
-    // Asegurar solo un punto decimal (remover extras)
+    // Manejar signo negativo: solo permitir al inicio
+    $isNegative = (strpos($str, '-') === 0);
+    $str = str_replace('-', '', $str); // Remover todos los guiones
+    
+    // Asegurar solo un punto decimal (mantener el último como decimal)
     $parts = explode('.', $str);
     if (count($parts) > 2) {
-        // Mantener primera parte y solo primera parte decimal
-        $str = $parts[0] . '.' . $parts[1];
+        // Mantener todas las partes excepto la última como entero
+        $integerPart = implode('', array_slice($parts, 0, -1));
+        $decimalPart = end($parts);
+        $str = $integerPart . '.' . $decimalPart;
     }
     
-    // Asegurar solo un guión al inicio (para negativos)
-    if (substr_count($str, '-') > 0) {
-        $str = str_replace('-', '', $str);
+    // Aplicar signo negativo si estaba presente
+    if ($isNegative) {
         $str = '-' . $str;
     }
     
