@@ -178,15 +178,21 @@ function initAmountInput(selector) {
         value = value.replace(/[^\d.\-]/g, '');
         
         // Prevenir múltiples puntos: mantener solo el primer punto encontrado
-        const parts = value.split('.');
-        if (parts.length > 2) {
-            // Hay múltiples puntos, mantener solo el primero
-            value = parts[0] + '.' + parts.slice(1).join('');
+        const firstDotIndex = value.indexOf('.');
+        if (firstDotIndex !== -1) {
+            // Hay al menos un punto, mantener solo el primero
+            const beforeDot = value.substring(0, firstDotIndex);
+            const afterDot = value.substring(firstDotIndex + 1).replace(/\./g, ''); // Remover puntos adicionales
+            value = beforeDot + '.' + afterDot;
         }
         
         // Limitar decimales a 2 dígitos después del punto
-        if (parts.length === 2 && parts[1].length > 2) {
-            value = parts[0] + '.' + parts[1].substring(0, 2);
+        const dotIndex = value.indexOf('.');
+        if (dotIndex !== -1) {
+            const decimals = value.substring(dotIndex + 1);
+            if (decimals.length > 2) {
+                value = value.substring(0, dotIndex + 1) + decimals.substring(0, 2);
+            }
         }
         
         // Solo actualizar si cambió
