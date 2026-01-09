@@ -18,6 +18,18 @@ if (!isset($_SESSION['empresa_id'])) {
 $empresa_id = $_SESSION['empresa_id'];
 $msg = "";
 
+/**
+ * Convierte un monto en formato latino (1.234,56) a formato estándar (1234.56)
+ * @param string $monto_latino Monto en formato latino
+ * @return float Monto convertido a float
+ */
+function convertirMontoLatino($monto_latino) {
+    $monto_str = trim($monto_latino);
+    $monto_str = str_replace('.', '', $monto_str); // Remover separador de miles
+    $monto_str = str_replace(',', '.', $monto_str); // Cambiar coma decimal por punto
+    return floatval($monto_str);
+}
+
 // --- OBTENER CONTRATISTAS ---
 $contratistas = [];
 $sql = "SELECT id, nombre FROM contratistas WHERE empresa_id=? ORDER BY nombre ASC";
@@ -45,11 +57,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'agregar') {
     // Para servicios, en el futuro usar $_POST['servicio_id']
     $tipo_pago = $_POST['tipo_pago'] ?? 'pago total';
     $fecha = trim($_POST['fecha']) ?: date('Y-m-d');
-    // Convertir de formato latino (1.234,56) a formato estándar (1234.56)
-    $monto_str = trim($_POST['monto']);
-    $monto_str = str_replace('.', '', $monto_str); // Remover separador de miles
-    $monto_str = str_replace(',', '.', $monto_str); // Cambiar coma decimal por punto
-    $monto = floatval($monto_str);
+    $monto = convertirMontoLatino($_POST['monto']);
     $descripcion = trim($_POST['descripcion']);
     $cuenta_id = intval($_POST['cuenta']);
 
@@ -79,11 +87,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'editar' && isset($_POST['pa
     $contratista_id = ($destino_pago === 'contratista') ? intval($_POST['contratista_id']) : null;
     $tipo_pago = $_POST['tipo_pago'] ?? 'pago total';
     $fecha = trim($_POST['fecha']) ?: date('Y-m-d');
-    // Convertir de formato latino (1.234,56) a formato estándar (1234.56)
-    $monto_str = trim($_POST['monto']);
-    $monto_str = str_replace('.', '', $monto_str); // Remover separador de miles
-    $monto_str = str_replace(',', '.', $monto_str); // Cambiar coma decimal por punto
-    $monto = floatval($monto_str);
+    $monto = convertirMontoLatino($_POST['monto']);
     $descripcion = trim($_POST['descripcion']);
     $cuenta_id = intval($_POST['cuenta']);
 
