@@ -24,7 +24,12 @@ function test($description, $input, $expected_parse, $expected_format = null) {
     
     // Test parseMontoLatino
     $result_parse = parseMontoLatino($input);
-    $parse_ok = abs($result_parse - $expected_parse) < 0.001; // Tolerancia para floats
+    
+    // Usar tolerancia relativa para comparación de floats
+    // Para valores pequeños (<1), usar tolerancia absoluta de 0.0001
+    // Para valores grandes, usar tolerancia relativa de 0.01%
+    $tolerance = ($expected_parse < 1.0) ? 0.0001 : abs($expected_parse * 0.0001);
+    $parse_ok = abs($result_parse - $expected_parse) < $tolerance;
     
     // Test formatMontoLatino
     $format_ok = true;

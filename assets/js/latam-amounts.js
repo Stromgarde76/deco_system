@@ -31,9 +31,10 @@
         // Remover todo excepto dígitos, punto y guión
         str = str.replace(/[^\d.\-]/g, '');
         
-        // Manejar signo negativo
+        // Manejar signo negativo (solo permitir uno al inicio)
         const isNegative = str.startsWith('-');
-        str = str.replace('-', '');
+        // Remover TODOS los guiones para limpiar y solo agregar uno al inicio si es necesario
+        str = str.replace(/-/g, '');
         
         // Si hay múltiples puntos, usar el ÚLTIMO como separador decimal
         // Ejemplo: "1.2.3.4.5" se interpreta como entero "1234" + decimal ".5" = 1234.5
@@ -108,7 +109,8 @@
         // Permitir solo dígitos, punto y guión
         let sanitized = value.replace(/[^\d.\-]/g, '');
         
-        // Manejar signo negativo (solo al inicio)
+        // Manejar signo negativo (solo permitir uno al inicio)
+        // Remover múltiples guiones (ej: "--123" o "12-3-4" se convierten en "1233" o "-1233")
         const isNegative = sanitized.startsWith('-');
         sanitized = sanitized.replace(/-/g, '');
         if (isNegative) {

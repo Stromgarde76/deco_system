@@ -299,7 +299,7 @@
 
             fields.forEach(field => {
                 const input = document.getElementById(field.id);
-                const value = input.value;
+                const value = (input.value || '').trim();  // Trim to handle whitespace
                 const correct = value === field.expected;
                 
                 results.push({
