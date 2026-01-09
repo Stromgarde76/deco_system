@@ -13,6 +13,7 @@ Permitir que los usuarios ingresen montos usando el **punto (.) como separador d
 ### Entrada de Usuario
 - Usuario escribe: `652485.20` (punto como decimal, sin separadores de miles)
 - Usuario puede escribir también: `652485` (sin decimales) o `0.50` (decimales solamente)
+- **Al presionar ENTER**: El campo se formatea automáticamente y el foco se mueve al siguiente campo
 
 ### Visualización
 - Sistema muestra: `652.485,20` (formato latino: punto para miles, coma para decimales)
@@ -28,6 +29,7 @@ Permitir que los usuarios ingresen montos usando el **punto (.) como separador d
 Utilidad JavaScript reutilizable que maneja:
 - Formateo automático al perder foco (blur)
 - Desformateo al obtener foco (focus) para edición
+- **Formateo y navegación automática al presionar ENTER**
 - Normalización antes de enviar al servidor
 - Auto-inicialización de campos con clase `amount-input`
 
@@ -35,8 +37,9 @@ Utilidad JavaScript reutilizable que maneja:
 - `formatAmountDisplay(value)` - Formatea número a formato latino
 - `parseAmountInput(str)` - Normaliza string a formato estándar
 - `initAmountInput(selector)` - Inicializa un campo de input
-- `handleAmountBlur(input)` - Maneja evento blur
+- `handleAmountBlur(input, skipIfFormatted)` - Maneja evento blur con opción de saltar si ya está formateado
 - `handleAmountFocus(input)` - Maneja evento focus
+- `moveToNextField(currentInput)` - Mueve el foco al siguiente campo enfocable del formulario
 
 ### 2. `/config/amount_utils.php`
 Utilidad PHP reutilizable que maneja:
@@ -169,10 +172,37 @@ Para probar:
 
 - ✅ Consistencia en toda la aplicación
 - ✅ Mejor experiencia de usuario (puede usar teclado numérico)
+- ✅ **Navegación rápida con tecla ENTER** - Formateo y avance automático al siguiente campo
 - ✅ Código reutilizable y mantenible
 - ✅ Formato latino estándar en toda la interfaz
 - ✅ Sin pérdida de precisión en conversiones
 - ✅ Validación automática de formato
+
+## Actualización: Navegación con Tecla ENTER (Enero 2026)
+
+### Nueva Funcionalidad
+Se agregó la capacidad de **formatear y navegar automáticamente** al presionar la tecla ENTER en los campos de monto:
+
+**Comportamiento:**
+1. Usuario ingresa un monto (ej: `1234567.89`)
+2. Usuario presiona **ENTER**
+3. El campo se formatea inmediatamente a formato latino (`1.234.567,89`)
+4. El foco se mueve automáticamente al siguiente campo enfocable del formulario
+
+**Beneficios:**
+- ⚡ Entrada de datos más rápida - el usuario no necesita usar el mouse
+- 🎯 Flujo de trabajo más eficiente - navegación continua con teclado
+- ✨ Formateo inmediato - verificación visual instantánea del valor ingresado
+- 🔄 Prevención de doble formateo - mecanismo inteligente que evita reformatear valores ya formateados
+
+**Implementación Técnica:**
+- Nueva función `moveToNextField(currentInput)` que busca el siguiente elemento enfocable en el formulario
+- Parámetro `skipIfFormatted` en `handleAmountBlur()` para evitar reformatear valores ya en formato latino
+- Event listener para tecla ENTER que coordina el formateo y la navegación
+- Compatible con todos los tipos de campos del formulario (input, select, textarea, button)
+
+**Archivo de Prueba:**
+Se creó `/test_enter_functionality.html` para validar el comportamiento de la nueva funcionalidad.
 
 ## Próximos Pasos (Opcional)
 
