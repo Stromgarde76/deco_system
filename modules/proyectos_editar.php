@@ -79,7 +79,7 @@ while ($row = $res->fetch_assoc()) $contratistas[] = $row;
     <meta charset="UTF-8">
     <title>Editar Proyecto</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <script src="../assets/js/amount-input.js"></script>
+    <script src="../assets/js/latam-amounts.js"></script>
     <script>
     function actualizarTasa() {
         var moneda = document.getElementById('moneda').value;
@@ -93,9 +93,6 @@ while ($row = $res->fetch_assoc()) $contratistas[] = $row;
         }
     }
     window.addEventListener('DOMContentLoaded', function() {
-        // Inicializar campo de monto
-        initAmountInput('#input-monto');
-        
         // Actualizar visibilidad de tasa de cambio
         var monedaSel = document.getElementById('moneda');
         if (monedaSel) {

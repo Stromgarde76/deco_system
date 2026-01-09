@@ -108,3 +108,15 @@ function parseMontoLatino($input) {
 function formatAmount($amount, $decimals = 2) {
     return number_format($amount, $decimals, ',', '.');
 }
+
+/**
+ * Alias de formatAmount() - nombre solicitado en especificación del problema
+ * Formatea un monto para mostrarlo en formato latino (miles con punto, decimales con coma)
+ * 
+ * @param float $value Monto a formatear
+ * @param int $decimals Cantidad de decimales (default: 2)
+ * @return string Monto formateado (ej: 1.234.567,89)
+ */
+function formatMontoLatino($value, $decimals = 2) {
+    return number_format($value, $decimals, ',', '.');
+}

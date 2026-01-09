@@ -105,7 +105,7 @@ while ($row = $res->fetch_assoc()) $trabajos[] = $row;
     <meta charset="UTF-8">
     <title>Trabajos</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <script src="../assets/js/amount-input.js"></script>
+    <script src="../assets/js/latam-amounts.js"></script>
     <script>
     // Mostrar/ocultar el campo "tasa cambio" según la moneda seleccionada
     function actualizarTasa() {
