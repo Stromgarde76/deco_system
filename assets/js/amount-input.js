@@ -63,11 +63,20 @@ function parseAmountInput(str) {
  * Maneja el evento onblur en un campo de input de monto
  * Formatea el valor para mostrarlo en formato latino
  * @param {HTMLInputElement} input - Elemento input
+ * @param {boolean} skipIfFormatted - Si es true, no reformatea valores ya formateados
  */
-function handleAmountBlur(input) {
+function handleAmountBlur(input, skipIfFormatted = false) {
     if (!input) return;
     
-    const normalized = parseAmountInput(input.value);
+    const value = input.value.trim();
+    
+    // Si skipIfFormatted es true y el valor ya está en formato latino, no hacer nada
+    // Formato latino tiene coma como decimal, así que si tiene coma asumimos que ya está formateado
+    if (skipIfFormatted && value.includes(',')) {
+        return;
+    }
+    
+    const normalized = parseAmountInput(value);
     if (normalized !== '') {
         const num = parseFloat(normalized);
         if (!isNaN(num)) {
@@ -117,6 +126,35 @@ function prepareAmountForm(form, amountFields) {
 }
 
 /**
+ * Mueve el foco al siguiente campo enfocable en el formulario
+ * @param {HTMLInputElement} currentInput - Elemento input actual
+ */
+function moveToNextField(currentInput) {
+    if (!currentInput || !currentInput.form) return;
+    
+    const form = currentInput.form;
+    const formElements = Array.from(form.elements);
+    const currentIndex = formElements.indexOf(currentInput);
+    
+    // Buscar el siguiente elemento enfocable
+    for (let i = currentIndex + 1; i < formElements.length; i++) {
+        const element = formElements[i];
+        // Verificar si el elemento es enfocable (input, select, textarea, button)
+        if (element.type !== 'hidden' && 
+            !element.disabled && 
+            !element.readOnly &&
+            element.tabIndex !== -1 &&
+            (element.tagName === 'INPUT' || 
+             element.tagName === 'SELECT' || 
+             element.tagName === 'TEXTAREA' ||
+             element.tagName === 'BUTTON')) {
+            element.focus();
+            return;
+        }
+    }
+}
+
+/**
  * Inicializa un campo de input para montos
  * @param {string|HTMLInputElement} selector - Selector CSS o elemento input
  */
@@ -129,15 +167,17 @@ function initAmountInput(selector) {
     });
     
     input.addEventListener('blur', function() {
-        handleAmountBlur(this);
+        handleAmountBlur(this, true); // Skip if already formatted
     });
     
-    // Manejar Enter para formatear
+    // Manejar Enter para formatear y mover al siguiente campo
     input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            this.blur();
-            setTimeout(() => this.focus(), 50);
+            // Formatear el campo actual (forzar formato incluso si ya está formateado)
+            handleAmountBlur(this, false);
+            // Mover al siguiente campo enfocable
+            moveToNextField(this);
         }
     });
 }
