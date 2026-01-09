@@ -37,9 +37,10 @@
         str = str.replace(/-/g, '');
         
         // Si hay múltiples puntos, usar el ÚLTIMO como separador decimal
-        // Ejemplo: "1.2.3.4.5" se interpreta como entero "1234" + decimal ".5" = 1234.5
-        // Esto maneja el caso donde el usuario escribe puntos accidentalmente o
-        // cuando se recibe un valor ya formateado con separadores de miles (1.234.567)
+        // Esto maneja dos casos:
+        // 1) Usuario escribe puntos accidentalmente: "1.2.3.4.5" → "1234.5" (último punto es decimal)
+        // 2) Valor pre-formateado con separadores de miles: "1.234.567" → "1234567" (sin decimales)
+        // Ejemplo: "1.234.567.89" → "1234567.89" (preserva todos los dígitos)
         const dotCount = (str.match(/\./g) || []).length;
         if (dotCount > 1) {
             const lastDotIndex = str.lastIndexOf('.');

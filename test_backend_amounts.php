@@ -17,6 +17,10 @@ function colorize($text, $status) {
     return $colors[$status] . $text . $colors['reset'];
 }
 
+// Constantes para tolerancia de comparación de floats
+define('FLOAT_TOLERANCE_ABSOLUTE', 0.0001);  // Para valores pequeños (<1)
+define('FLOAT_TOLERANCE_RELATIVE', 0.0001);  // 0.01% para valores grandes
+
 // Función de prueba
 function test($description, $input, $expected_parse, $expected_format = null) {
     static $test_number = 0;
@@ -26,9 +30,11 @@ function test($description, $input, $expected_parse, $expected_format = null) {
     $result_parse = parseMontoLatino($input);
     
     // Usar tolerancia relativa para comparación de floats
-    // Para valores pequeños (<1), usar tolerancia absoluta de 0.0001
-    // Para valores grandes, usar tolerancia relativa de 0.01%
-    $tolerance = ($expected_parse < 1.0) ? 0.0001 : abs($expected_parse * 0.0001);
+    // Para valores pequeños (<1), usar tolerancia absoluta
+    // Para valores grandes, usar tolerancia relativa
+    $tolerance = ($expected_parse < 1.0) 
+        ? FLOAT_TOLERANCE_ABSOLUTE 
+        : abs($expected_parse * FLOAT_TOLERANCE_RELATIVE);
     $parse_ok = abs($result_parse - $expected_parse) < $tolerance;
     
     // Test formatMontoLatino

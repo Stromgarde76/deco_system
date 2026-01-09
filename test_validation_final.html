@@ -299,7 +299,8 @@
 
             fields.forEach(field => {
                 const input = document.getElementById(field.id);
-                const value = (input.value || '').trim();  // Trim to handle whitespace
+                // Trim to handle potential whitespace differences that could affect string comparison
+                const value = (input.value || '').trim();
                 const correct = value === field.expected;
                 
                 results.push({
