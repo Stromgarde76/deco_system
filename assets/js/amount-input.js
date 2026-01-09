@@ -177,20 +177,16 @@ function initAmountInput(selector) {
         // Permitir solo dígitos, punto y guión (para negativos)
         value = value.replace(/[^\d.\-]/g, '');
         
-        // Asegurar que solo haya un punto decimal
-        const dotCount = (value.match(/\./g) || []).length;
-        if (dotCount > 1) {
-            // Mantener solo el último punto como decimal
-            const lastDotIndex = value.lastIndexOf('.');
-            value = value.substring(0, lastDotIndex).replace(/\./g, '') + value.substring(lastDotIndex);
+        // Prevenir múltiples puntos: mantener solo el primer punto encontrado
+        const parts = value.split('.');
+        if (parts.length > 2) {
+            // Hay múltiples puntos, mantener solo el primero
+            value = parts[0] + '.' + parts.slice(1).join('');
         }
         
-        // Limitar decimales a 2 dígitos
-        if (value.includes('.')) {
-            const parts = value.split('.');
-            if (parts[1] && parts[1].length > 2) {
-                value = parts[0] + '.' + parts[1].substring(0, 2);
-            }
+        // Limitar decimales a 2 dígitos después del punto
+        if (parts.length === 2 && parts[1].length > 2) {
+            value = parts[0] + '.' + parts[1].substring(0, 2);
         }
         
         // Solo actualizar si cambió
