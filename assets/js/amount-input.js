@@ -71,6 +71,7 @@ function handleAmountBlur(input, skipIfFormatted = false) {
     const value = input.value.trim();
     
     // Si skipIfFormatted es true y el valor ya está en formato latino, no hacer nada
+    // Formato latino tiene coma como decimal, así que si tiene coma asumimos que ya está formateado
     if (skipIfFormatted && value.includes(',')) {
         return;
     }
@@ -142,6 +143,7 @@ function moveToNextField(currentInput) {
         if (element.type !== 'hidden' && 
             !element.disabled && 
             !element.readOnly &&
+            element.tabIndex !== -1 &&
             (element.tagName === 'INPUT' || 
              element.tagName === 'SELECT' || 
              element.tagName === 'TEXTAREA' ||
