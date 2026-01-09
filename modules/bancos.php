@@ -4,6 +4,7 @@
 
 session_start();
 require_once "../config/db.php";
+require_once "../config/amount_utils.php";
 
 // Verifica si el usuario está autenticado y con empresa seleccionada
 if (!isset($_SESSION['usuario'])) {
@@ -24,7 +25,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'agregar') {
     $tipo_cuenta = trim($_POST['tipo_cuenta']);
     $numero_cuenta = preg_replace('/[^0-9]/', '', $_POST['numero_cuenta']);
     $titular = trim($_POST['titular']);
-    $saldo = floatval(str_replace(',', '.', $_POST['saldo']));
+    $saldo = parseAmount($_POST['saldo']);
 
     if ($tipo_cuenta !== 'ahorros' && $tipo_cuenta !== 'corriente') {
         $msg = "El tipo de cuenta debe ser 'ahorros' o 'corriente'.";
@@ -48,7 +49,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'editar' && isset($_POST['ba
     $tipo_cuenta = trim($_POST['tipo_cuenta']);
     $numero_cuenta = preg_replace('/[^0-9]/', '', $_POST['numero_cuenta']);
     $titular = trim($_POST['titular']);
-    $saldo = floatval(str_replace(',', '.', $_POST['saldo']));
+    $saldo = parseAmount($_POST['saldo']);
 
     if ($tipo_cuenta !== 'ahorros' && $tipo_cuenta !== 'corriente') {
         $msg = "El tipo de cuenta debe ser 'ahorros' o 'corriente'.";
@@ -139,6 +140,7 @@ function selected_tipo_cuenta($valor, $banco_editar) {
     <meta charset="UTF-8">
     <title>Bancos</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../assets/js/amount-input.js"></script>
     <script>
     function formatNumeroCuenta(input) {
         let value = input.value.replace(/\D/g,'').slice(0,20);
@@ -149,6 +151,10 @@ function selected_tipo_cuenta($valor, $banco_editar) {
         if(value.length > 10) result += '-' + value.substring(10,20);
         input.value = result;
     }
+    window.addEventListener('DOMContentLoaded', function() {
+        // Inicializar campo de saldo
+        initAmountInput('#saldo');
+    });
     </script>
 </head>
 <body>
@@ -186,8 +192,8 @@ function selected_tipo_cuenta($valor, $banco_editar) {
                     placeholder="N° cuenta (20 dígitos)" required
                     oninput="formatNumeroCuenta(this)">
                 <input type="text" name="titular" value="<?php echo $banco_editar['titular'] ?? ''; ?>" placeholder="Titular">
-                <input type="number" name="saldo" step="0.01" min="0"
-                    value="<?php echo isset($banco_editar['saldo']) ? $banco_editar['saldo'] : ''; ?>"
+                <input type="text" id="saldo" name="saldo" class="amount-input"
+                    value="<?php echo isset($banco_editar['saldo']) ? formatAmount($banco_editar['saldo']) : ''; ?>"
                     placeholder="Saldo inicial Bs.">
                 <div class="form-btns">
                     <button type="submit" class="btn-principal"><?php echo $banco_editar ? "Actualizar" : "Agregar"; ?></button>
@@ -219,11 +225,11 @@ function selected_tipo_cuenta($valor, $banco_editar) {
                         <td><?php echo formatearCuenta($b['numero_cuenta']); ?></td>
                         <td><?php echo htmlspecialchars($b['titular']); ?></td>
                         <td class="td-saldo">
-                            <?php echo number_format($b['saldo'],2,',','.'); ?> Bs.
+                            <?php echo formatAmount($b['saldo']); ?> Bs.
                             <?php if ($tasa_usd > 0): ?>
                                 <br>
                                 <small class="saldo-secundario">
-                                    <?php echo number_format($b['saldo']/$tasa_usd, 2, ',', '.'); ?> USD
+                                    <?php echo formatAmount($b['saldo']/$tasa_usd); ?> USD
                                 </small>
                             <?php else: ?>
                                 <br>

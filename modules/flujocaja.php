@@ -1,12 +1,12 @@
 <?php
 // Archivo: modules/flujocaja.php
-// Módulo: Flujo de Caja (forzado formato miles="," y decimal="." para Bs y $)
-// Ajustes: detectar correctamente cuando el usuario escribe en el pad numérico "1582.50"
-// y al presionar Enter formatearlo automáticamente a "1,582.50".
-// Reemplaza tu archivo flujocaja.php por este (haz backup antes).
+// Módulo: Flujo de Caja
+// Usuario ingresa montos usando punto como decimal (652485.20)
+// Sistema muestra en formato latino (652.485,20)
 
 session_start();
 require_once "../config/db.php";
+require_once "../config/amount_utils.php";
 
 if (!isset($_SESSION['usuario'])) {
     header('Location: ../index.php');
@@ -32,36 +32,6 @@ function sql_to_ddmmyyyy($d) {
     if (!$d) return '';
     $t = strtotime($d);
     return date('d/m/Y', $t);
-}
-// Keep PHP parsing helpers tolerant: they accept "1.234,56" or "1,234.56" etc.
-// We'll receive normalized strings (decimal point '.') from client but parser stays robust.
-function parse_monto_bs_from_input($s) {
-    $s = trim((string)$s);
-    if ($s === '') return 0.0;
-    // Remove spaces and NBSP
-    $s = str_replace("\xc2\xa0", '', $s);
-    $s = str_replace(' ', '', $s);
-    // Normalize common inputs:
-    // If contains both separators, decide decimal by last occurrence
-    if (substr_count($s, ',') > 0 && substr_count($s, '.') > 0) {
-        $lastComma = strrpos($s, ',');
-        $lastDot = strrpos($s, '.');
-        if ($lastComma > $lastDot) { // comma is decimal (e.g. 1.234,56)
-            $s = str_replace('.', '', $s);
-            $s = str_replace(',', '.', $s);
-        } else { // dot is decimal (e.g. 1,234.56)
-            $s = str_replace(',', '', $s);
-        }
-    } elseif (substr_count($s, ',') > 0 && substr_count($s, '.') == 0) {
-        // e.g. "1234,56" -> treat comma as decimal
-        $s = str_replace(',', '.', $s);
-    } else {
-        // only dots or numbers, keep as-is
-    }
-    return floatval($s);
-}
-function parse_monto_usd_from_input($s) {
-    return parse_monto_bs_from_input($s);
 }
 
 // Obtener última tasa
@@ -178,10 +148,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_edicion'])) {
 
     if ($instrumento === 'Bs') {
         $banco_id = isset($_POST['banco_id']) && $_POST['banco_id'] !== '' ? (int)$_POST['banco_id'] : null;
-        $monto_bs = isset($_POST['monto']) ? parse_monto_bs_from_input($_POST['monto']) : 0.0;
+        $monto_bs = isset($_POST['monto']) ? parseAmount($_POST['monto']) : 0.0;
         if ($banco_id === null) $errors[] = "Debe seleccionar la cuenta bancaria de donde se debitará el pago en Bs.";
     } else {
-        $monto_usd = isset($_POST['monto']) ? parse_monto_usd_from_input($_POST['monto']) : 0.0;
+        $monto_usd = isset($_POST['monto']) ? parseAmount($_POST['monto']) : 0.0;
     }
 
     if ($descripcion === '') $errors[] = "Descripción requerida.";
@@ -345,6 +315,7 @@ unset($_SESSION['msg']);
 <title>Flujo de Caja | <?php echo htmlspecialchars($_SESSION['nombre'] ?? ''); ?></title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/amount-input.js"></script>
 </head>
 <body>
     <nav class="nav-bar">
@@ -384,7 +355,7 @@ unset($_SESSION['msg']);
                 <input type="text" name="descripcion" id="descripcion_input" placeholder="Descripción del Pago" required>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <div id="currency_label" class="currency-badge">Bs</div>
-                    <input type="text" name="monto" id="monto_input" required placeholder="Monto" style="flex: 1;">
+                    <input type="text" name="monto" id="monto_input" class="amount-input" required placeholder="Monto" style="flex: 1;">
                 </div>
                 <input type="text" name="tasa" id="tasa_input" value="<?php echo $tasa_actual!==null ? htmlspecialchars(str_replace(',', '.', (string)$tasa_actual)) : ''; ?>" placeholder="Tasa (opcional)">
                 <input type="text" name="responsable" id="responsable_input" placeholder="Responsable">
@@ -493,22 +464,19 @@ unset($_SESSION['msg']);
     <!-- Cargar JS al final -->
     <script src="../assets/js/flujocaja.js?v=<?php echo time(); ?>"></script>
     <script>
-    // Forzado: usar formato miles = ',' y decimal = '.' (ejemplo: 1,250,520.45)
-    // No dependemos de la configuración del navegador: forzamos en esta página.
-    const FIXED_LOCALE = 'en-US'; // en-US produce 1,250,520.45
-    function nf2_fixed() {
+    // Usar formato latino: miles = '.' y decimal = ',' (ejemplo: 1.250.520,45)
+    // El usuario ingresa con punto como decimal (652485.20) y se muestra en formato latino
+    const LATIN_LOCALE = 'es-ES'; // es-ES produce 1.250.520,45
+    function nf2_latin() {
         try {
-            return new Intl.NumberFormat(FIXED_LOCALE, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return new Intl.NumberFormat(LATIN_LOCALE, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         } catch(e) {
-            return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
     }
-    const NUM_FORMAT = nf2_fixed();
+    const NUM_FORMAT = nf2_latin();
 
-    // Force explicit separators for parsing logic
-    const SEPS = { group: ',', decimal: '.' };
-
-    // Format number for display (2 decimals) using fixed format
+    // Format number for display (2 decimals) using Latin format
     function fcj_formatNumber(value) {
         if (value === null || value === undefined || isNaN(Number(value))) return '';
         return NUM_FORMAT.format(Number(value));
@@ -517,8 +485,7 @@ unset($_SESSION['msg']);
     function fcj_formatBs(value) { return fcj_formatNumber(value); }
     function fcj_formatUsd(value) { return fcj_formatNumber(value); }
 
-    // Unformat string into normalized "1234.56"
-    // Improved to detect when user types "1582.50" (dot decimal) or "1.582,50" etc.
+    // Unformat string into normalized "1234.56" (dot as decimal, no thousands)
     function fcj_unformat(str) {
         if (str === null || str === undefined) return '';
         str = String(str).trim();
@@ -527,17 +494,24 @@ unset($_SESSION['msg']);
         str = str.replace(/\u00A0/g,'').replace(/\s/g,'');
         // Remove currency symbols and letters
         str = str.replace(/[^\d\-\.,]/g,'');
-        // If string contains comma and no dot -> treat comma as decimal (e.g. "1582,50")
-        if (str.indexOf(',') > -1 && str.indexOf('.') === -1) {
-            // remove thousand separators if any are dots (unlikely here) then replace comma by dot
-            str = str.replace(/\./g, '');
-            str = str.replace(/,/g, '.');
-        } else {
-            // Otherwise (common expected format: group commas, decimal dot) remove group commas
-            str = str.replace(/,/g, '');
-            // keep dot as decimal. If multiple dots exist, keep last one as decimal
-            // we'll normalize below
+        
+        // If string contains both separators, the last one is decimal
+        if (str.indexOf('.') > -1 && str.indexOf(',') > -1) {
+            var lastDot = str.lastIndexOf('.');
+            var lastComma = str.lastIndexOf(',');
+            if (lastComma > lastDot) {
+                // Latin format: 1.234,56 -> remove dots, replace comma with dot
+                str = str.replace(/\./g, '').replace(',', '.');
+            } else {
+                // US format: 1,234.56 -> remove commas, keep dot
+                str = str.replace(/,/g, '');
+            }
+        } else if (str.indexOf(',') > -1) {
+            // Only comma, assume it's decimal: 1234,56 -> 1234.56
+            str = str.replace(',', '.');
         }
+        // else: only dot or neither, keep as is (dot is decimal)
+        
         // Remove any character except digits, dot, minus
         str = str.replace(/[^0-9\.\-]/g, '');
         // Normalize multiple dots (keep last dot as decimal)
@@ -708,29 +682,16 @@ unset($_SESSION['msg']);
 
     // Events on monto input to update bank info and check insufficiency
     document.addEventListener('DOMContentLoaded', function(){
+        // Initialize amount input with our utility
+        initAmountInput('#monto_input');
+        
         const monto = document.getElementById('monto_input');
         if (monto) {
-            // Format on blur according to fixed format (comma thousands, dot decimal)
+            // Additional custom handling for bank saldo validation
+            // Override blur to also update bank info
             monto.addEventListener('blur', function(){
-                var u = fcj_unformat(this.value);
-                if (u !== '') {
-                    var n = Number(u);
-                    this.value = fcj_formatNumber(n);
-                }
                 updateBankSaldoInfo(document.getElementById('form_agregar'), 'bank_saldo_info');
                 maybeCheckInsufficientAndFocus(document.getElementById('form_agregar'));
-            });
-            // On Enter: format but prevent immediate submit (first Enter formats)
-            monto.addEventListener('keydown', function(e){
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    setTimeout(function(){
-                        var u = fcj_unformat(monto.value);
-                        if (u !== '') monto.value = fcj_formatNumber(Number(u));
-                        updateBankSaldoInfo(document.getElementById('form_agregar'), 'bank_saldo_info');
-                        maybeCheckInsufficientAndFocus(document.getElementById('form_agregar'));
-                    }, 50);
-                }
             });
         }
     });

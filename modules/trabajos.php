@@ -2,6 +2,7 @@
 // Archivo: modules/trabajos.php - Vista de Trabajos compacta y organizada
 session_start();
 require_once "../config/db.php";
+require_once "../config/amount_utils.php";
 
 // Verifica sesión y empresa seleccionada
 if (!isset($_SESSION['usuario'])) {
@@ -51,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && ($_POST[
     $estado = $_POST['estado'];
     $moneda = $_POST['moneda'];
     $tasa_cambio = ($moneda === 'USD') ? floatval($_POST['tasa_cambio']) : null;
-    $monto_inicial = floatval(str_replace(',', '.', $_POST['monto_inicial']));
+    $monto_inicial = parseAmount($_POST['monto_inicial']);
 
     if ($_POST['accion'] === 'nuevo') {
         $stmt = $conn->prepare("INSERT INTO trabajos 
@@ -104,6 +105,7 @@ while ($row = $res->fetch_assoc()) $trabajos[] = $row;
     <meta charset="UTF-8">
     <title>Trabajos</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../assets/js/amount-input.js"></script>
     <script>
     // Mostrar/ocultar el campo "tasa cambio" según la moneda seleccionada
     function actualizarTasa() {
@@ -123,6 +125,8 @@ while ($row = $res->fetch_assoc()) $trabajos[] = $row;
         sel.addEventListener('change', actualizarTasa);
         actualizarTasa();
       }
+      // Inicializar campo de monto
+      initAmountInput('#monto_inicial');
     });
 
     // Confirmar antes de eliminar
@@ -186,7 +190,7 @@ while ($row = $res->fetch_assoc()) $trabajos[] = $row;
                     <option value="USD" <?php echo $trabajo_editar && $trabajo_editar['moneda']=='USD' ? 'selected' : ''; ?>>Dólares</option>
                 </select>
                 <input type="number" step="0.0001" min="0" name="tasa_cambio" id="tasa_cambio" placeholder="Tasa $ a Bs" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['tasa_cambio']) : ''; ?>">
-                <input type="number" step="0.01" min="0" name="monto_inicial" required placeholder="Monto Inicial" value="<?php echo $trabajo_editar ? htmlspecialchars($trabajo_editar['monto_inicial']) : ''; ?>">
+                <input type="text" id="monto_inicial" name="monto_inicial" class="amount-input" required placeholder="Monto Inicial" value="<?php echo $trabajo_editar ? formatAmount($trabajo_editar['monto_inicial']) : ''; ?>">
                 <div class="form-btns">
                     <button type="submit" class="btn-principal"><?php echo $trabajo_editar ? "Actualizar" : "Guardar Trabajo"; ?></button>
                     <?php if ($trabajo_editar): ?>
@@ -224,10 +228,10 @@ while ($row = $res->fetch_assoc()) $trabajos[] = $row;
                         <td><?php echo htmlspecialchars($t['estado']); ?></td>
                         <td>
                             <?php
-                                echo number_format($t['monto_inicial'], 2, ',', '.');
+                                echo formatAmount($t['monto_inicial']);
                                 echo ($t['moneda'] === 'USD') ? ' $' : ' Bs';
                                 if ($t['moneda'] === 'USD' && $t['tasa_cambio']) {
-                                    echo "<br><small>(" . number_format($t['monto_inicial'] * $t['tasa_cambio'], 2, ',', '.') . " Bs)</small>";
+                                    echo "<br><small>(" . formatAmount($t['monto_inicial'] * $t['tasa_cambio']) . " Bs)</small>";
                                 }
                             ?>
                         </td>
