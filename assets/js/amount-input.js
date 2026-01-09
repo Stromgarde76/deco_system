@@ -170,6 +170,35 @@ function initAmountInput(selector) {
         handleAmountBlur(this, true); // Skip if already formatted
     });
     
+    // Validar input: solo dígitos y un punto decimal
+    input.addEventListener('input', function(e) {
+        let value = this.value;
+        
+        // Permitir solo dígitos, punto y guión (para negativos)
+        value = value.replace(/[^\d.\-]/g, '');
+        
+        // Asegurar que solo haya un punto decimal
+        const dotCount = (value.match(/\./g) || []).length;
+        if (dotCount > 1) {
+            // Mantener solo el último punto como decimal
+            const lastDotIndex = value.lastIndexOf('.');
+            value = value.substring(0, lastDotIndex).replace(/\./g, '') + value.substring(lastDotIndex);
+        }
+        
+        // Limitar decimales a 2 dígitos
+        if (value.includes('.')) {
+            const parts = value.split('.');
+            if (parts[1] && parts[1].length > 2) {
+                value = parts[0] + '.' + parts[1].substring(0, 2);
+            }
+        }
+        
+        // Solo actualizar si cambió
+        if (this.value !== value) {
+            this.value = value;
+        }
+    });
+    
     // Manejar Enter para formatear y mover al siguiente campo
     input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {

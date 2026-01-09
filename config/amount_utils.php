@@ -10,7 +10,9 @@
 
 /**
  * Parsea un monto del input del usuario
- * Acepta formato con punto como decimal (652485.20)
+ * Acepta AMBOS formatos:
+ * - Formato con punto como decimal: 652485.20 o 1234567.89
+ * - Formato latino (formateado): 652.485,20 o 1.234.567,89
  * Retorna float
  * 
  * @param string|float $input Valor del input
@@ -30,11 +32,31 @@ function parseAmount($input) {
         return 0.0;
     }
     
+    // Detectar si está en formato latino (tiene coma como decimal)
+    // Formato latino: 1.234.567,89 (puntos para miles, coma para decimal)
+    // Formato estándar: 1234567.89 (punto para decimal, sin separador de miles)
+    if (strpos($str, ',') !== false) {
+        // Es formato latino: remover puntos (miles) y convertir coma (decimal) a punto
+        $str = str_replace('.', '', $str); // Remover separadores de miles
+        $str = str_replace(',', '.', $str); // Convertir separador decimal a punto
+    }
+    
     // Remover todo excepto dígitos, punto y guión
     $str = preg_replace('/[^\d.\-]/', '', $str);
     
     // Convertir a float
     return floatval($str);
+}
+
+/**
+ * Alias de parseAmount() - nombre solicitado en especificación
+ * Parsea un monto en formato latino (1.234.567,89) o estándar (1234567.89)
+ * 
+ * @param string|float $input Valor del input
+ * @return float Valor parseado
+ */
+function parseMontoLatino($input) {
+    return parseAmount($input);
 }
 
 /**
