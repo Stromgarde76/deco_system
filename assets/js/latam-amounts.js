@@ -16,6 +16,10 @@
      * Ejemplo: "1234567.89" → "1.234.567,89"
      * Preserva TODOS los dígitos sin truncar
      * 
+     * Esta función maneja valores al momento de formatear (Enter o blur),
+     * donde puede recibir diversos formatos incluyendo valores ya formateados.
+     * Usa el ÚLTIMO punto como decimal para manejar casos como "1.234.567.89"
+     * 
      * @param {string} value - Valor con punto como decimal
      * @returns {string} - Valor formateado en formato latino
      */
@@ -32,11 +36,15 @@
         str = str.replace('-', '');
         
         // Si hay múltiples puntos, usar el ÚLTIMO como separador decimal
+        // Ejemplo: "1.2.3.4.5" se interpreta como entero "1234" + decimal ".5" = 1234.5
+        // Esto maneja el caso donde el usuario escribe puntos accidentalmente o
+        // cuando se recibe un valor ya formateado con separadores de miles (1.234.567)
         const dotCount = (str.match(/\./g) || []).length;
         if (dotCount > 1) {
             const lastDotIndex = str.lastIndexOf('.');
-            // Juntar todas las partes antes del último punto
+            // Juntar todas las partes antes del último punto (parte entera)
             const integerPart = str.substring(0, lastDotIndex).replace(/\./g, '');
+            // Mantener todo después del último punto (parte decimal)
             const decimalPart = str.substring(lastDotIndex + 1);
             str = integerPart + '.' + decimalPart;
         }
@@ -88,6 +96,9 @@
 
     /**
      * Sanitiza el input para permitir solo dígitos y un solo punto
+     * Esta función se usa durante la escritura en tiempo real (evento input)
+     * Mantiene el PRIMER punto para permitir al usuario continuar escribiendo decimales
+     * 
      * @param {string} value - Valor del input
      * @returns {string} - Valor sanitizado
      */
@@ -104,7 +115,10 @@
             sanitized = '-' + sanitized;
         }
         
-        // Mantener solo el PRIMER punto como decimal
+        // Durante la escritura: mantener solo el PRIMER punto como decimal
+        // Esto permite al usuario escribir "123." y continuar con los decimales
+        // Ejemplo: usuario escribe "123.4" → se mantiene "123.4"
+        // Si intenta "123.4.5" → se sanitiza a "123.45" (quita el segundo punto)
         const firstDotIndex = sanitized.indexOf('.');
         if (firstDotIndex !== -1) {
             const beforeDot = sanitized.substring(0, firstDotIndex + 1);
