@@ -25,8 +25,17 @@ $msg = "";
  */
 function convertirMontoLatino($monto_latino) {
     $monto_str = trim($monto_latino);
-    $monto_str = str_replace('.', '', $monto_str); // Remover separador de miles
-    $monto_str = str_replace(',', '.', $monto_str); // Cambiar coma decimal por punto
+    
+    // Si está vacío, retornar 0
+    if (empty($monto_str)) {
+        return 0.0;
+    }
+    
+    // Remover separador de miles (puntos)
+    $monto_str = str_replace('.', '', $monto_str);
+    // Cambiar coma decimal por punto
+    $monto_str = str_replace(',', '.', $monto_str);
+    
     return floatval($monto_str);
 }
 
