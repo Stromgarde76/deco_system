@@ -37,7 +37,7 @@ function generarCodigoServicio($conn, $empresa_id) {
 if (isset($_POST['accion']) && $_POST['accion'] === 'agregar') {
     $nombre = trim($_POST['nombre']);
     $tipo = $_POST['tipo'];
-    $costo = floatval(str_replace(',', '.', $_POST['costo']));
+    $costo = parseAmount($_POST['costo']);
     $descripcion = trim($_POST['descripcion']);
     $cod_serv = generarCodigoServicio($conn, $empresa_id);
 

@@ -170,6 +170,49 @@ function initAmountInput(selector) {
         handleAmountBlur(this, true); // Skip if already formatted
     });
     
+    // Validar input: solo dígitos y un punto decimal
+    input.addEventListener('input', function(e) {
+        let value = this.value;
+        
+        // Verificar si comienza con signo negativo
+        const isNegative = value.startsWith('-');
+        
+        // Permitir solo dígitos y punto (el guión se maneja por separado)
+        value = value.replace(/[^\d.]/g, '');
+        
+        // Restaurar signo negativo al inicio si estaba presente
+        if (isNegative) {
+            value = '-' + value;
+        }
+        
+        // Prevenir múltiples puntos: mantener solo el último punto como decimal
+        const lastDotIndex = value.lastIndexOf('.');
+        if (lastDotIndex !== -1) {
+            const beforeLastDot = value.substring(0, lastDotIndex).replace(/\./g, '');
+            const afterLastDot = value.substring(lastDotIndex + 1).replace(/\./g, '');
+            value = beforeLastDot + '.' + afterLastDot;
+            
+            // Si hay signo negativo, asegurar que esté al inicio
+            if (value.includes('-')) {
+                value = '-' + value.replace(/-/g, '');
+            }
+        }
+        
+        // Limitar decimales a 2 dígitos después del punto
+        const dotIndex = value.lastIndexOf('.');
+        if (dotIndex !== -1) {
+            const decimals = value.substring(dotIndex + 1);
+            if (decimals.length > 2) {
+                value = value.substring(0, dotIndex + 1) + decimals.substring(0, 2);
+            }
+        }
+        
+        // Solo actualizar si cambió
+        if (this.value !== value) {
+            this.value = value;
+        }
+    });
+    
     // Manejar Enter para formatear y mover al siguiente campo
     input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {

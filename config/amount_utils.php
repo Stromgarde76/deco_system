@@ -10,7 +10,9 @@
 
 /**
  * Parsea un monto del input del usuario
- * Acepta formato con punto como decimal (652485.20)
+ * Acepta AMBOS formatos:
+ * - Formato con punto como decimal: 652485.20 o 1234567.89
+ * - Formato latino (formateado): 652.485,20 o 1.234.567,89
  * Retorna float
  * 
  * @param string|float $input Valor del input
@@ -30,11 +32,70 @@ function parseAmount($input) {
         return 0.0;
     }
     
+    // Detectar formato basándose en el uso de coma y punto
+    // Formato latino: usa coma como decimal (1.234.567,89)
+    // Formato estándar: usa punto como decimal (1234567.89 o 1,234,567.89)
+    
+    $hasComma = strpos($str, ',') !== false;
+    $hasDot = strpos($str, '.') !== false;
+    
+    if ($hasComma && $hasDot) {
+        // Ambos presentes: determinar cuál es el decimal por posición
+        $lastCommaPos = strrpos($str, ',');
+        $lastDotPos = strrpos($str, '.');
+        
+        if ($lastCommaPos > $lastDotPos) {
+            // Formato latino: 1.234.567,89 (coma es decimal)
+            $str = str_replace('.', '', $str); // Remover separadores de miles
+            $str = str_replace(',', '.', $str); // Convertir separador decimal a punto
+        } else {
+            // Formato estándar: 1,234,567.89 (punto es decimal)
+            $str = str_replace(',', '', $str); // Remover separadores de miles
+        }
+    } elseif ($hasComma) {
+        // Solo coma: es formato latino (1.234,56 o 0,50)
+        $str = str_replace('.', '', $str); // Remover separadores de miles
+        $str = str_replace(',', '.', $str); // Convertir separador decimal a punto
+    }
+    // Si solo tiene punto o ninguno, ya está en formato estándar
+    
     // Remover todo excepto dígitos, punto y guión
     $str = preg_replace('/[^\d.\-]/', '', $str);
     
+    // Manejar signo negativo: solo permitir al inicio
+    $isNegative = (strpos($str, '-') === 0);
+    $str = str_replace('-', '', $str); // Remover todos los guiones
+    
+    // Asegurar solo un punto decimal (mantener el último como decimal)
+    $parts = explode('.', $str);
+    if (count($parts) > 2) {
+        // Mantener todas las partes excepto la última como entero
+        $integerPart = implode('', array_slice($parts, 0, -1));
+        $decimalPart = end($parts);
+        $str = $integerPart . '.' . $decimalPart;
+    }
+    
+    // Aplicar signo negativo si estaba presente
+    if ($isNegative) {
+        $str = '-' . $str;
+    }
+    
     // Convertir a float
     return floatval($str);
+}
+
+/**
+ * Alias de parseAmount() - nombre solicitado en especificación del problema
+ * Este alias existe específicamente porque fue requerido en la especificación:
+ * "asegurar parseo robusto desde '1.234.567,89' a float 1234567.89 (helper parseMontoLatino)"
+ * 
+ * Parsea un monto en formato latino (1.234.567,89) o estándar (1234567.89)
+ * 
+ * @param string|float $input Valor del input
+ * @return float Valor parseado
+ */
+function parseMontoLatino($input) {
+    return parseAmount($input);
 }
 
 /**

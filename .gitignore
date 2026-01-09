@@ -1,0 +1,19 @@
+# Test files
+test_amount_parsing.php
+test_complete_system.html
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.log

@@ -4,6 +4,7 @@
 
 session_start();
 require_once "../config/db.php";
+require_once "../config/amount_utils.php";
 
 // Verifica si el usuario ha iniciado sesión
 if (!isset($_SESSION['usuario'])) {
@@ -65,7 +66,7 @@ $pagos_pendientes = 5; // Simulado
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nueva_tasa'])) {
     // Normalizar y validar
     $fecha = date('Y-m-d');
-    $tasa = floatval(str_replace(',', '.', $_POST['nueva_tasa']));
+    $tasa = parseAmount($_POST['nueva_tasa']);
 
     // Inserta o actualiza la tasa del día (ON DUPLICATE KEY asumes clave única por fecha)
     $stmt = $conn->prepare(

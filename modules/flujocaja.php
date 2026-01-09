@@ -63,16 +63,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar'])) {
     $monto_bs = null;
     $monto_usd = null;
     // tasa: server expects normalized decimal with dot
-    $tasa = isset($_POST['tasa']) && strlen($_POST['tasa'])>0 ? floatval(str_replace(',', '.', $_POST['tasa'])) : $tasa_actual;
+    $tasa = isset($_POST['tasa']) && strlen($_POST['tasa'])>0 ? parseAmount($_POST['tasa']) : $tasa_actual;
     $responsable = trim($_POST['responsable'] ?? '');
     $beneficiario = trim($_POST['beneficiario'] ?? '');
 
     if ($instrumento === 'Bs') {
         $banco_id = isset($_POST['banco_id']) && $_POST['banco_id'] !== '' ? (int)$_POST['banco_id'] : null;
-        $monto_bs = isset($_POST['monto']) ? parse_monto_bs_from_input($_POST['monto']) : 0.0;
+        $monto_bs = isset($_POST['monto']) ? parseAmount($_POST['monto']) : 0.0;
         if ($banco_id === null) $errors[] = "Debe seleccionar la cuenta bancaria de donde se debitará el pago en Bs.";
     } else {
-        $monto_usd = isset($_POST['monto']) ? parse_monto_usd_from_input($_POST['monto']) : 0.0;
+        $monto_usd = isset($_POST['monto']) ? parseAmount($_POST['monto']) : 0.0;
     }
 
     if ($descripcion === '') $errors[] = "Descripción requerida.";
@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_edicion'])) {
     $banco_id = null;
     $monto_bs = null;
     $monto_usd = null;
-    $tasa = isset($_POST['tasa']) && strlen($_POST['tasa'])>0 ? floatval(str_replace(',', '.', $_POST['tasa'])) : $tasa_actual;
+    $tasa = isset($_POST['tasa']) && strlen($_POST['tasa'])>0 ? parseAmount($_POST['tasa']) : $tasa_actual;
     $responsable = trim($_POST['responsable'] ?? '');
     $beneficiario = trim($_POST['beneficiario'] ?? '');
 
